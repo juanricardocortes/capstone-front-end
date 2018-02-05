@@ -1,0 +1,24 @@
+.login-bg {
+    background-color: #00cd9a;
+    width: 100%;
+    height: 100%;
+}
+
+.loginbutton {
+    position: absolute !important;
+    right: 8%;
+}
+
+.cancelbutton {
+    position: absolute !important;
+    right: 24%;
+}
+
+.genericlink:hover {
+    cursor: pointer;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none;
+}
+

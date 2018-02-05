@@ -1,0 +1,55 @@
+<div ng-controller="mainpageCtrl" class="pagecontainer">
+    <div class="sidenav">
+        <div class="logo">
+            <h5>Logo Here</h5>
+        </div>
+        <div class="sidenav_navigation">
+            <ul class="collection">
+                <li class="collection-item avatar" ng-click="gotoDashboard()">
+                    <i class="material-icons circle icons">dashboard</i>
+                    Dashboard
+                </li>
+                <li class="collection-item avatar" ng-click="gotoEmployees()">
+                    <i class="material-icons circle icons">supervisor_account</i>
+                    Employees
+                </li>
+                <li class="collection-item avatar" ng-click="gotoProjects()">
+                    <i class="material-icons circle icons">developer_board</i>
+                    Projects
+                </li>
+                <li class="collection-item avatar" ng-click="gotoApplicants()">
+                    <i class="material-icons circle icons">assignment_ind</i>
+                    Applicants
+                </li>
+                <li class="collection-item avatar" ng-click="gotoLeaveRequests()">
+                    <i class="material-icons circle icons">markunread</i>
+                    Leave Requests
+                </li>
+                <li class="collection-item avatar" ng-click="gotoProfile()">
+                    <i class="material-icons circle icons">person</i>
+                    Profile
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#!" class="brand-logo">{{currentPage}}</a>
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <a ng-click="logout()">
+                                <i class="material-icons left">input</i>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="currentpage">
+            <ng-view>
+
+            </ng-view>
+        </div>
+    </div>
+</div>

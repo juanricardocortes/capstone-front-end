@@ -1,0 +1,44 @@
+<html ng-app="app">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/material_overwrite.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/applicants.css">
+</head>
+
+<body ng-controller="mainCtrl">
+
+    <div ng-show="!isLogged">
+        <ng-include src="'./views/login/login.html'"></ng-include>
+    </div>
+
+    <div ng-show="isLogged">
+        <ng-include src="'./views/login/mainpage.html'"></ng-include>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <script src="js/firebaseInit/firebaseInit.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/dashboard/dashboardController.js"></script>
+    <script src="js/controllers/employees/employeeController.js"></script>
+    <script src="js/controllers/projects/projectsController.js"></script>
+    <script src="js/controllers/applicants/applicantsController.js"></script>
+    <script src="js/controllers/applicants/applicantProfileController.js"></script>
+    <script src="js/controllers/applicants/addApplicantController.js"></script>
+    <script src="js/controllers/applicants/allAddApplicantsController.js"></script>
+    <script src="js/controllers/profile/profileController.js"></script>
+    <script src="js/controllers/leaverequests/requestsController.js"></script>
+    <script src="js/controllers/login/loginController.js"></script>
+    <script src="js/controllers/login/mainpageController.js"></script>
+</body>
+
+</html>

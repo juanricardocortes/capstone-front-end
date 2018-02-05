@@ -1,0 +1,23 @@
+.collection-item {
+    vertical-align: middle !important;
+}
+
+.collection-item:hover {
+    cursor: pointer;
+}
+
+nav {
+    background-color: #00cd9a !important;
+}
+
+.icons {
+    background-color: #00cd9a !important;
+}
+
+#toast-container {
+    top: auto !important;
+    left: auto !important;
+    bottom: 10%;
+    right:7%;
+}
+

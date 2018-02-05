@@ -1,0 +1,21 @@
+<h1>Employees</h1>
+<div>
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Email Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in allEmployees track by $index">
+                <td>{{employee.userkey}}</td>
+                <td>{{employee.file.lastname}}</td>
+                <td>{{employee.file.firstname}}</td>
+                <td>{{employee.email}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

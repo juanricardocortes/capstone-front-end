@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col s8 z-depth-2">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>Applicant ID</th>
+                    <th>Email Address</th>
+                    <th>Reference Number</th>
+                    <th>Completion Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="applicant in allApplicants track by $index" ng-click="gotoApplicantProfile(applicant)" class=" applicant-row">
+                    <td>{{applicant.userkey}}</td>
+                    <td>{{applicant.email}}</td>
+                    <td>{{applicant.referenceNumber}}</td>
+                    <td>10%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col s3 z-depth-2 applicant-notifications">
+        <h4>Applicant notification here</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="row">
+        <a class="waves-effect waves-light btn-large add-applicant-button" ng-click="showAddApplicantModal()">
+            <i class="material-icons left">add</i>Add</a>
+    </div>
+</div>
+
+<div class="row" ng-if="showAddApplicant">
+    <ng-include src="'./views/applicants/addapplicantmodal.html'">
+    </ng-include>
+</div>
+
+<div class="row" ng-if="showAllAddApplicants">
+    <ng-include src="'./views/applicants/alladdapplicantsmodal.html'">
+    </ng-include>
+</div>

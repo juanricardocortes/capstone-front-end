@@ -1,0 +1,33 @@
+<div ng-controller="allAddApplicantsCtrl" class="add-applicant-modal-bg">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title grey-text text-darken-4">All applicants to be added
+                        <i ng-click="hideAllAddApplicantModal()" class="material-icons right add-applicant-modal-close-button">navigate_before</i>
+                    </span>
+                    <div class="row">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li ng-show="allApplicantsToBeAdded.length>0" ng-repeat="applicant in allApplicantsToBeAdded track by $index">
+                                <div class="collapsible-header">
+                                    <i class="material-icons">filter_drama</i>
+                                    {{applicant.email}}
+                                </div>
+                                <div class="collapsible-body">
+                                    <span>{{applicant.lastname}}, {{applicant.firstname}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row add-applicants">
+                        <a class="btn-floating btn-large waves-effect waves-light default-button-color" ng-click="addApplicants()">
+                            <i class="material-icons">add</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>
