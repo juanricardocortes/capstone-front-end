@@ -14,12 +14,11 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         $rootScope.currentPage = "Weltanchaung > Applicants"
         console.log("Applicants controller");
         firebase.database().ref("HRMS_Storage/Applicants/").on("child_added", function (snapshot) {
-            $scope.allApplicants.push(snapshot.val());
             setTimeout(function(){
+                $scope.allApplicants.push(snapshot.val());
                 $scope.$apply();
             });
         });
-        
     }
 
     $scope.gotoApplicantProfile = function (applicant) {

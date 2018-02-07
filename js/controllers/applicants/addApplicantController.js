@@ -4,6 +4,7 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
 
     function initialize() {
         console.log("Add applicant controller");
+        listeners();
         $rootScope.allApplicantsToBeAdded = [];
     }
 
@@ -15,6 +16,40 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             }
         }
         return false;
+    }
+
+    function listeners() {
+        $('#file').on("change", function (event) {
+            $scope.selectedFile = event.target.files[0];
+        });
+    }
+
+    function confirmAddApplicant() {
+        var storageRef = firebase.storage().ref('/images/' + $scope.filename);
+        var uploadTask = storageRef.put($scope.selectedFile);
+        var newUserKey = firebase.database().ref().push().key;
+        uploadTask.on('state_changed', function (snapshot) {}, function (error) {}, function () {
+            var downloadURL = uploadTask.snapshot.downloadURL;
+            $http({
+                url: "http://127.0.0.1:9001/secure-api/uploadImage",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    userkey: newUserKey,
+                    email: $scope.addApplicant_email,
+                    downloadURL: downloadURL
+                }
+            }).then(function (response) {
+                Materialize.toast(response.data.message, 4000);
+            })
+        });
+
+        $rootScope.allApplicantsToBeAdded.push({
+            firstname: $scope.addApplicant_firstname,
+            lastname: $scope.addApplicant_lastname,
+            email: $scope.addApplicant_email,
+            userkey: newUserKey
+        });
     }
 
     $scope.hideAddApplicantModal = function () {
@@ -41,11 +76,7 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             if (checkEmail($scope.addApplicant_email, $rootScope.allApplicantsToBeAdded)) {
                 Materialize.toast("<i class='small material-icons'>priority_high</i>Email already listed.", 4000);
             } else {
-                $rootScope.allApplicantsToBeAdded.push({
-                    firstname: $scope.addApplicant_firstname,
-                    lastname: $scope.addApplicant_lastname,
-                    email: $scope.addApplicant_email
-                });
+                confirmAddApplicant();
                 $("#addApplicant_firstname").val(undefined);
                 $("#addApplicant_firstname").blur();
                 $("#addApplicant_lastname").val(undefined);

@@ -25,6 +25,17 @@
                             <label for="addApplicant_firstname">First Name</label>
                         </div>
                     </div>
+                    <div class="row ">
+                        <div class="file-field input-field col s12">
+                            <div class="btn">
+                                <span>Picture</span>
+                                <input id="file" type="file" accept="image/png,image/gif,image/jpeg">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input ng-model="filename" class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </div>
                     <div class="row view-applicants">
                         <a class="btn-floating btn-large waves-effect waves-light default-button-color" ng-click="viewApplicants()">
                             <i class="material-icons">remove_red_eye</i>
