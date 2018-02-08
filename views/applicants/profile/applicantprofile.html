@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col s8">
+        <div ng-show="informationActive" class="row">
+            <ng-include src="'./views/applicants/profile/applicantinformation.html'">
+            </ng-include>
+        </div>
+        <div ng-show="requirementsActive" class="row">
+            <ng-include src="'./views/applicants/profile/applicantrequirements.html'">
+            </ng-include>
+        </div>
+    </div>
+    <div class="col s4">
+        <div class="row profile-picture-container">
+            <div class="profile-picture">
+                <img ng-src="{{selectedApplicant.image}}" alt="Image being uploaded">
+            </div>
+        </div>
+        <div class="row profile-navigation">
+            <h5 ng-if="informationActive" ng-click="toggleInfo()" class="profile-navigation-link-active">Information</h5>
+            <h5 ng-if="!informationActive" ng-click="toggleInfo()" class="profile-navigation-link">Information</h5>
+            <h5 ng-if="requirementsActive" ng-click="toggleReqs()" class="profile-navigation-link-active">Requirements</h5>
+            <h5 ng-if="!requirementsActive" ng-click="toggleReqs()" class="profile-navigation-link">Requirements</h5>
+        </div>
+    </div>
+</div>

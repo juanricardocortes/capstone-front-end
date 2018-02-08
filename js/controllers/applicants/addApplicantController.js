@@ -25,26 +25,11 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
     }
 
     function confirmAddApplicant() {
-        var storageRef = firebase.storage().ref('/images/' + $scope.filename);
-        var uploadTask = storageRef.put($scope.selectedFile);
+        var storageRef = "/images/applicantImages/" + $scope.addApplicant_email + "_" + $scope.addApplicant_lastname + ", " +  $scope.addApplicant_firstname;
         var newUserKey = firebase.database().ref().push().key;
-        uploadTask.on('state_changed', function (snapshot) {}, function (error) {}, function () {
-            var downloadURL = uploadTask.snapshot.downloadURL;
-            $http({
-                url: "http://127.0.0.1:9001/secure-api/uploadImage",
-                method: "POST",
-                data: {
-                    token: localStorage.getItem("token"),
-                    userkey: newUserKey,
-                    email: $scope.addApplicant_email,
-                    downloadURL: downloadURL
-                }
-            }).then(function (response) {
-                Materialize.toast(response.data.message, 4000);
-            })
-        });
-
         $rootScope.allApplicantsToBeAdded.push({
+            applicantImageFile: $scope.selectedFile,
+            storageRef: storageRef,
             firstname: $scope.addApplicant_firstname,
             lastname: $scope.addApplicant_lastname,
             email: $scope.addApplicant_email,

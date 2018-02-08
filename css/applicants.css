@@ -42,3 +42,33 @@
     position: absolute !important;
     right: 8%;
 }
+
+.profile-picture-container {
+    height: 30%;
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-navigation {
+    height: auto;
+    color: #a9a9a9;
+}
+
+.profile-navigation-link:hover {
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+}
+
+.profile-navigation-link-active {
+    color: #00cd9a;
+    font-weight: bold;
+}
+
+.profile-navigation-link-active:hover {
+    cursor: pointer;
+    font-weight: bold;
+}

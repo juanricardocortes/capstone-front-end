@@ -56,4 +56,9 @@ body {
     background-color: #008161 !important;
 }
 
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 

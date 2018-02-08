@@ -23,7 +23,7 @@ angular.module("app", ["ngRoute", "blockUI"])
                 controller: "applicantCtrl"
             })
             .when("/applicants/profile", {
-                templateUrl: "views/applicants/applicantprofile.html",
+                templateUrl: "views/applicants/profile/applicantprofile.html",
                 controller: "applicantProfileCtrl"
             })
             .when("/profile", {
