@@ -42,6 +42,8 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             $("#email").blur();
             $("#password").val(undefined);
             $("#password").blur();
+            $("#pin").val(undefined);
+            $("#pin").blur();
         })
     }
 
@@ -55,14 +57,23 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             }
         }).then(function (response) {
             console.log(response.data);
-            authenticate();
-            $scope.auth = false;
-            $scope.email = "";
-            $scope.password = "";
-            $rootScope.token = response.data.token;
-            $rootScope.isLogged = true;
-            localStorage.setItem("token", response.data.token);
-            window.location.href = "#!/dashboard";
+            if (response.data.valid) {
+                authenticate();
+                $scope.auth = false;
+                $("#email").val(undefined);
+                $("#email").blur();
+                $("#password").val(undefined);
+                $("#password").blur();
+                $("#pin").val(undefined);
+                $("#pin").blur();
+                $rootScope.token = response.data.token;
+                $rootScope.isLogged = true;
+                localStorage.setItem("token", response.data.token);
+                window.location.href = "#!/dashboard";
+            } else {
+                Materialize.toast("Invalid code", 4000);
+                $scope.cancel();
+            }
         });
     }
 

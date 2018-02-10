@@ -1,41 +1,52 @@
 <div class="row">
-    <div class="col s8 z-depth-2">
-        <table class="highlight">
-            <thead>
-                <tr>
-                    <th>Applicant ID</th>
-                    <th>Email Address</th>
-                    <th>Reference Number</th>
-                    <th>Completion Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="applicant in allApplicants track by $index" ng-click="gotoApplicantProfile(applicant)" class=" applicant-row">
-                    <td>{{applicant.userkey}}</td>
-                    <td>{{applicant.email}}</td>
-                    <td>{{applicant.referenceNumber}}</td>
-                    <td>10%</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="left-column">
+        <div class="applicant-table-modifiers">
+            <a class="waves-effect waves-light btn-large add-applicant-button" ng-click="showAddApplicantModal()">
+                <i class="material-icons left">add</i>Add
+            </a>
+        </div>
+        <div class="applicant-table z-depth-2">
+            <table class="applicant-table-table highlight bordered">
+                <thead>
+                    <tr>
+                        <th>Applicant ID</th>
+                        <th>Email Address</th>
+                        <th>Reference Number</th>
+                        <th>Completion Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="applicant in allApplicants track by $index" ng-if="!(applicant.isArchived)" ng-click="gotoApplicantProfile(applicant)"
+                        class=" applicant-table-row">
+                        <td>{{applicant.userkey}}</td>
+                        <td>{{applicant.email}}</td>
+                        <td>{{applicant.referenceNumber}}</td>
+                        <td>10%</td>
+                        <td>
+                            <a class="waves-effect waves-light btn applicant-archive-button" ng-click="archiveApplicant(applicant,$event)">
+                                <i class="material-icons">archive</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col s3 z-depth-2 applicant-notifications">
+    <div class="space-column">
+
+    </div>
+    <div class="right-column z-depth-2">
         <h4>Applicant notification here</h4>
     </div>
 </div>
-<div class="row">
-    <div class="row">
-        <a class="waves-effect waves-light btn-large add-applicant-button" ng-click="showAddApplicantModal()">
-            <i class="material-icons left">add</i>Add</a>
-    </div>
-</div>
 
-<div class="row" ng-if="showAddApplicant">
+<div class="row" ng-show="showAddApplicant">
     <ng-include src="'./views/applicants/addapplicantmodal.html'">
     </ng-include>
 </div>
 
-<div class="row" ng-if="showAllAddApplicants">
+<div class="row" ng-show="showAllAddApplicants">
     <ng-include src="'./views/applicants/alladdapplicantsmodal.html'">
     </ng-include>
 </div>

@@ -1,0 +1,27 @@
+.add-applicant-modal-bg {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.add-applicant-modal-close-button {
+    cursor: pointer !important;
+}
+
+.view-applicants {
+    position: absolute !important;
+    right: 8%;
+}
+
+.add-applicant {
+    position: absolute !important;
+    right: 20%;
+}
+
+.add-applicants {
+    position: absolute !important;
+    right: 8%;
+}

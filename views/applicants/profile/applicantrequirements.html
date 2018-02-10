@@ -1,3 +1,18 @@
 <div ng-controller="applicantRequirementsCtrl">
-    <h1>Requirements</h1>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>Requirement</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key,value) in selectedApplicant.requirements track by $index">
+                    <td>{{value.name}}</td>
+                    <td class="update-status" ng-click="updateRequirement(key, value.status)">{{value.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

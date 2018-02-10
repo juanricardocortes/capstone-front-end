@@ -2,7 +2,11 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
 
     if (localStorage.getItem("token")) {
         $rootScope.isLogged = true;
-        initialize();
+        if($rootScope.selectedApplicant === undefined) {
+            window.location.href = "#!/applicants";
+        } else {
+            initialize();
+        }
     } else {
         console.log("BREACH");
         window.location.href = "#!/login";

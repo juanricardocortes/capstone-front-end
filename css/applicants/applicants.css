@@ -1,0 +1,57 @@
+/* Applicant page layout */
+.left-column {
+    float: left;
+    height: 87% !important;
+    width: 70%;
+}
+
+.right-column {
+    float: left;
+    height: 87% !important;
+    width: 28%;
+}
+
+.space-column {
+    float: left;
+    height: 87% !important;
+    width: 2%;
+}
+
+/* Applicant table */
+.applicant-table {
+    height: 90%;
+}
+
+.applicant-table-modifiers {
+    height: 10%;
+}
+
+.applicant-table-table {
+    font-size: 14px !important;
+}
+
+.applicant-table-row {
+    cursor: pointer !important;
+}
+
+/* Add applicant button */
+.add-applicant-button {
+    background-color: #00cd34 !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+.add-applicant-button:hover {
+    background-color: #009a27 !important;
+}
+
+/* Archive applicant button */
+.applicant-archive-button {
+    background-color: #009acd !important;
+    cursor: pointer;
+    z-index: 0 !important;
+}
+
+.applicant-archive-button:hover {
+    background-color: #00749a !important;
+}
