@@ -2,11 +2,11 @@
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.css" />
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/material_overwrite.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login/mainpage.css">
+    <link rel="stylesheet" href="css/login/login.css">
     <link rel="stylesheet" href="css/applicants/applicants.css">
     <link rel="stylesheet" href="css/applicants/applicantprofile.css">
     <link rel="stylesheet" href="css/applicants/applicantmodals.css">
@@ -15,11 +15,15 @@
 <body ng-controller="mainCtrl">
 
     <div ng-show="!isLogged">
-        <ng-include src="'./views/login/login.html'"></ng-include>
+        <ng-include src="'./views/login/login.html'">
+        
+        </ng-include>
     </div>
 
     <div ng-show="isLogged">
-        <ng-include src="'./views/login/mainpage.html'"></ng-include>
+        <ng-include src="'./views/login/mainpage.html'">
+        
+        </ng-include>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>

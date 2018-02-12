@@ -11,7 +11,7 @@
                         <ul class="collapsible" data-collapsible="accordion">
                             <li ng-show="allApplicantsToBeAdded.length>0" ng-repeat="applicant in allApplicantsToBeAdded track by $index">
                                 <div class="collapsible-header">
-                                    <i class="material-icons">filter_drama</i>
+                                    <i ng-click="removeApplicant(applicant)" class="material-icons">close</i>
                                     {{applicant.email}}
                                 </div>
                                 <div class="collapsible-body">

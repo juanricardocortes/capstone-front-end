@@ -8,7 +8,6 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
     }
 
     $scope.login = function () {
-        console.log("EMAIL: " + $scope.email + "\nPASSWORD: " + $scope.password);
         $http({
             url: "http://127.0.0.1:9001/api/authOne",
             method: "POST",
@@ -25,7 +24,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                 $scope.user = response.data.user;
                 $scope.auth = true;
             }
-        })
+        });
     }
 
     $scope.cancel = function () {
@@ -86,9 +85,11 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
     }
 
     function authenticate() {
-        firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password).catch(function (error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-        });
+        firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password)
+            .catch(function (error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
     }
+
 });

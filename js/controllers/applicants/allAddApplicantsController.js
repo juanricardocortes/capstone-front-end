@@ -30,13 +30,22 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
         });
     }
 
+    $scope.removeApplicant = function (applicant) {
+        setTimeout(function () {
+            $rootScope.allApplicantsToBeAdded.splice($rootScope.allApplicantsToBeAdded.indexOf(applicant, 1));
+            $scope.$apply();
+        });
+    }
+
     function uploadApplicantImages() {
         for (var index = 0; index < $rootScope.allApplicantsToBeAdded.length; index++) {
+            console.log("Uploading images: " + $rootScope.allApplicantsToBeAdded[index].firstname);
             uploadImageAsPromise($rootScope.allApplicantsToBeAdded[index]);
         }
     }
 
     function uploadImageAsPromise(applicant) {
+        console.log("Uploading images step 2");
         return new Promise(function (resolve, reject) {
             var storageRef = firebase.storage().ref(applicant.storageRef);
             var task = storageRef.put(applicant.applicantImageFile);

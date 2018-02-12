@@ -1,14 +1,37 @@
 <div class="row">
     <div class="left-column">
         <div class="applicant-table-modifiers">
-            <a class="waves-effect waves-light btn-large add-applicant-button" ng-click="showAddApplicantModal()">
-                <i class="material-icons left">add</i>Add
-            </a>
+            <div class="applicant-table-modifiers-buttons">
+                <a class="waves-effect waves-light btn-large add-applicant-button" ng-click="showAddApplicantModal()">
+                    <i class="material-icons left">add</i>Add
+                </a>
+                <a class="waves-effect waves-light btn-large archive-applicant-button" ng-click="showArchiveApplicantModal()">
+                    <i class="material-icons left">archive</i>Archive
+                </a>
+            </div>
+            <div class="applicant-table-modifiers-filter">
+                <input id="tablefilter" type="text" ng-model="tablefilter" class="validate" placeholder="Search">
+            </div>
+            <div class="applicant-table-modifiers-switch">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" ng-model="toggleArchives" ng-change="showActiveTableToast()">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
         </div>
+        <div class="applicant-table-space"></div>
         <div class="applicant-table z-depth-2">
             <table class="applicant-table-table highlight bordered">
-                <thead>
+                <thead class="applicant-table-head">
                     <tr>
+                        <th>
+                            <p>
+                                <input type="checkbox" id="headercheckbox" />
+                                <label for="headercheckbox"></label>
+                            </p>
+                        </th>
                         <th>Applicant ID</th>
                         <th>Email Address</th>
                         <th>Reference Number</th>
@@ -16,13 +39,37 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="applicant in allApplicants track by $index" ng-if="!(applicant.isArchived)" ng-click="gotoApplicantProfile(applicant)"
+                <tbody class="applicant-table-body">
+                    <tr ng-repeat="applicant in allApplicants | filter:tablefilter track by $index" ng-if="!(applicant.isArchived) && !(toggleArchives)"
+                        class="applicant-table-row">
+                        <td>
+                            <p>
+                                <input type="checkbox" ng-model="applicant.archive" ng-change="showArchiveApplicantModal(applicant)" id="activeapplicants" />
+                                <label for="activeapplicants"></label>
+                            </p>
+                        </td>
+                        <td ng-click="gotoApplicantProfile(applicant)" >{{applicant.userkey}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)" >{{applicant.email}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)" >{{applicant.referenceNumber}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)" >{{applicant.completion}}</td>
+                        <td>
+                            <a class="waves-effect waves-light btn applicant-archive-button" ng-click="archiveApplicant(applicant,$event)">
+                                <i class="material-icons">archive</i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="applicant in allApplicants | filter:tablefilter track by $index" ng-if="(applicant.isArchived) && (toggleArchives)"
                         class=" applicant-table-row">
-                        <td>{{applicant.userkey}}</td>
-                        <td>{{applicant.email}}</td>
-                        <td>{{applicant.referenceNumber}}</td>
-                        <td>10%</td>
+                        <td>
+                            <p>
+                                <input type="checkbox" ng-model="applicant.archive" ng-change="showArchiveApplicantModal(applicant)" id="archivedapplicants" />
+                                <label for="archivedapplicants"></label>
+                            </p>
+                        </td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}</td>
                         <td>
                             <a class="waves-effect waves-light btn applicant-archive-button" ng-click="archiveApplicant(applicant,$event)">
                                 <i class="material-icons">archive</i>
@@ -33,11 +80,20 @@
             </table>
         </div>
     </div>
-    <div class="space-column">
-
-    </div>
+    <div class="space-column"></div>
     <div class="right-column z-depth-2">
-        <h4>Applicant notification here</h4>
+        <ul class="collection">
+            <li ng-repeat="notif in applicantNotifications" class="collection-item avatar">
+                <i class="material-icons circle">{{notif.icon}}</i>
+                <span class="title">{{notif.time}}</span>
+                <p>{{notif.message}}
+                    <br>{{notif.status}}
+                </p>
+                <!-- <a href="#!" class="secondary-content">
+                    <i class="material-icons">grade</i>
+                </a> -->
+            </li>
+        </ul>
     </div>
 </div>
 
