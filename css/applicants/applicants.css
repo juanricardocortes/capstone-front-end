@@ -1,21 +1,9 @@
 /* Applicant page layout */
 
-.left-column {
+.applicant-page {
     float: left;
     height: 87% !important;
-    width: 70%;
-}
-
-.right-column {
-    float: left;
-    height: 87% !important;
-    width: 28%;
-}
-
-.space-column {
-    float: left;
-    height: 87% !important;
-    width: 2%;
+    width: 100%;
 }
 
 /* Applicant table */
@@ -35,13 +23,7 @@
 }
 
 .applicant-table-modifiers-switch {
-    float: left;
-    width: 5%;
-}
-
-.applicant-table-modifiers-buttons {
-    float: left;
-    width: 40%;
+    float: right;
 }
 
 .applicant-table-table {
@@ -52,14 +34,24 @@
     cursor: pointer !important;
 }
 
+.applicant-table-row:hover {
+    background-color: #cdfff3;
+}
+
 .applicant-table-space {
     height: 2%;
 }
 
 /* Applicant table modifiers */
 
+.applicant-table-modifiers-buttons {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+}
+
 .add-applicant-button {
-    background-color: #00cd34 !important;
+    background-color: #00e73a !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -69,7 +61,7 @@
 }
 
 .archive-applicant-button {
-    background-color: #009acd !important;
+    background-color: #00ade7 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -78,14 +70,23 @@
     background-color: #00749a !important;
 }
 
-/* Archive applicant button */
-
-.applicant-archive-button {
-    background-color: #009acd !important;
-    cursor: pointer;
+.hire-applicant-button {
+    background-color: #00ade7 !important;
     z-index: 0 !important;
+    font-size: 14px !important;
 }
 
-.applicant-archive-button:hover {
+.hire-applicant-button:hover {
     background-color: #00749a !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+/* Applicant table switch */
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #00ade7;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #84c7c1;
 }

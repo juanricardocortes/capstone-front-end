@@ -10,16 +10,20 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
     }
 
     function initialize() {
+        $rootScope.multipleArchive = [];
         $rootScope.currentPage = "Weltanchaung > Applicants"
+        $rootScope.applicantTableSwitch = "Active applicants"
+        $rootScope.archiveButton = "archive"
         console.log("Applicants controller");
-        Materialize.toast("Active applicants", 1000);
     }
 
     $scope.showActiveTableToast = function () {
         if ($scope.toggleArchives) {
-            Materialize.toast("Archived applicants", 1000);
+            $rootScope.applicantTableSwitch = "Archived applicants"
+            $rootScope.archiveButton = "undo"
         } else {
-            Materialize.toast("Active applicants", 1000);
+            $rootScope.applicantTableSwitch = "Active applicants"
+            $rootScope.archiveButton = "archive"
         }
     }
 
@@ -37,11 +41,9 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
     }
 
     $scope.archiveApplicant = function (applicant, event) {
-        var isArchived;
-        for (var index = 0; index < $scope.allApplicants.length; index++) {
-            if (applicant.userkey === $scope.allApplicants[index].userkey) {
-                $scope.allApplicants[index].isArchived = !($scope.allApplicants[index].isArchived);
-                isArchived = ($scope.allApplicants[index].isArchived)
+        for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+            if (applicant.userkey === $rootScope.allApplicants[index].userkey) {
+                $rootScope.allApplicants[index].isArchived = !($rootScope.allApplicants[index].isArchived);
                 refresh();
             }
         }
@@ -50,8 +52,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             method: "POST",
             data: {
                 applicant: [applicant],
-                token: localStorage.getItem("token"),
-                isArchived: isArchived,
+                token: localStorage.getItem("token")
             }
         }).then(function (response) {
             Materialize.toast(response.data.message, 4000);
@@ -59,8 +60,34 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         event.stopPropagation();
     }
 
+    $scope.hireApplicant = function (applicant, event) {
+        $http({
+            url: "http://127.0.0.1:9001/secure-api/addEmployee",
+            method: "POST",
+            data: {
+                token: localStorage.getItem("token"),
+                employees: {
+                    email: applicant.email,
+                    image: applicant.image,
+                    password: applicant.lastname,
+                    firstname: applicant.firstname,
+                    lastname: applicant.lastname
+                }
+            }
+        });
+        event.stopPropagation();
+    }
+
     $scope.showArchiveApplicantModal = function (applicant) {
-        alert(JSON.stringify(applicant));
+        $rootScope.showMultipleAddApplicantModal = true;
+    }
+
+    $scope.addApplicantToMultipleArchive = function (applicant) {
+        if (applicant.archive) {
+            $rootScope.multipleArchive.push(applicant);
+        } else {
+            $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf(applicant), 1);
+        }
     }
 
     function refresh() {

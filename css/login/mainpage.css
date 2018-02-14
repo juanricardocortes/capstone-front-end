@@ -15,7 +15,7 @@ body {
 .pagecontainer {
     height: auto;
     width: 100%;
-}   
+}
 
 .sidenav {
     background: #fff;
@@ -49,7 +49,7 @@ body {
 
 .sidenav-navigation {
     height: 90%;
-    font-size: 20px !important;    
+    font-size: 20px !important;
 }
 
 .currentpage {
@@ -57,16 +57,18 @@ body {
 }
 
 .default-button-color {
-    background-color: #00cd9a;
+    /* background-color: #00cd9a; */
+    /* background-color: #009acd !important; */
+    background-color: #00ade7 !important;
 }
 
-.default-button-color:hover{
-    background-color: #008161 !important;
+.default-button-color:hover {
+    /* background-color: #008161 !important; */
+    background-color: #00749a !important;
+    /* background-color: #009acd !important; */
 }
 
 img {
     max-width: 100%;
     max-height: 100%;
 }
-
-

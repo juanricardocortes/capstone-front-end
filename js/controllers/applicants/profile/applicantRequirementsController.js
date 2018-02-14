@@ -23,6 +23,7 @@ angular.module("app").controller("applicantRequirementsCtrl", function ($scope, 
                 status: status
             }
         }).then(function (response) {
+            Materialize.toast(response.data.message, 4000);
             toggleRequirementListener(response);
         });
     }
@@ -32,7 +33,6 @@ angular.module("app").controller("applicantRequirementsCtrl", function ($scope, 
             setTimeout(function () {
                 $rootScope.selectedApplicant = snapshot.val();
                 $scope.$apply();
-                Materialize.toast(response.data.message, 4000);
             });
         });
     }

@@ -7,11 +7,13 @@
 }
 
 nav {
-    background-color: #00cd9a !important;
+    /* background-color: #00cd9a !important; */
+    background-color: #00ade7 !important;
 }
 
 .icons {
-    background-color: #00cd9a !important;
+    /* background-color: #00cd9a !important; */
+    background-color: #00ade7 !important;
 }
 
 #toast-container {

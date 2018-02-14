@@ -8,3 +8,6 @@
  * ng-model
  * ng-include
  */
+{
+    tablefilter
+}
