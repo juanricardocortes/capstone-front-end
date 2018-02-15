@@ -6,6 +6,7 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
         console.log("Add applicant controller");
         listeners();
         $rootScope.allApplicantsToBeAdded = [];
+        $rootScope.databaseConnection = [];
     }
 
     function checkEmail(obj, list) {
@@ -28,13 +29,15 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
         var storageRef = "/images/applicantImages/" + $scope.addApplicant_email + "_" + $scope.addApplicant_lastname + ", " +  $scope.addApplicant_firstname;
         var newUserKey = firebase.database().ref().push().key;
         $rootScope.allApplicantsToBeAdded.push({
-            applicantImageFile: $scope.selectedFile,
-            storageRef: storageRef,
             firstname: $scope.addApplicant_firstname,
             lastname: $scope.addApplicant_lastname,
             email: $scope.addApplicant_email,
             userkey: newUserKey
         });
+        $rootScope.databaseConnection.push({
+            applicantImageFile: $scope.selectedFile,
+            storageRef: storageRef
+        })
     }
 
     $scope.hideAddApplicantModal = function () {

@@ -21,6 +21,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                 allApplicants: $rootScope.allApplicantsToBeAdded
             }
         }).then(function (response) {
+            sendEmail(response.data.referenceNumbers);
             uploadApplicantImages();
             setTimeout(function () {
                 $rootScope.showAllAddApplicants = false;
@@ -37,11 +38,36 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
         });
     }
 
+    function sendEmail(referenceNumbers) {
+        var emails = getEmails();
+        console.log(JSON.stringify(emails));
+        $http({
+            url: "http://127.0.0.1:9001/secure-api/applicantSendEmail",
+            method: "POST",
+            data: {
+                token: localStorage.getItem("token"),
+                referenceNumbers: referenceNumbers,
+                applicants: getEmails()
+            }
+        }).then(function (response) {
+            console.log("Email sent to applicants added");
+        });
+    }
+
     function uploadApplicantImages() {
         for (var index = 0; index < $rootScope.allApplicantsToBeAdded.length; index++) {
             console.log("Uploading images: " + $rootScope.allApplicantsToBeAdded[index].firstname);
-            uploadImageAsPromise($rootScope.allApplicantsToBeAdded[index]);
+            uploadImageAsPromise($rootScope.databaseConnection[index]);
         }
+    }
+
+    function getEmails() {
+        var emails = [];
+        console.log("ASDADASDASDAS" + JSON.stringify($rootScope.allApplicantsToBeAdded)); 
+        for (var index = 0; index < $rootScope.allApplicantsToBeAdded.length; index++) {
+            emails.push($rootScope.allApplicantsToBeAdded.email);
+        }
+        return emails;
     }
 
     function uploadImageAsPromise(applicant) {
