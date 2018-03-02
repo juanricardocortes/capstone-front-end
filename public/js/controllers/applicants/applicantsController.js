@@ -10,7 +10,11 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
     }
 
     function initialize() {
+        $('.tooltipped').tooltip({
+            delay: 50
+        });
         $rootScope.multipleArchive = [];
+        $rootScope.showHired = false;
         $rootScope.currentPage = "Weltanchaung > Applicants"
         $rootScope.applicantTableSwitch = "Active applicants"
         $rootScope.archiveButton = "archive"
@@ -29,6 +33,10 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
 
     $scope.showhideArchive = function () {
         $scope.activateToggle = $scope.toggleArchives;
+    }
+
+    $scope.showHiredApplicants = function () {
+        $rootScope.showHired = !$rootScope.showHired;
     }
 
     $scope.gotoApplicantProfile = function (applicant) {
@@ -66,14 +74,18 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             method: "POST",
             data: {
                 token: localStorage.getItem("token"),
-                employees: {
+                employees: [{
                     email: applicant.email,
                     image: applicant.image,
                     password: applicant.lastname,
                     firstname: applicant.firstname,
-                    lastname: applicant.lastname
-                }
+                    lastname: applicant.lastname,
+                    applicantkey: applicant.userkey
+                }],
+                hireFrom: "applicants"
             }
+        }).then(function (response) {
+            alert(response.data.message);
         });
         event.stopPropagation();
     }
@@ -87,6 +99,24 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $rootScope.multipleArchive.push(applicant);
         } else {
             $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf(applicant), 1);
+            $scope.selectAllApplicants = false;
+        }
+    }
+
+    $scope.checkAll = function () {
+        var toggle;
+        if ($scope.selectAllApplicants) {
+            toggle = true;
+        } else {
+            toggle = false;
+        }
+        for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+            $rootScope.allApplicants[index].archive = toggle;
+            if ($rootScope.allApplicants[index].archive && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
+                $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
+            } else if (!$rootScope.allApplicants[index].archive) {
+                $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+            }
         }
     }
 
@@ -95,4 +125,17 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $scope.$apply();
         });
     }
+
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (JSON.stringify(list[i]) === JSON.stringify(obj)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 });

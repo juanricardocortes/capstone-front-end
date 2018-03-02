@@ -44,6 +44,14 @@ angular.module("app", ["ngRoute", "blockUI"])
         function initialize() {
             $rootScope.currentPage = "Weltanchaung";
             console.log("Main controller");
+
+            $rootScope.dashboardactive = true;
+            $rootScope.employeeactive = false;
+            $rootScope.projectsactive = false;
+            $rootScope.applicantsactive = false;
+            $rootScope.leavesactive = false;
+            $rootScope.profileactive = false;
+
             onListeners();
         }
 
@@ -81,14 +89,14 @@ angular.module("app", ["ngRoute", "blockUI"])
                     $scope.$apply();
                 });
             });
-    
+
             firebase.database().ref("HRMS_Storage/Applicants/").on("child_removed", function (snapshot) {
                 $rootScope.allApplicants.splice($rootScope.allApplicants.indexOf(snapshot.val()), 1);
                 setTimeout(function () {
                     $scope.$apply();
                 });
             });
-    
+
             firebase.database().ref("HRMS_Storage/Applicants/").on("child_changed", function (snapshot) {
                 for (var index = 0; index < $rootScope.allApplicants.length; index++) {
                     if ($rootScope.allApplicants[index].userkey === snapshot.val().userkey) {

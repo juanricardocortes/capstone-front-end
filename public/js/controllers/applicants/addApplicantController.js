@@ -32,12 +32,10 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             firstname: $scope.addApplicant_firstname,
             lastname: $scope.addApplicant_lastname,
             email: $scope.addApplicant_email,
-            userkey: newUserKey
-        });
-        $rootScope.databaseConnection.push({
+            userkey: newUserKey,
             applicantImageFile: $scope.selectedFile,
             storageRef: storageRef
-        })
+        });
     }
 
     $scope.hideAddApplicantModal = function () {
@@ -71,6 +69,8 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
                 $("#addApplicant_lastname").blur();
                 $("#addApplicant_email").val(undefined);
                 $("#addApplicant_email").blur();
+                $("#file").val(undefined);
+                $("#file").blur();
                 Materialize.toast("Applicant listed.", 4000);
             }
         } else {
