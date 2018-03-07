@@ -1,7 +1,6 @@
-
 .sidebar {
     float: left;
-    width: 15%;
+    width: 18%;
     height: 100%;
 }
 
@@ -42,16 +41,32 @@
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
-}   
+}
 
 .sidebar-link-active {
     color: #4FC3F7;
+}
+
+.link-active {
+    background-color: rgba(244, 244, 244, 0.2);
+    border-right: solid 5px;
+    border-color: #4FC3F7;
 }
 
 .sidebar-link:hover {
     cursor: pointer;
     font-weight: bold;
     background-color: rgba(244, 244, 244, 0.2);
+    border-right: solid 5px;
+    border-color: #4FC3F7;
+}
+
+.sign-out-link:hover {
+    cursor: pointer;
+    font-weight: bold;
+    background-color: rgba(244, 244, 244, 0.2);
+    border-right: solid 5px !important;
+    border-color: #f74f6f !important;
 }
 
 .sidebar-link-icon {
@@ -70,7 +85,7 @@
 
 .content {
     float: left;
-    width: 85%;
+    width: 82%;
     height: 100%;
 }
 
