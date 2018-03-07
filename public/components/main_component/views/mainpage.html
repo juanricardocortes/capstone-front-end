@@ -1,0 +1,226 @@
+<div ng-controller="mainpageCtrl">
+    <!-- <div class="sidenav">
+        <div class="logo">
+            <h5>Logo Here</h5>
+        </div>
+        <div class="sidenav-navigation">
+            <ul class="collection">
+                <li class="collection-item avatar sidenav-link" ng-click="gotoDashboard()">
+                    <i class="material-icons circle icons">dashboard</i>
+                    Dashboard
+                </li>
+                <li class="collection-item avatar sidenav-link" ng-click="gotoEmployees()">
+                    <i class="material-icons circle icons">supervisor_account</i>
+                    Employees
+                </li>
+                <li class="collection-item avatar sidenav-link" ng-click="gotoProjects()">
+                    <i class="material-icons circle icons">developer_board</i>
+                    Projects
+                </li>
+                <li class="collection-item avatar sidenav-link" ng-click="gotoApplicants()">
+                    <i class="material-icons circle icons">assignment_ind</i>
+                    Applicants
+                </li>
+                <li class="collection-item avatar sidenav-link" ng-click="gotoLeaveRequests()">
+                    <i class="material-icons circle icons">markunread</i>
+                    Leave Requests
+                </li>
+                <li class="collection-item avatar sidenav-link" ng-click="gotoProfile()">
+                    <i class="material-icons circle icons">person</i>
+                    Profile
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#!" class="brand-logo">{{currentPage}}</a>
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <a ng-click="logout()">
+                                <i class="material-icons left">input</i>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="currentpage">
+            <ng-view>
+
+            </ng-view>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="sidebar z-depth-5">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-text">
+                    <span>WELTANCHAUNG</span>
+                    <br>
+                </div>
+                <div class="sidebar-logo-text">
+                    <span>CORPORATION</span>
+                    <br>
+                </div>
+            </div>
+            <div class="sidebar-links">
+                <div class="sidebar-space"></div>
+                <div class="sidebar-link" ng-click="gotoProfile()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="profileactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="user"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Account</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!profileactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="user"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Account</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="sidebar-link" ng-click="gotoDashboard()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="dashboardactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="layout"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Dashboard</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!dashboardactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="layout"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Dashboard</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="sidebar-link" ng-click="gotoApplicants()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="applicantsactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="file-text"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Applicants</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!applicantsactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="file-text"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Applicants</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="sidebar-link" ng-click="gotoEmployees()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="employeeactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="users"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Employees</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!employeeactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="users"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Employees</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="sidebar-link" ng-click="gotoProjects()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="projectsactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="package"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Projects</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!projectsactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="package"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Projects</span>
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-link" ng-click="gotoLeaveRequests()">
+                    <div class="sidebar-link-hover">
+                        <span>
+                            <b class="sidebar-link-active" ng-show="leavesactive">
+                                <div class="sidebar-link-icon">
+                                    <i data-feather="calendar"></i>
+                                </div>
+                                <div class="sidebar-link-text">
+                                    <span>Leaves</span>
+                                </div>
+                            </b>
+                        </span>
+                        <span ng-show="!leavesactive">
+                            <div class="sidebar-link-icon">
+                                <i data-feather="calendar"></i>
+                            </div>
+                            <div class="sidebar-link-text">
+                                <span>Leaves</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <nav>
+                <div class="nav-wrapper">
+                    <ul id="nav-mobile" class="right">
+                        <li>
+                            <a ng-click="logout()">
+                                <i class="material-icons left">input</i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="row currentpage">
+                <div class="col s12 m12 l12">
+                    <ng-view>
+
+                    </ng-view>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

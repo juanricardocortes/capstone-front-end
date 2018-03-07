@@ -1,0 +1,43 @@
+.login-bg {
+    /* background-color: #00cd9a; */
+    background-color: #009acd !important;
+    /* background-color: #4FC3F7 !important; */
+    width: 100%;
+    height: 100%;
+}
+
+.loginbutton {
+    position: absolute !important;
+    right: 8%;
+}
+
+.cancelbutton {
+    position: absolute !important;
+    right: 24%;
+}
+
+.genericlink:hover {
+    cursor: pointer;
+}
+
+[ng\:cloak],
+[ng-cloak],
+.ng-cloak {
+    display: none;
+}
+
+.authone-button {
+    background-color: #009acd !important;
+}
+
+.authone-button:hover {
+    background-color: #00749a !important;
+}
+
+.authtwo-button {
+    background-color: #00cd33 !important;
+}
+
+.authtwo-button:hover {
+    background-color: #009a26 !important;
+}
