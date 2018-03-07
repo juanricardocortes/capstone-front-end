@@ -10,7 +10,7 @@
 
 .applicant-table {
     overflow-y: auto;
-    height: 88%;
+    height: 70%;
 }
 
 .applicant-table-modifiers {
@@ -19,19 +19,23 @@
 
 .applicant-table-modifiers-filter {
     float: left;
-    width: 50%;
+    width: 40%;
+    margin-left: 2%;
 }
 
 .applicant-table-modifiers-switch {
     float: right;
+    margin-top: 2%;
 }
 
 .applicant-table-table {
-    font-size: 14px !important;
+    font-size: 12px !important;
+    
 }
 
 .applicant-table-row {
     cursor: pointer !important;
+    font-weight: 400;
 }
 
 .applicant-table-row:hover {
