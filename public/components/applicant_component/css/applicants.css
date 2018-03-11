@@ -39,7 +39,7 @@
 }
 
 .applicant-table-row:hover {
-    background-color: #cdfff3;
+    background-color:rgba(241,242,242,0.6);
 }
 
 .applicant-table-space {
@@ -55,7 +55,7 @@
 }
 
 .add-applicant-button {
-    background-color: #00e73a !important;
+    background-color: #37f672 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -65,7 +65,7 @@
 }
 
 .archive-applicant-button {
-    background-color: #00ade7 !important;
+    background-color: #37bbf6 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -75,7 +75,7 @@
 }
 
 .hire-applicant-button {
-    background-color: #00ade7 !important;
+    background-color: #37bbf6 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -87,7 +87,7 @@
 }
 
 .show-hired-applicant-button {
-    background-color: #e7ae00 !important;
+    background-color: #f6d237 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
@@ -100,7 +100,7 @@
 
 /* Applicant table switch */
 .switch label input[type=checkbox]:checked+.lever:after {
-    background-color: #00ade7;
+    background-color: #4FC3F7;
 }
 
 .switch label input[type=checkbox]:checked+.lever {

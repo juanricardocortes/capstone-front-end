@@ -74,6 +74,7 @@ angular.module("app").controller("mainpageCtrl", function ($scope, $rootScope, $
         localStorage.removeItem("token");
         firebase.auth().signOut().then(function () {
             // invalidate token
+            
         }).catch(function (error) {});
     }
 });

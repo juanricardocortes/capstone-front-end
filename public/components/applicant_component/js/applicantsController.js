@@ -13,12 +13,22 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         $('.tooltipped').tooltip({
             delay: 50
         });
+        getActiveSideBarLink();
         $rootScope.multipleArchive = [];
         $rootScope.showHired = false;
         $rootScope.currentPage = "Weltanchaung > Applicants"
         $rootScope.applicantTableSwitch = "Active applicants"
         $rootScope.archiveButton = "archive"
         console.log("Applicants controller");
+    }
+
+    function getActiveSideBarLink() {
+        $rootScope.dashboardactive = false;
+        $rootScope.employeeactive = false;
+        $rootScope.projectsactive = false;
+        $rootScope.applicantsactive = true;
+        $rootScope.leavesactive = false;
+        $rootScope.profileactive = false;
     }
 
     $scope.showActiveTableToast = function () {

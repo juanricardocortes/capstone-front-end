@@ -4,6 +4,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
 
     function initialize() {
         console.log("Login controller");
+        feather.replace();
         $scope.auth = false;
     }
 
@@ -75,6 +76,12 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                 $rootScope.token = response.data.token;
                 $rootScope.isLogged = true;
                 localStorage.setItem("token", response.data.token);
+                $rootScope.dashboardactive = true;
+                $rootScope.employeeactive = false;
+                $rootScope.projectsactive = false;
+                $rootScope.applicantsactive = false;
+                $rootScope.leavesactive = false;
+                $rootScope.profileactive = false;
                 window.location.href = "#!/dashboard";
             } else {
                 Materialize.toast("Invalid code", 4000);
