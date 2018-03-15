@@ -15,6 +15,11 @@ angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $
         for (var index = 0; index < $rootScope.allApplicants.length; index++) {
             if (applicant.userkey === $rootScope.allApplicants[index].userkey) {
                 $rootScope.allApplicants[index].archive = false;
+                if ($rootScope.allApplicants[index].isArchived) {
+                    $rootScope.unarchiveAllApplicants = false;
+                } else {
+                    $rootScope.archiveAllApplicants = false;
+                }
             }
         }
         refresh();
@@ -23,8 +28,11 @@ angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $
     $scope.archiveApplicants = function () {
         for (var outerindex = 0; outerindex < $rootScope.multipleArchive.length; outerindex++) {
             for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-                if ($rootScope.multipleArchive[outerindex].userkey === $rootScope.allApplicants[index].userkey) {
+                if ($rootScope.multipleArchive[outerindex].userkey === $rootScope.allApplicants[index].userkey &&
+                    $rootScope.allApplicants[index].isArchived === $rootScope.archiveToggle) {
+                    $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
                     $rootScope.allApplicants[index].isArchived = !($rootScope.allApplicants[index].isArchived);
+                    $rootScope.allApplicants[index].archive = false;
                     refresh();
                 }
             }
@@ -38,10 +46,12 @@ angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $
             }
         }).then(function (response) {
             $rootScope.showMultipleAddApplicantModal = false;
-            $rootScope.multipleArchive = [];
             refresh();
             Materialize.toast(response.data.message, 4000);
         });
+
+        $rootScope.unarchiveAllApplicants = false;
+        $rootScope.archiveAllApplicants = false;
         event.stopPropagation();
     }
 

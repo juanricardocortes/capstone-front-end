@@ -60,7 +60,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                 function complete() {
                     var downloadURL = task.snapshot.downloadURL;
                     $http({
-                        url: "http://127.0.0.1:9001/secure-api/uploadImage",
+                        url: $rootScope.baseURL + "secure-api/uploadImage",
                         method: "POST",
                         data: {
                             token: localStorage.getItem("token"),

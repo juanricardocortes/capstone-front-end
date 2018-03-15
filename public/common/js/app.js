@@ -42,9 +42,15 @@ angular.module("app", ["ngRoute", "blockUI"])
         initialize();
 
         function initialize() {
-            $rootScope.currentPage = "Weltanchaung";
             console.log("Main controller");
+            getInitalValues();
+            getUserLogged();
+            onListeners();
+        }
 
+        function getInitalValues() {
+            $rootScope.baseURL = "http://127.0.0.1:9001/";
+            $rootScope.currentPage = "Weltanchaung";
             $rootScope.dashboardactive = true;
             $rootScope.employeeactive = false;
             $rootScope.projectsactive = false;
@@ -52,7 +58,6 @@ angular.module("app", ["ngRoute", "blockUI"])
             $rootScope.leavesactive = false;
             $rootScope.profileactive = false;
 
-            onListeners();
         }
 
         function onListeners() {
@@ -64,6 +69,10 @@ angular.module("app", ["ngRoute", "blockUI"])
                     // No user is signed in.
                 }
             });
+        }
+
+        function getUserLogged() {
+            $rootScope.userlogged = JSON.parse(localStorage.getItem("userlogged"));
         }
 
         function applicantListeners() {

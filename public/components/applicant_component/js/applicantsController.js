@@ -1,25 +1,43 @@
 angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, $http) {
 
-    if (localStorage.getItem("token")) {
+    onInit();
+
+    function onInit() {
         $rootScope.isLogged = true;
-        initialize();
-    } else {
-        console.log("BREACH");
-        window.location.href = "#!/login";
-        $rootScope.isLogged = false;
+        $http({
+            url: $rootScope.baseURL + "api/validateToken",
+            method: "POST",
+            data: {
+                token: localStorage.getItem("token")
+            }
+        }).then(function (response) {
+            if (response.data.valid) {
+                onCreate();
+            } else {
+                console.log("BREACH");
+                window.location.href = "#!/login";
+                $rootScope.isLogged = false;
+            }
+        });
     }
 
-    function initialize() {
+    $scope.startFeather = function () {
+        feather.replace();
         $('.tooltipped').tooltip({
-            delay: 50
+            delay: 1
         });
+        return true;
+    }
+
+    function onCreate() {
+        initializeJavascript();
         getActiveSideBarLink();
-        $rootScope.multipleArchive = [];
-        $rootScope.showHired = false;
-        $rootScope.currentPage = "Weltanchaung > Applicants"
-        $rootScope.applicantTableSwitch = "Active applicants"
-        $rootScope.archiveButton = "archive"
+        getInitialValues();
         console.log("Applicants controller");
+    }
+
+    function initializeJavascript() {
+        $('.collapsible').collapsible();
     }
 
     function getActiveSideBarLink() {
@@ -31,13 +49,28 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         $rootScope.profileactive = false;
     }
 
+    function getInitialValues() {
+        $scope.applicantTableSorter = "userkey";
+        $rootScope.multipleArchive = [];
+        $rootScope.selectAllApplicants = false;
+        $scope.toggleArchives = false;
+        $rootScope.showHired = false;
+        $rootScope.currentPage = "Weltanchaung > Applicants"
+        $rootScope.applicantTableSwitch = "Active applicants"
+        $rootScope.archiveText = "Archive"
+        $rootScope.showhide = "Show";
+        $rootScope.archiveModalText = "Archive applicants?"
+    }
+
     $scope.showActiveTableToast = function () {
         if ($scope.toggleArchives) {
             $rootScope.applicantTableSwitch = "Archived applicants"
-            $rootScope.archiveButton = "undo"
+            $rootScope.archiveText = "Unarchive"
+            $rootScope.archiveModalText = "Unarchive applicants?"
         } else {
             $rootScope.applicantTableSwitch = "Active applicants"
-            $rootScope.archiveButton = "archive"
+            $rootScope.archiveText = "Archive"
+            $rootScope.archiveModalText = "Archive applicants?"
         }
     }
 
@@ -47,6 +80,11 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
 
     $scope.showHiredApplicants = function () {
         $rootScope.showHired = !$rootScope.showHired;
+        if ($rootScope.showHired) {
+            $rootScope.showhide = "Hide";
+        } else {
+            $rootScope.showhide = "Show";
+        }
     }
 
     $scope.gotoApplicantProfile = function (applicant) {
@@ -66,21 +104,35 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             }
         }
         $http({
-            url: "http://127.0.0.1:9001/secure-api/archiveApplicant",
+            url: $rootScope.baseURL + "secure-api/archiveApplicant",
             method: "POST",
             data: {
                 applicant: [applicant],
                 token: localStorage.getItem("token")
             }
         }).then(function (response) {
-            Materialize.toast(response.data.message, 4000);
+            if (response.data.message === "Success") {
+                var message;
+                if(applicant.isArchived) {
+                    message = " archived";
+                } else {
+                    message = " unarchived";
+                }
+                swal({
+                    type: 'success',
+                    title: applicant.firstname + message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+            // Materialize.toast(response.data.message, 4000);
         });
         event.stopPropagation();
     }
 
     $scope.hireApplicant = function (applicant, event) {
         $http({
-            url: "http://127.0.0.1:9001/secure-api/addEmployee",
+            url: $rootScope.baseURL + "secure-api/addEmployee",
             method: "POST",
             data: {
                 token: localStorage.getItem("token"),
@@ -101,6 +153,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
     }
 
     $scope.showArchiveApplicantModal = function (applicant) {
+        $rootScope.archiveToggle = $scope.toggleArchives;
         $rootScope.showMultipleAddApplicantModal = true;
     }
 
@@ -109,25 +162,66 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $rootScope.multipleArchive.push(applicant);
         } else {
             $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf(applicant), 1);
-            $scope.selectAllApplicants = false;
+            if (applicant.isArchived) {
+                $rootScope.unarchiveAllApplicants = false;
+            } else {
+                $rootScope.archiveAllApplicants = false;
+            }
         }
     }
 
-    $scope.checkAll = function () {
+    $scope.archiveAll = function () {
         var toggle;
-        if ($scope.selectAllApplicants) {
+        if ($rootScope.archiveAllApplicants) {
             toggle = true;
         } else {
             toggle = false;
         }
         for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-            $rootScope.allApplicants[index].archive = toggle;
-            if ($rootScope.allApplicants[index].archive && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
-                $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
-            } else if (!$rootScope.allApplicants[index].archive) {
-                $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+            if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
+                $rootScope.allApplicants[index].archive = toggle;
+                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
+                    $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
+                } else if (!$rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired)) {
+                    $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+                }
             }
         }
+    }
+
+    $scope.unarchiveAll = function () {
+        var toggle;
+        if ($rootScope.unarchiveAllApplicants) {
+            toggle = true;
+        } else {
+            toggle = false;
+        }
+        for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+            if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
+                $rootScope.allApplicants[index].archive = toggle;
+                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
+                    $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
+                } else if (!$rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired)) {
+                    $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+                }
+            }
+        }
+    }
+
+    $scope.sortByKey = function(){
+        $scope.applicantTableSorter = "userkey";
+    }
+
+    $scope.sortByEmail = function(){
+        $scope.applicantTableSorter = "email";
+    }
+
+    $scope.sortByRefNum = function(){
+        $scope.applicantTableSorter = "referenceNumber";
+    }
+
+    $scope.sortByStatus = function(){
+        $scope.applicantTableSorter = "Status";
     }
 
     function refresh() {

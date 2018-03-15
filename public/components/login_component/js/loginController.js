@@ -17,7 +17,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
     }
     $scope.login = function () {
         $http({
-            url: "http://127.0.0.1:9001/api/authOne",
+            url: $rootScope.baseURL + "api/authOne",
             method: "POST",
             data: {
                 user: {
@@ -37,7 +37,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
 
     $scope.cancel = function () {
         $http({
-            url: "http://127.0.0.1:9001/api/cancelAuth",
+            url: $rootScope.baseURL + "api/cancelAuth",
             method: "POST",
             data: {
                 user: $scope.user
@@ -45,18 +45,13 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
         }).then(function (response) {
             console.log(response.data);
             $scope.auth = false;
-            $("#email").val(undefined);
-            $("#email").blur();
-            $("#password").val(undefined);
-            $("#password").blur();
-            $("#pin").val(undefined);
-            $("#pin").blur();
+            resetForm();
         })
     }
 
     $scope.authTwo = function () {
         $http({
-            url: "http://127.0.0.1:9001/api/authTwo",
+            url: $rootScope.baseURL + "api/authTwo",
             method: "POST",
             data: {
                 pin: $scope.pin,
@@ -67,21 +62,12 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             if (response.data.valid) {
                 authenticate();
                 $scope.auth = false;
-                $("#email").val(undefined);
-                $("#email").blur();
-                $("#password").val(undefined);
-                $("#password").blur();
-                $("#pin").val(undefined);
-                $("#pin").blur();
+                resetForm();
                 $rootScope.token = response.data.token;
                 $rootScope.isLogged = true;
+                $rootScope.userlogged = response.data.user;
+                localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
                 localStorage.setItem("token", response.data.token);
-                $rootScope.dashboardactive = true;
-                $rootScope.employeeactive = false;
-                $rootScope.projectsactive = false;
-                $rootScope.applicantsactive = false;
-                $rootScope.leavesactive = false;
-                $rootScope.profileactive = false;
                 window.location.href = "#!/dashboard";
             } else {
                 Materialize.toast("Invalid code", 4000);
@@ -104,6 +90,15 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                 var errorCode = error.code;
                 var errorMessage = error.message;
             });
+    }
+
+    function resetForm() {
+        $("#email").val(undefined);
+        $("#email").blur();
+        $("#password").val(undefined);
+        $("#password").blur();
+        $("#pin").val(undefined);
+        $("#pin").blur();
     }
 
 });

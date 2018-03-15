@@ -4,12 +4,12 @@
         <div class="col s6">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title grey-text text-darken-4">Selected applicants
+                    <span class="card-title grey-text text-darken-4">{{archiveModalText}}
                         <i ng-click="hideMultipleAddApplicant()" class="material-icons right add-applicant-modal-close-button">close</i>
                     </span>
                     <div class="row">
                         <ul class="collapsible" data-collapsible="accordion">
-                            <li ng-show="multipleArchive.length>0" ng-repeat="applicant in multipleArchive track by $index">
+                            <li ng-repeat="applicant in multipleArchive track by $index" ng-show="multipleArchive.length>0 && applicant.isArchived === archiveToggle">
                                 <div class="collapsible-header">
                                     <i ng-click="removeApplicant(applicant)" class="material-icons">close</i>
                                     {{applicant.email}}
@@ -22,7 +22,7 @@
                     </div>
                     <div class="row add-applicants">
                         <a class="btn-floating btn-large waves-effect waves-light default-button-color" ng-click="archiveApplicants()">
-                            <i class="material-icons">{{archiveButton}}</i>
+                            <!-- <i data-feather="archive"></i> -->
                         </a>
                     </div>
                 </div>

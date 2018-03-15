@@ -30,7 +30,6 @@
 
 .applicant-table-table {
     font-size: 12px !important;
-    
 }
 
 .applicant-table-row {
@@ -39,7 +38,7 @@
 }
 
 .applicant-table-row:hover {
-    background-color:rgba(241,242,242,0.6);
+    background-color: rgba(211, 211, 211, 0.6);
 }
 
 .applicant-table-space {
@@ -55,54 +54,89 @@
 }
 
 .add-applicant-button {
-    background-color: #37f672 !important;
+    background-color: #03e54d !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 .add-applicant-button:hover {
-    background-color: #009a27 !important;
+    background-color: #0bef51 !important;
 }
 
 .archive-applicant-button {
-    background-color: #37bbf6 !important;
+    /* background-color: #e5032a !important; */
+    background-color: #f74f6f !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 .archive-applicant-button:hover {
-    background-color: #00749a !important;
+    background-color: #ef0b36 !important;
 }
 
 .hire-applicant-button {
-    background-color: #37bbf6 !important;
+    /* background-color: #039be5 !important; */
+    background-color: #4fc3f7 !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 .hire-applicant-button:hover {
-    background-color: #00749a !important;
+    background-color: #0ba8ef !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 .show-hired-applicant-button {
-    background-color: #f6d237 !important;
+    /* background-color: #e54d03 !important; */
+    background-color: #f7d74f !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 .show-hired-applicant-button:hover {
-    background-color: #b48800 !important;
+    background-color: #efc30b !important;
     z-index: 0 !important;
     font-size: 14px !important;
 }
 
 /* Applicant table switch */
+
 .switch label input[type=checkbox]:checked+.lever:after {
-    background-color: #4FC3F7;
+    background-color: #039be5;
 }
 
 .switch label input[type=checkbox]:checked+.lever {
     background-color: #84c7c1;
 }
+
+/* Applicant table column width */
+.applicant-column-checkbox {
+    width: 5% !important;
+}
+
+.applicant-column-id {
+    width: 18% !important;
+    cursor: pointer;
+}
+
+.applicant-column-email {
+    width: 18% !important;
+    cursor: pointer;
+}
+
+.applicant-column-reference {
+    width: 13% !important;
+    cursor: pointer;
+}
+
+.applicant-column-status {
+    width: 5% !important;
+    cursor: pointer;
+}
+
+.applicant-column-action {
+    width: auto;
+}
+
+

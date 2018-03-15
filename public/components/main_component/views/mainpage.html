@@ -21,7 +21,7 @@
                                     <i data-feather="user"></i>
                                 </div>
                                 <div class="sidebar-link-text">
-                                    <span>Account</span>
+                                    <span>{{userlogged.files.firstname}}</span>
                                 </div>
                             </b>
                         </span>
@@ -34,7 +34,7 @@
                                 <i data-feather="user"></i>
                             </div>
                             <div class="sidebar-link-text">
-                                <span>Account</span>
+                                <span>{{userlogged.files.firstname}}</span>
                             </div>
                         </span>
                     </div>
@@ -195,11 +195,11 @@
             <nav>
                 <div class="nav-wrapper">
                     <ul id="nav-mobile" class="right">
-                        <li>
+                        <!-- <li>
                             <a ng-click="logout()">
                                 <i class="material-icons left">input</i>Logout
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </nav>
