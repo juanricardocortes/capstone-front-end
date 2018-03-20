@@ -1,4 +1,4 @@
-angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $http ) {
 
     initialize();
 
@@ -8,13 +8,6 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
         $scope.auth = false;
     }
 
-    $scope.testSwal = function () {
-        swal(
-            'Good job!',
-            'You clicked the button!',
-            'success'
-        )
-    }
     $scope.login = function () {
         $http({
             url: $rootScope.baseURL + "api/authOne",

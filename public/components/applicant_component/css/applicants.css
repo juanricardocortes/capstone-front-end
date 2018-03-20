@@ -14,12 +14,12 @@
 }
 
 .applicant-table-modifiers {
-    height: 10%;
+    height: 10% !important;
 }
 
 .applicant-table-modifiers-filter {
     float: left;
-    width: 40%;
+    width: 40% !important;
     margin-left: 2%;
 }
 
@@ -111,6 +111,7 @@
 }
 
 /* Applicant table column width */
+
 .applicant-column-checkbox {
     width: 5% !important;
 }
@@ -138,5 +139,3 @@
 .applicant-column-action {
     width: auto;
 }
-
-

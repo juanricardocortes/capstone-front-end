@@ -1,0 +1,118 @@
+/* .profile-picture-container {
+    height: 30%;
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-navigation {
+    height: auto;
+    color: #a9a9a9;
+}
+
+.profile-navigation-link:hover {
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+}
+
+.profile-navigation-link-active {
+    color: #00cd9a;
+    font-weight: bold;
+}
+
+.profile-navigation-link-active:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+.update-status {
+    cursor: pointer;
+}
+
+.update-status:hover {
+    color: #00cd9a;
+    font-weight: bold;
+} */
+
+.profile-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.applicant-picture-container {
+    position: absolute;
+    width: 15%;
+    height: 20%;
+    text-align: center;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+}
+
+.applicant-details-container {
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    overflow: auto;
+}
+
+/* 
+.applicant-details-modifiers {
+    position: absolute;
+    width: 100%;
+    height: 25%;
+    background-color: gold;
+} */
+
+.applicant-picture-specs {
+    height: 100%;
+    width: 100%;
+}
+
+.applicant-information {
+    height: 100%;
+    width: 100%;
+    padding: 1.5%
+}
+
+.applicant-information-content {
+    height: auto;
+    width: 100%;
+}
+
+.applicant-requirements {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 1.5%;
+}
+
+.applicant-content-titles {
+    position: relative;
+    float: left;
+    height: auto;
+    width: 20%;
+}
+
+.applicant-content-data {
+    position: relative;
+    float: left;
+    height: auto;
+    width: 80%;
+}
+
+.applicant-details-header {
+    height: 10%;
+}
+
+.applicant-profile-space {
+    width: 100%;
+    height: 10%;
+}

@@ -1,26 +1,30 @@
-<div ng-controller="addApplicantCtrl" class="add-applicant-modal-bg">
+<div ng-show="startFeather()" ng-controller="addApplicantCtrl" class="add-applicant-modal-bg">
     <div class="row">
         <div class="col s3"></div>
         <div class="col s6">
-            <div class="card">
+            <div class="card add-applicant-modal">
                 <div class="card-content">
                     <span class="card-title grey-text text-darken-4">Add applicant
                         <i ng-click="hideAddApplicantModal()" class="material-icons right add-applicant-modal-close-button">close</i>
                     </span>
+                    <div class="row"></div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <i data-feather="mail" class="prefix applicant-add-modal-icon"></i>
                             <input id="addApplicant_email" ng-model="addApplicant_email" type="email" class="validate">
                             <label for="addApplicant_email">Email</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <i data-feather="user" class="prefix applicant-add-modal-icon"></i>
                             <input id="addApplicant_lastname" ng-model="addApplicant_lastname" type="text" class="validate">
                             <label for="addApplicant_lastname">Last Name</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <i data-feather="user" class="prefix applicant-add-modal-icon"></i>
                             <input id="addApplicant_firstname" ng-model="addApplicant_firstname" type="text" class="validate">
                             <label for="addApplicant_firstname">First Name</label>
                         </div>
@@ -28,7 +32,9 @@
                     <div class="row">
                         <div class="file-field input-field col s12">
                             <div class="btn default-button-color">
-                                <span><i class="material-icons">camera_alt</i></span>
+                                <span>
+                                    <i data-feather="camera" class="button-file-center-icon"></i>
+                                </span>
                                 <input id="file" type="file" accept="image/png,image/gif,image/jpeg">
                             </div>
                             <div class="file-path-wrapper">
@@ -36,16 +42,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row view-applicants">
-                        <a class="btn-floating btn-large waves-effect waves-light default-button-color" ng-click="viewApplicants()">
-                            <i class="material-icons">remove_red_eye</i>
+                    <div class="add-applicant-modal-buttons">
+                        <a class="btn-floating btn-large waves-effect waves-light show-hired-applicant-button" ng-click="viewApplicants()">
+                            <i data-feather="eye" class="center-feather-icon"></i>
                         </a>
-                    </div>
-                    <div class="row add-applicant">
                         <a class="btn-floating btn-large waves-effect waves-light add-applicant-button" ng-click="addApplicant()">
-                            <i class="material-icons">add</i>
+                            <i data-feather="user-plus" class="center-feather-icon"></i>
                         </a>
                     </div>
+                    <!-- <div class="row add-applicant">
+                        <a class="btn-floating btn-large waves-effect waves-light add-applicant-button" ng-click="addApplicant()">
+                            <i data-feather="user-plus" class="center-feather-icon"></i>
+                        </a>
+                    </div> -->
                 </div>
             </div>
         </div>

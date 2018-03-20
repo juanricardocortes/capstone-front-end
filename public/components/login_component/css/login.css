@@ -9,7 +9,7 @@
     bottom: 75%;
     left: 0;
     right: 0;
-    background-color: #4f6ff7;
+    background-color: #0ba8ef;
 }
 
 .second-half-bg {
@@ -18,7 +18,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #4fc3f7;
+    background-color: #80d4f9;
 }
 
 .login-div {
@@ -80,4 +80,14 @@
 
 .cancel-button:hover {
     background-color: #810021 !important;
+}
+
+.login-form-container {
+    position: relative;
+}
+
+.login-form-buttons {
+    position: absolute;
+    bottom: -10%;
+    right: 5%;
 }

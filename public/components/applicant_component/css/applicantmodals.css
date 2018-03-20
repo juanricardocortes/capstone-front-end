@@ -21,8 +21,28 @@
     right: 20%;
 }
 
-.add-applicants {
-    position: absolute !important;
-    right: 8%;
+.add-applicant-modal {
+    height: 80% !important;
+    position: relative;
 }
 
+.archive-applicant-modal {
+    height: 80% !important;
+    position: relative;
+}
+
+.add-applicant-modal-buttons {
+    position: absolute;
+    bottom: -5%;
+    right: 5%;
+}
+
+.archive-applicant-modal-button {
+    position: absolute;
+    bottom: -5%;
+    right: 5%;
+}
+
+.applicant-add-modal-icon {
+    margin-top: 3% !important;
+}

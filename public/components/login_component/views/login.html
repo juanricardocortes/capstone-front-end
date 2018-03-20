@@ -83,7 +83,7 @@
             <div class="row">
                 <div class="login-div">
                     <div class="card login-form z-depth-3">
-                        <div class="card-content">
+                        <div class="card-content login-form-container">
                             <div class="row">
                                 <div class="col s6">
                                     <h4>*picture here</h4>
@@ -113,19 +113,15 @@
                                 </div>
                             </div>
                             <div class="row"></div>
-                            <div class="row login-step-one-button" ng-show="!auth">
-                                <a class="btn-floating btn-large waves-effect waves-light authone-button z-depth-5" ng-click="login()">
+                            <div class="login-form-buttons">
+                                <a class="btn-floating btn-large waves-effect waves-light authone-button z-depth-5" ng-show="!auth" ng-click="login()">
                                     <i data-feather="log-in" class="center-feather-icon"></i>
                                 </a>
-                            </div>
-                            <div class="row login-step-two-button" ng-show="auth">
-                                <a class="btn-floating btn-large waves-effect waves-light authtwo-button z-depth-5" ng-click="authTwo()">
-                                    <i data-feather="log-in" class="center-feather-icon"></i>
-                                </a>
-                            </div>
-                            <div class="row cancel-login-button" ng-show="auth">
-                                <a class="btn-floating btn-large waves-effect waves-light cancel-button z-depth-5" ng-click="cancel()">
+                                <a class="btn-floating btn-large waves-effect waves-light cancel-button z-depth-5" ng-show="auth" ng-click="cancel()">
                                     <i data-feather="x" class="center-feather-icon"></i>
+                                </a>
+                                <a class="btn-floating btn-large waves-effect waves-light authtwo-button z-depth-5" ng-show="auth" ng-click="authTwo()">
+                                    <i data-feather="log-in" class="center-feather-icon"></i>
                                 </a>
                             </div>
                         </div>

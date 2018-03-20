@@ -26,7 +26,7 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
     }
 
     function confirmAddApplicant() {
-        var storageRef = "/images/applicantImages/" + $scope.addApplicant_email + "_" + $scope.addApplicant_lastname + ", " +  $scope.addApplicant_firstname;
+        var storageRef = "/images/applicantImages/" + $scope.addApplicant_email + "_" + $scope.addApplicant_lastname + ", " + $scope.addApplicant_firstname;
         var newUserKey = firebase.database().ref().push().key;
         $rootScope.allApplicantsToBeAdded.push({
             firstname: $scope.addApplicant_firstname,
@@ -36,6 +36,11 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             applicantImageFile: $scope.selectedFile,
             storageRef: storageRef
         });
+    }
+
+    $scope.startFeather = function () {
+        feather.replace();
+        return true;
     }
 
     $scope.hideAddApplicantModal = function () {

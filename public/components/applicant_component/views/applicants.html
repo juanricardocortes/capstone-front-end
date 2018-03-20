@@ -2,7 +2,12 @@
     <div class="applicant-page">
         <div class="applicant-table-modifiers">
             <div class="applicant-table-modifiers-filter">
-                <input id="tablefilter" type="text" ng-model="tablefilter" class="validate z-depth-5" placeholder="Search">
+                <!-- <input id="tablefilter" type="text" ng-model="tablefilter" class="validate z-depth-5" placeholder="Search"> -->
+                <div class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="tablefilter" ng-model="tablefilter" type="text" class="validate z-depth-5">
+                    <label for="tablefilter">Search</label>
+                </div>
             </div>
             <div class="applicant-table-modifiers-buttons">
                 <a ng-click="showAddApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light add-applicant-button z-depth-5 tooltipped"
@@ -80,7 +85,7 @@
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                         <td>
                             <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
@@ -104,7 +109,7 @@
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                         <td>
                             <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
@@ -121,7 +126,7 @@
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}</td>
+                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                     </tr>
                 </tbody>
             </table>

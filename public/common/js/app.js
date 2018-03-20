@@ -1,6 +1,7 @@
 angular.module("app", ["ngRoute", "blockUI"])
 
-    .config(function ($routeProvider) {
+    .config(function ($routeProvider, blockUIConfig) {
+        blockUIConfig.templateUrl = "common/views/blockui_spinner.html";
         $routeProvider
             .when("/", {
                 templateUrl: "components/dashboard_component/views/dashboard.html",
@@ -23,7 +24,7 @@ angular.module("app", ["ngRoute", "blockUI"])
                 controller: "applicantCtrl"
             })
             .when("/applicants/profile", {
-                templateUrl: "components/applicant_component/views/profile/applicantprofile.html",
+                templateUrl: "components/applicant_profile_component/views/applicantprofile.html",
                 controller: "applicantProfileCtrl"
             })
             .when("/profile", {
@@ -33,7 +34,7 @@ angular.module("app", ["ngRoute", "blockUI"])
             .when("/leaverequests", {
                 templateUrl: "components/leaves_component/views/leaverequests.html",
                 controller: "leaveRequestsCtrl"
-            })
+            });
 
     })
 
@@ -110,9 +111,14 @@ angular.module("app", ["ngRoute", "blockUI"])
                 for (var index = 0; index < $rootScope.allApplicants.length; index++) {
                     if ($rootScope.allApplicants[index].userkey === snapshot.val().userkey) {
                         $rootScope.allApplicants[index] = snapshot.val();
+                        if ($rootScope.selectedApplicant.userkey === snapshot.val().userkey) {
+                            $rootScope.selectedApplicant = snapshot.val();
+                            localStorage.setItem("selectedApplicant", JSON.stringify($rootScope.selectedApplicant));
+                        }
                         break;
                     }
                 }
+
                 setTimeout(function () {
                     $scope.$apply();
                 });

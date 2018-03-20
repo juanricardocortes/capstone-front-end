@@ -1,11 +1,3 @@
-.collection-item {
-    vertical-align: middle !important;
-}
-
-.collection-item:hover {
-    cursor: pointer;
-}
-
 nav {
     /* background-color: #fbfbfc !important; */
     background-color: #4fc3f7 !important;
@@ -26,4 +18,10 @@ nav {
 [type="checkbox"]:checked+label:before {
     border-right: 2px solid #4fc3f7 !important;
     border-bottom: 2px solid #4fc3f7 !important;
+}
+
+.collection-item {
+    white-space: nowrap !important;
+    overflow-x: hidden !important;
+    text-overflow: ellipsis !important; 
 }

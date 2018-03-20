@@ -51,7 +51,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
 
     function getInitialValues() {
         $scope.applicantTableSorter = "userkey";
-        $rootScope.multipleArchive = [];
+        $rootScope.multipleArchiveApplicant = [];
         $rootScope.selectAllApplicants = false;
         $scope.toggleArchives = false;
         $rootScope.showHired = false;
@@ -89,6 +89,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
 
     $scope.gotoApplicantProfile = function (applicant) {
         $rootScope.selectedApplicant = applicant;
+        localStorage.setItem("selectedApplicant", JSON.stringify(applicant));
         window.location.href = "#!/applicants/profile";
     }
 
@@ -159,9 +160,9 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
 
     $scope.addApplicantToMultipleArchive = function (applicant) {
         if (applicant.archive) {
-            $rootScope.multipleArchive.push(applicant);
+            $rootScope.multipleArchiveApplicant.push(applicant);
         } else {
-            $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf(applicant), 1);
+            $rootScope.multipleArchiveApplicant.splice($rootScope.multipleArchiveApplicant.indexOf(applicant), 1);
             if (applicant.isArchived) {
                 $rootScope.unarchiveAllApplicants = false;
             } else {
@@ -180,10 +181,10 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         for (var index = 0; index < $rootScope.allApplicants.length; index++) {
             if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
                 $rootScope.allApplicants[index].archive = toggle;
-                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
-                    $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
+                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchiveApplicant))) {
+                    $rootScope.multipleArchiveApplicant.push($rootScope.allApplicants[index]);
                 } else if (!$rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired)) {
-                    $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+                    $rootScope.multipleArchiveApplicant.splice($rootScope.multipleArchiveApplicant.indexOf($rootScope.allApplicants[index]), 1);
                 }
             }
         }
@@ -199,10 +200,10 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         for (var index = 0; index < $rootScope.allApplicants.length; index++) {
             if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
                 $rootScope.allApplicants[index].archive = toggle;
-                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchive))) {
-                    $rootScope.multipleArchive.push($rootScope.allApplicants[index]);
+                if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(containsObject($rootScope.allApplicants[index], $rootScope.multipleArchiveApplicant))) {
+                    $rootScope.multipleArchiveApplicant.push($rootScope.allApplicants[index]);
                 } else if (!$rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired)) {
-                    $rootScope.multipleArchive.splice($rootScope.multipleArchive.indexOf($rootScope.allApplicants[index]), 1);
+                    $rootScope.multipleArchiveApplicant.splice($rootScope.multipleArchiveApplicant.indexOf($rootScope.allApplicants[index]), 1);
                 }
             }
         }
