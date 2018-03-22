@@ -58,7 +58,7 @@ angular.module("app", ["ngRoute", "blockUI"])
             $rootScope.applicantsactive = false;
             $rootScope.leavesactive = false;
             $rootScope.profileactive = false;
-
+            $rootScope.unseenNotifications = {};
         }
 
         function onListeners() {
@@ -66,6 +66,7 @@ angular.module("app", ["ngRoute", "blockUI"])
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     applicantListeners();
+                    projectListeners();
                 } else {
                     // No user is signed in.
                 }
@@ -79,7 +80,6 @@ angular.module("app", ["ngRoute", "blockUI"])
         function applicantListeners() {
             $rootScope.appNotifCounter = 0;
             $rootScope.applicantNotifications = [];
-            $rootScope.unseenNotifications = {};
             $rootScope.allApplicants = [];
 
             firebase.database().ref("HRMS_Storage/Notifications/Applicants/").on("child_added", function (snapshot) {
@@ -88,40 +88,86 @@ angular.module("app", ["ngRoute", "blockUI"])
                 }
                 $rootScope.unseenNotifications["applicants"] = $rootScope.appNotifCounter;
                 $rootScope.applicantNotifications.push(snapshot.val());
-                setTimeout(function () {
-                    $scope.$apply();
-                });
+                refresh();
             });
 
             firebase.database().ref("HRMS_Storage/Applicants/").on("child_added", function (snapshot) {
                 $rootScope.allApplicants.push(snapshot.val());
-                setTimeout(function () {
-                    $scope.$apply();
-                });
+                refresh();
             });
 
             firebase.database().ref("HRMS_Storage/Applicants/").on("child_removed", function (snapshot) {
                 $rootScope.allApplicants.splice($rootScope.allApplicants.indexOf(snapshot.val()), 1);
-                setTimeout(function () {
-                    $scope.$apply();
-                });
+                refresh();
             });
 
             firebase.database().ref("HRMS_Storage/Applicants/").on("child_changed", function (snapshot) {
                 for (var index = 0; index < $rootScope.allApplicants.length; index++) {
                     if ($rootScope.allApplicants[index].userkey === snapshot.val().userkey) {
                         $rootScope.allApplicants[index] = snapshot.val();
-                        if ($rootScope.selectedApplicant.userkey === snapshot.val().userkey) {
-                            $rootScope.selectedApplicant = snapshot.val();
-                            localStorage.setItem("selectedApplicant", JSON.stringify($rootScope.selectedApplicant));
+                        try {
+                            if ($rootScope.selectedApplicant.userkey === snapshot.val().userkey) {
+                                $rootScope.selectedApplicant = snapshot.val();
+                                localStorage.setItem("selectedApplicant", JSON.stringify($rootScope.selectedApplicant));
+                            }
+                        } catch (err) {
+                            console.log("No selected applicant");
                         }
                         break;
                     }
                 }
+                refresh();
+            });
+        }
 
+        function projectListeners() {
+            $rootScope.projectNotifCounter = 0;
+            $rootScope.projectNotifications = [];
+            $rootScope.allProjects = [];
+
+            firebase.database().ref("HRMS_Storage/Notifications/Projects/").on("child_added", function (snapshot) {
+                if (!(snapshot.val().seen)) {
+                    $rootScope.projectNotifCounter++;
+                }
+                $rootScope.unseenNotifications["projects"] = $rootScope.projectNotifCounter;
+                $rootScope.projectNotifications.push(snapshot.val());
                 setTimeout(function () {
                     $scope.$apply();
                 });
+            });
+
+            firebase.database().ref("HRMS_Storage/Projects/").on("child_added", function (snapshot) {
+                $rootScope.allProjects.push(snapshot.val());
+                refresh();
+            });
+
+            firebase.database().ref("HRMS_Storage/Projects/").on("child_removed", function (snapshot) {
+                $rootScope.allProjects.splice($rootScope.allProjects.indexOf(snapshot.val()), 1);
+                refresh();
+            });
+
+            firebase.database().ref("HRMS_Storage/Projects/").on("child_changed", function (snapshot) {
+                for (var index = 0; index < $rootScope.allProjects.length; index++) {
+                    if ($rootScope.allProjects[index].projectkey === snapshot.val().projectkey) {
+                        $rootScope.allProjects[index] = snapshot.val();
+                        break;
+                    }
+                }
+                refresh();
+            });
+        }
+
+        $rootScope.startFeather = function () {
+            feather.replace();
+            $('.tooltipped').tooltip({
+                delay: 1
+            });
+            return true;
+        }
+
+        function refresh() {
+            setTimeout(function () {
+                $scope.$apply();
             });
         }
     });

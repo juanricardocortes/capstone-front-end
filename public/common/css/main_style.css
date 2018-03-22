@@ -2,7 +2,7 @@ html,
 body {
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: fixed !important;
     margin: 0;
     padding: 0;
     top: 0;
@@ -20,6 +20,12 @@ body {
     position: relative !important;
     top: 29%;
     right: 2%;
+}
+
+.center-small-feather-icon {
+    position: relative !important;
+    top: 20%;
+    right: 0%;
 }
 
 .button-center-icon {

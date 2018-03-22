@@ -53,6 +53,11 @@
     padding-left: 10%;
 }
 
+.sidebar-link:focus{
+    outline: none !important;
+    border: 0 !important;
+}
+
 .sidebar-link-hover {
     width: 100%;
     position: absolute;

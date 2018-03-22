@@ -1,1 +1,47 @@
-<h1>Projects</h1>
+<div ng-show="startFeather()">
+    <div class="projects-page">
+        <div class="projects-panel-filter-container">
+            <div class="projects-panel-filter-search">
+                <div class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="projectsFilter" ng-model="projectsFilter" type="text" class="validate z-depth-5">
+                    <label for="projectsFilter">Search</label>
+                </div>
+            </div>
+            <div class="projects-panel-filter-switch">
+                <div class="switch graytext">
+                    <i>{{projectsSwitchText}}</i>
+                    <label>
+                        <input type="checkbox" ng-model="projectArchiveToggle" ng-change="toggleProjectArchive()">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="projects-panel-display-container">
+            <div class="projects-panel-display-content scroll">
+                <div ng-repeat="project in allProjects" class="projects-panel-display-projects z-depth-5" ng-show="(project.isArchived === projectArchiveToggle)">
+                    <div class="projects-panel-display-projects-information">
+                        <div class="project-name">
+                            <h4>{{project.name}}</h4>
+                        </div>
+                    </div>
+                    <div class="projects-panel-display-projects-buttons">
+                        <a ng-click="archiveProject()" class="btn-floating btn-large waves-effect waves-light archive-project-button z-depth-5 tooltipped"
+                            data-position="top" data-tooltip="{{archiveButtonText}} {{project.name}}">
+                            <i data-feather="archive" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="projects-panel-modifiers-container">
+            <div class="projects-panel-modifiers-buttons">
+                <a ng-click="showAddApplicantModal()" class="btn-floating btn-large waves-effect waves-light add-project-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Add project">
+                    <i data-feather="plus" class="center-feather-icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -73,7 +73,7 @@
                     </tr>
                 </thead>
                 <tbody class="applicant-table-body">
-                    <tr ng-repeat="applicant in allApplicants | filter:tablefilter | orderBy:applicantTableSorter track by $index" ng-show="!applicant.isArchived && !toggleArchives && !showHired && !applicant.hired"
+                    <tr ng-repeat="applicant in allApplicants | filter:tablefilter | orderBy:applicantTableSorter track by $index" ng-show="(applicant.isArchived === toggleArchives) && !showHired && !applicant.hired"
                         class="applicant-table-row">
                         <td>
                             <p class="table-checkbox">
@@ -86,7 +86,7 @@
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
                         <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
-                        <td>
+                        <td ng-show="!applicant.isArchived">
                             <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                 <i data-feather="user-check" class="button-center-icon "></i>
@@ -96,21 +96,7 @@
                                 <i data-feather="archive" class="button-center-icon"></i>
                             </a>
                         </td>
-                    </tr>
-                    <tr ng-repeat="applicant in allApplicants | filter:tablefilter track by $index" ng-show="applicant.isArchived && toggleArchives && !showHired && !applicant.hired"
-                        class="applicant-table-row">
-                        <td>
-                            <p class="table-checkbox">
-                                <input type="checkbox" ng-model="applicant.archive" ng-change="addApplicantToMultipleArchive(applicant)" id="{{applicant.userkey}}"
-                                />
-                                <label for="{{applicant.userkey}}"></label>
-                            </p>
-                        </td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
-                        <td>
+                        <td ng-show="applicant.isArchived">
                             <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                 <i data-feather="user-check" class="button-center-icon"></i>

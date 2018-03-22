@@ -10,7 +10,10 @@
 
 .applicant-table {
     overflow-y: auto;
+    position: relative;
+    float: left;
     height: 70%;
+    width: 100%;
 }
 
 .applicant-table-modifiers {
@@ -21,6 +24,7 @@
     float: left;
     width: 40% !important;
     margin-left: 2%;
+    position: relative;
 }
 
 .applicant-table-modifiers-switch {

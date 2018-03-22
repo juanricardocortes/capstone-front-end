@@ -1,0 +1,41 @@
+.leaves-page {
+    float: left;
+    height: 87% !important;
+    width: 100%;
+}
+
+.leaves-page>.calendar-container {
+    position: relative;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.leaves-page>.calendar-container>#calendar {
+    position: absolute;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.leaves-page>.calendar-modifiers {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+    z-index: 1;
+}
+
+.calendar-options-button {
+    background-color: #f7d74f !important;
+}
+
+.calendar-options-button:hover {
+    background-color: #efc30b !important;
+}
+
+.option-view {
+    background-color: #4fc3f7 !important;
+}
+
+.option-view:hover {
+    background-color: #0ba8ef !important;
+}

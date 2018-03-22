@@ -25,3 +25,9 @@ nav {
     overflow-x: hidden !important;
     text-overflow: ellipsis !important; 
 }
+
+.fixed-action-btn {
+    position: fixed !important;
+    right: 5% !important;
+    bottom: 5% !important;
+}

@@ -21,14 +21,6 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         });
     }
 
-    $scope.startFeather = function () {
-        feather.replace();
-        $('.tooltipped').tooltip({
-            delay: 1
-        });
-        return true;
-    }
-
     function onCreate() {
         initializeJavascript();
         getActiveSideBarLink();

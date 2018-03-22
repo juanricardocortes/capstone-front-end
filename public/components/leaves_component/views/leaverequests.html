@@ -1,1 +1,34 @@
-<h1>Leave Requests</h1>
+<div ng-show="startFeather()">
+    <div class="leaves-page">
+        <div class="calendar-container">
+            <div id='calendar' class="scroll"></div>
+        </div>
+        <div class="calendar-modifiers">
+            <div class="fixed-action-btn">
+                <a class="btn-floating btn-large waves-effect waves-light calendar-options-button z-depth-5">
+                    <i data-feather="eye" class="center-feather-icon"></i>
+                </a>
+                <ul>
+                    <li>
+                        <a ng-click="viewByDay()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
+                            data-position="left" data-tooltip="View by day">
+                            D
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="viewByWeek()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
+                            data-position="left" data-tooltip="View by week">
+                            W
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="viewByMonth()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
+                            data-position="left" data-tooltip="View by month">
+                            M
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
