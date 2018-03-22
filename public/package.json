@@ -1,0 +1,12 @@
+{
+    "name": "hrmsapp",
+    "version": "0.1.0",
+    "dependencies": {
+        "angular": "^1.6.9",
+        "angular-route": "^1.6.9",
+        "fullcalendar": "^3.9.0",
+        "fullcalendar-scheduler": "^1.9.3",
+        "jquery": "^3.3.1",
+        "moment": "^2.21.0"
+    }
+}
