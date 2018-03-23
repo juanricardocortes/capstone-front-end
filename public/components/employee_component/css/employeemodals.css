@@ -1,0 +1,48 @@
+.add-employee-modal-bg {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.add-employee-modal-close-button {
+    cursor: pointer !important;
+}
+
+.view-employees {
+    position: absolute !important;
+    right: 8%;
+}
+
+.add-employee {
+    position: absolute !important;
+    right: 20%;
+}
+
+.add-employee-modal {
+    height: 80% !important;
+    position: relative;
+}
+
+.archive-employee-modal {
+    height: 80% !important;
+    position: relative;
+}
+
+.add-employee-modal-buttons {
+    position: absolute;
+    bottom: -5%;
+    right: 5%;
+}
+
+.archive-employee-modal-button {
+    position: absolute;
+    bottom: -5%;
+    right: 5%;
+}
+
+.employee-add-modal-icon {
+    margin-top: 3% !important;
+}

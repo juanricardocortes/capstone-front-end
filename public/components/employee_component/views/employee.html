@@ -1,1 +1,120 @@
-<h1>Employee</h1>
+<div ng-show="startFeather()" class="row">
+    <div class="employee-page">
+        <div class="employee-table-modifiers">
+            <div class="employee-table-modifiers-filter">
+                <div class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="tablefilter" ng-model="tablefilter" type="text" class="validate z-depth-5">
+                    <label for="tablefilter">Search</label>
+                </div>
+            </div>
+            <div class="employee-table-modifiers-buttons">
+                <a ng-click="showAddEmployeeModal()" class="btn-floating btn-large waves-effect waves-light add-employee-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Add employee?">
+                    <i data-feather="user-plus" class="center-feather-icon"></i>
+                </a>
+                <a ng-click="showArchiveEmployeeModal()" class="btn-floating btn-large waves-effect waves-light archive-employee-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="{{archiveText}} selected employees?">
+                    <div ng-show="!employeeArchiveToggle" class="center-feather-icon">
+                        <i data-feather="archive"></i>
+                    </div>
+                    <div ng-show="employeeArchiveToggle" class="center-feather-icon">
+                        <i data-feather="rotate-ccw"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="employee-table-modifiers-switch">
+                <div class="switch graytext">
+                    <i>{{employeesSwitchText}}</i>
+                    <label>
+                        <input type="checkbox" ng-model="employeeArchiveToggle" ng-change="toggleEmployeeArchive()">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="employee-table-space"></div>
+        <div class="employee-table z-depth-2">
+            <table class="employee-table-table">
+                <thead class="employee-table-head">
+                    <tr>
+                        <th ng-show="!(employeeArchiveToggle)" class="employee-column-checkbox">
+                            <p class="table-checkbox">
+                                <input type="checkbox" ng-model="$root.archiveAllEmployees" ng-change="archiveAll()" id="headercheckboxa" />
+                                <label for="headercheckboxa"></label>
+                            </p>
+                        </th>
+                        <th ng-show="(employeeArchiveToggle)" class="employee-column-checkbox">
+                            <p class="table-checkbox">
+                                <input type="checkbox" ng-model="$root.unarchiveAllEmployees" ng-change="unarchiveAll()" id="headercheckboxb" />
+                                <label for="headercheckboxb"></label>
+                            </p>
+                        </th>
+                        <th ng-click="sortByKey()" class="employee-column-id">Employee ID</th>
+                        <th ng-click="sortByEmail()" class="employee-column-email">Email Address</th>
+                        <th ng-click="sortByLastName()" class="employee-column-lastname">Last Name</th>
+                        <th ng-click="sortByFirstName()" class="employee-column-firstname">First Name</th>
+                        <th class="employee-column-actions">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="employee-table-body">
+                    <tr ng-repeat="employee in allEmployees | filter:tablefilter | orderBy:employeeTableSorter track by $index" ng-show="!employee.isArchived && !employeeArchiveToggle"
+                        class="employee-table-row">
+                        <td>
+                            <p class="table-checkbox">
+                                <input type="checkbox" ng-model="employee.archive" ng-change="addEmployeeToMultipleArchive(employee)" id="{{employee.userkey}}"
+                                />
+                                <label for="{{employee.userkey}}"></label>
+                            </p>
+                        </td>
+                        <td>{{employee.userkey}}</td>
+                        <td>{{employee.email}}</td>
+                        <td>{{employee.files.lastname}}</td>
+                        <td>{{employee.files.firstname}}</td>
+                        <td>
+                            <a class="waves-effect waves-light btn archive-employee-button z-depth-3 tooltipped" ng-click="archiveEmployee(employee,$event)"
+                                data-position="top" data-tooltip="Archive {{employee.lastname}}?">
+                                <i data-feather="archive" class="button-center-icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="employee in allEmployees | filter:tablefilter track by $index" ng-show="employee.isArchived && employeeArchiveToggle"
+                        class="employee-table-row">
+                        <td>
+                            <p class="table-checkbox">
+                                <input type="checkbox" ng-model="employee.archive" ng-change="addEmployeeToMultipleArchive(employee)" id="{{employee.userkey}}"
+                                />
+                                <label for="{{employee.userkey}}"></label>
+                            </p>
+                        </td>
+                        <td>{{employee.userkey}}</td>
+                        <td>{{employee.email}}</td>
+                        <td>{{employee.files.lastname}}</td>
+                        <td>{{employee.files.firstname}}</td>
+                        <td>
+                            <a class="waves-effect waves-light btn archive-employee-button z-depth-3 tooltipped" ng-click="archiveEmployee(employee,$event)"
+                                data-position="top" data-tooltip="Unarchive {{employee.lastname}}?">
+                                <i data-feather="rotate-ccw" class="button-center-icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="showAddEmployee">
+    <ng-include src="'./components/employee_component/views/addemployeemodal.html'">
+    </ng-include>
+</div>
+
+<div class="row" ng-show="showAllAddEmployees">
+    <ng-include src="'./components/employee_component/views/alladdemployeesmodal.html'">
+    </ng-include>
+</div>
+
+<div class="row" ng-show="showMultipleArchiveEmployeeModal">
+    <ng-include src="'./components/employee_component/views/multiplearchiveemployeemodal.html'">
+    </ng-include>
+</div>

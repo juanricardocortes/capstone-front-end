@@ -66,6 +66,7 @@ angular.module("app", ["ngRoute", "blockUI"])
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     applicantListeners();
+                    employeeListeners();
                     projectListeners();
                 } else {
                     // No user is signed in.
@@ -112,6 +113,40 @@ angular.module("app", ["ngRoute", "blockUI"])
                             }
                         } catch (err) {
                             console.log("No selected applicant");
+                        }
+                        break;
+                    }
+                }
+                refresh();
+            });
+        }
+
+        function employeeListeners() {
+           
+            $rootScope.allEmployees = [];
+
+
+            firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
+                $rootScope.allEmployees.push(snapshot.val());
+                refresh();
+            });
+
+            firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
+                $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(snapshot.val()), 1);
+                refresh();
+            });
+
+            firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
+                for (var index = 0; index < $rootScope.allEmployees.length; index++) {
+                    if ($rootScope.allEmployees[index].userkey === snapshot.val().userkey) {
+                        $rootScope.allEmployees[index] = snapshot.val();
+                        try {
+                            if ($rootScope.selectedEmployee.userkey === snapshot.val().userkey) {
+                                $rootScope.selectedAEmployee = snapshot.val();
+                                localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
+                            }
+                        } catch (err) {
+                            console.log("No selected employee");
                         }
                         break;
                     }
