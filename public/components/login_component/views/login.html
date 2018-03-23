@@ -1,4 +1,4 @@
-<div ng-controller="loginCtrl" class="login-bg">
+<div ng-show="startJS()" ng-controller="loginCtrl" class="login-bg">
     <div class="first-half-bg"></div>
     <div class="second-half-bg"></div>
     <div class="row">
@@ -38,13 +38,14 @@
                             </div>
                             <div class="row"></div>
                             <div class="login-form-buttons">
-                                <a class="btn-floating btn-large waves-effect waves-light authone-button z-depth-5" ng-show="!auth" ng-click="login()">
+                                
+                                <a class="btn-floating btn-large waves-effect waves-light authone-button z-depth-5" ng-show="!auth" ng-click="functions.login()">
                                     <i data-feather="log-in" class="center-feather-icon"></i>
                                 </a>
-                                <a class="btn-floating btn-large waves-effect waves-light cancel-button z-depth-5" ng-show="auth" ng-click="cancel()">
+                                <a class="btn-floating btn-large waves-effect waves-light cancel-button z-depth-5" ng-show="auth" ng-click="functions.cancel()">
                                     <i data-feather="x" class="center-feather-icon"></i>
                                 </a>
-                                <a class="btn-floating btn-large waves-effect waves-light authtwo-button z-depth-5" ng-show="auth" ng-click="authTwo()">
+                                <a class="btn-floating btn-large waves-effect waves-light authtwo-button z-depth-5" ng-show="auth" ng-click="functions.authTwo()">
                                     <i data-feather="log-in" class="center-feather-icon"></i>
                                 </a>
                             </div>

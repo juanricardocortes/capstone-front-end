@@ -1,4 +1,4 @@
-<div ng-controller="mainpageCtrl">
+<div ng-if="startJS()" ng-controller="mainpageCtrl">
     <div class="sidebar z-depth-5">
         <div class="sidebar-logo">
             <div class="sidebar-logo-text">
@@ -10,7 +10,7 @@
         <div class="sidebar-links">
             <div class="sidebar-space"></div>
             <div class="sidebar-space"></div>
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoProfile()" ng-show="profileactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProfile()" ng-show="profileactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -24,7 +24,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoProfile()" ng-show="!profileactive">
+            <div class="sidebar-link" ng-click="functions.gotoProfile()" ng-show="!profileactive">
                 <div class="sidebar-link-hover">
                     <span ng-show="!profileactive">
                         <div class="sidebar-link-icon">
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoDashboard()" ng-show="dashboardactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoDashboard()" ng-show="dashboardactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -51,7 +51,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoDashboard()" ng-show="!dashboardactive">
+            <div class="sidebar-link" ng-click="functions.gotoDashboard()" ng-show="!dashboardactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <div class="sidebar-link-icon">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoApplicants()" ng-show="applicantsactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoApplicants()" ng-show="applicantsactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active ">
@@ -78,7 +78,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoApplicants()" ng-show="!applicantsactive">
+            <div class="sidebar-link" ng-click="functions.gotoApplicants()" ng-show="!applicantsactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <div class="sidebar-link-icon">
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoEmployees()" ng-show="employeeactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoEmployees()" ng-show="employeeactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -105,7 +105,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoEmployees()" ng-show="!employeeactive">
+            <div class="sidebar-link" ng-click="functions.gotoEmployees()" ng-show="!employeeactive">
                 <div class="sidebar-link-hover">
                     <span ng-show="!employeeactive">
                         <div class="sidebar-link-icon">
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoProjects()" ng-show="projectsactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProjects()" ng-show="projectsactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -132,7 +132,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoProjects()" ng-show="!projectsactive">
+            <div class="sidebar-link" ng-click="functions.gotoProjects()" ng-show="!projectsactive">
                 <div class="sidebar-link-hover">
                     <span ng-show="!projectsactive">
                         <div class="sidebar-link-icon">
@@ -145,7 +145,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="gotoLeaveRequests()" ng-show="leavesactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoLeaveRequests()" ng-show="leavesactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -159,7 +159,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="gotoLeaveRequests()" ng-show="!leavesactive">
+            <div class="sidebar-link" ng-click="functions.gotoLeaveRequests()" ng-show="!leavesactive">
                 <div class="sidebar-link-hover">
                     <span ng-show="!leavesactive">
                         <div class="sidebar-link-icon">
@@ -174,7 +174,7 @@
 
             <div class="sidebar-space"></div>
             <div class="sidebar-space"></div>
-            <div class="sidebar-link sign-out-link" ng-click="logout()">
+            <div class="sidebar-link sign-out-link" ng-click="functions.logout()">
                 <div class="sidebar-link-hover">
                     <span>
                         <div class="sidebar-link-icon">

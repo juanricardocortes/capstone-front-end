@@ -1,6 +1,14 @@
-<div ng-show="startFeather()">
+<div ng-if="startJS()">
     <div class="leaves-page">
-        <div class="calendar-container">
+        <div class="calendar-search">
+            <div class="search-date">
+                <div class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="calendarFilter" ng-model="calendarFilter" type="text" class="validate z-depth-5 datepicker">
+                </div>
+            </div>
+        </div>
+        <div class="calendar-container z-depth-5">
             <div id='calendar' class="scroll"></div>
         </div>
         <div class="calendar-modifiers">
@@ -10,20 +18,20 @@
                 </a>
                 <ul>
                     <li>
-                        <a ng-click="viewByDay()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
-                            data-position="left" data-tooltip="View by day">
+                        <a ng-click="functions.viewByDay()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped" data-position="left"
+                            data-tooltip="View by day">
                             D
                         </a>
                     </li>
                     <li>
-                        <a ng-click="viewByWeek()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
-                            data-position="left" data-tooltip="View by week">
+                        <a ng-click="functions.viewByWeek()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped" data-position="left"
+                            data-tooltip="View by week">
                             W
                         </a>
                     </li>
                     <li>
-                        <a ng-click="viewByMonth()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped"
-                            data-position="left" data-tooltip="View by month">
+                        <a ng-click="functions.viewByMonth()" class="btn-floating waves-effect waves-light option-view z-depth-5 tooltipped" data-position="left"
+                            data-tooltip="View by month">
                             M
                         </a>
                     </li>

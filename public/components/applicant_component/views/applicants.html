@@ -1,4 +1,4 @@
-<div ng-show="startFeather()" class="row">
+<div ng-show="startJS()" class="row">
     <div class="applicant-page">
         <div class="applicant-table-modifiers">
             <div class="applicant-table-modifiers-filter">
@@ -10,11 +10,11 @@
                 </div>
             </div>
             <div class="applicant-table-modifiers-buttons">
-                <a ng-click="showAddApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light add-applicant-button z-depth-5 tooltipped"
+                <a ng-click="functions.showAddApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light add-applicant-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add applicant?">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="showArchiveApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light archive-applicant-button z-depth-5 tooltipped"
+                <a ng-click="functions.showArchiveApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light archive-applicant-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="{{archiveText}} selected applicants?">
                     <div ng-show="!toggleArchives" class="center-feather-icon">
                         <i data-feather="archive"></i>
@@ -23,7 +23,7 @@
                         <i data-feather="rotate-ccw"></i>
                     </div>
                 </a>
-                <a ng-click="showHiredApplicants()" class="btn-floating btn-large waves-effect waves-light show-hired-applicant-button z-depth-5 tooltipped"
+                <a ng-click="functions.showHiredApplicants()" class="btn-floating btn-large waves-effect waves-light show-hired-applicant-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="{{showhide}} hired applicants">
                     <div ng-show="!(showHired)" class="center-feather-icon">
                         <i data-feather="eye"></i>
@@ -37,7 +37,7 @@
                 <div ng-show="!(showHired)" class="switch graytext">
                     <i>{{applicantTableSwitch}}</i>
                     <label>
-                        <input type="checkbox" ng-model="toggleArchives" ng-change="showActiveTableToast()">
+                        <input type="checkbox" ng-model="toggleArchives" ng-change="functions.showActiveTableToast()">
                         <span class="lever"></span>
                     </label>
                 </div>
@@ -55,20 +55,24 @@
                     <tr>
                         <th ng-show="!(showHired) && !(toggleArchives)" class="applicant-column-checkbox">
                             <p class="table-checkbox">
-                                <input type="checkbox" ng-model="$root.archiveAllApplicants" ng-change="archiveAll()" id="headercheckboxa" />
-                                <label for="headercheckboxa"></label>
+                                <label for="headercheckboxa">
+                                    <input type="checkbox" ng-model="$root.archiveAllApplicants" ng-change="functions.archiveAll()" id="headercheckboxa" />
+                                    <span></span>
+                                </label>
                             </p>
                         </th>
                         <th ng-show="!(showHired) && (toggleArchives)" class="applicant-column-checkbox">
                             <p class="table-checkbox">
-                                <input type="checkbox" ng-model="$root.unarchiveAllApplicants" ng-change="unarchiveAll()" id="headercheckboxb" />
-                                <label for="headercheckboxb"></label>
+                                <label for="headercheckboxb">
+                                    <input type="checkbox" ng-model="$root.unarchiveAllApplicants" ng-change="functions.unarchiveAll()" id="headercheckboxb" />
+                                    <span></span>
+                                </label>
                             </p>
                         </th>
-                        <th ng-click="sortByKey()" class="applicant-column-id">Applicant ID</th>
-                        <th ng-click="sortByEmail()" class="applicant-column-email">Email Address</th>
-                        <th ng-click="sortByRefNum()" class="applicant-column-reference">Reference Number</th>
-                        <th ng-click="sortByStatus()" class="applicant-column-status">Status</th>
+                        <th ng-click="functions.sortByKey()" class="applicant-column-id">Applicant ID</th>
+                        <th ng-click="functions.sortByEmail()" class="applicant-column-email">Email Address</th>
+                        <th ng-click="functions.sortByRefNum()" class="applicant-column-reference">Reference Number</th>
+                        <th ng-click="functions.sortByStatus()" class="applicant-column-status">Status</th>
                         <th class="applicant-column-actions" ng-show="!(showHired)">Action</th>
                     </tr>
                 </thead>
@@ -77,31 +81,32 @@
                         class="applicant-table-row">
                         <td>
                             <p class="table-checkbox">
-                                <input type="checkbox" ng-model="applicant.archive" ng-change="addApplicantToMultipleArchive(applicant)" id="{{applicant.userkey}}"
-                                />
-                                <label for="{{applicant.userkey}}"></label>
+                                <label>
+                                    <input type="checkbox" ng-change="functions.addApplicantToMultipleArchive(applicant)" ng-model="applicant.archive" />
+                                    <span></span>
+                                </label>
                             </p>
                         </td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.email}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                         <td ng-show="!applicant.isArchived">
-                            <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
+                            <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                 <i data-feather="user-check" class="button-center-icon "></i>
                             </a>
-                            <a class="waves-effect waves-light btn archive-applicant-button z-depth-3 tooltipped" ng-click="archiveApplicant(applicant,$event)"
+                            <a class="waves-effect waves-light btn archive-applicant-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Archive {{applicant.lastname}}?">
                                 <i data-feather="archive" class="button-center-icon"></i>
                             </a>
                         </td>
                         <td ng-show="applicant.isArchived">
-                            <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="hireApplicant(applicant,$event)"
+                            <a class="waves-effect waves-light btn hire-applicant-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                 <i data-feather="user-check" class="button-center-icon"></i>
                             </a>
-                            <a class="waves-effect waves-light btn archive-applicant-button z-depth-3 tooltipped" ng-click="archiveApplicant(applicant,$event)"
+                            <a class="waves-effect waves-light btn archive-applicant-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
                                 data-position="top" data-tooltip="Unarchive {{applicant.lastname}}?">
                                 <i data-feather="rotate-ccw" class="button-center-icon"></i>
                             </a>
@@ -109,10 +114,10 @@
                     </tr>
                     <tr ng-repeat="applicant in allApplicants | filter:tablefilter track by $index" ng-show="(showHired) && (applicant.hired)"
                         class="applicant-table-row">
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.email}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
-                        <td ng-click="gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.userkey}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.email}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
+                        <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                     </tr>
                 </tbody>
             </table>
