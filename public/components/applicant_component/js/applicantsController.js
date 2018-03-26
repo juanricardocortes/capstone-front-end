@@ -1,5 +1,4 @@
 angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, $http) {
-
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
@@ -35,14 +34,13 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         getInitialValues: function () {
             $scope.applicantTableSorter = "userkey";
             $rootScope.multipleArchiveApplicant = [];
-            $rootScope.selectAllApplicants = false;
-            $scope.toggleArchives = false;
+            $rootScope.archiveApplicantToggle = false;
             $rootScope.showHired = false;
             $rootScope.currentPage = "Weltanchaung > Applicants"
             $rootScope.applicantTableSwitch = "Active applicants"
-            $rootScope.archiveText = "Archive"
+            $rootScope.archiveApplicantText = "Archive"
             $rootScope.showhide = "Show";
-            $rootScope.archiveModalText = "Archive applicants?"
+            $rootScope.archiveApplicantModalText = "Archive applicants?"
         },
         refresh: function () {
             setTimeout(function () {
@@ -60,23 +58,21 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         }
 
     }
-
     functions.onInit();
-    
     $scope.functions = {
-        showActiveTableToast: function () {
-            if ($scope.toggleArchives) {
+        toggleArchiveApplicants: function () {
+            if ($rootScope.archiveApplicantToggle) {
                 $rootScope.applicantTableSwitch = "Archived applicants"
-                $rootScope.archiveText = "Unarchive"
-                $rootScope.archiveModalText = "Unarchive applicants?"
+                $rootScope.archiveApplicantText = "Unarchive"
+                $rootScope.archiveApplicantModalText = "Unarchive applicants?"
             } else {
                 $rootScope.applicantTableSwitch = "Active applicants"
-                $rootScope.archiveText = "Archive"
-                $rootScope.archiveModalText = "Archive applicants?"
+                $rootScope.archiveApplicantText = "Archive"
+                $rootScope.archiveApplicantModalText = "Archive applicants?"
             }
         },
         showHideArchive: function () {
-            $scope.activateToggle = $scope.toggleArchives;
+            $scope.activateToggle = $scope.archiveApplicantToggle;
         },
         showHiredApplicants: function () {
             $rootScope.showHired = !$rootScope.showHired;
@@ -94,13 +90,12 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         showAddApplicantModal: function () {
             $rootScope.showAddApplicant = true;
         },
+        showArchiveApplicantModal: function () {
+            $rootScope.showMultipleArchiveApplicantModal = true;
+        },
         archiveApplicant: function (applicant, event) {
-            for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-                if (applicant.userkey === $rootScope.allApplicants[index].userkey) {
-                    $rootScope.allApplicants[index].isArchived = !($rootScope.allApplicants[index].isArchived);
-                    functions.refresh();
-                }
-            }
+            applicant.isArchived = !applicant.isArchived;
+            functions.refresh();
             $http({
                 url: $rootScope.baseURL + "secure-api/archiveApplicant",
                 method: "POST",
@@ -132,7 +127,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
-                    employees: [{
+                    allEmployees: [{
                         email: applicant.email,
                         image: applicant.image,
                         password: applicant.lastname,
@@ -146,10 +141,6 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 alert(response.data.message);
             });
             event.stopPropagation();
-        },
-        showArchiveApplicantModal: function (applicant) {
-            $rootScope.archiveToggle = $scope.toggleArchives;
-            $rootScope.showMultipleAddApplicantModal = true;
         },
         addApplicantToMultipleArchive: function (applicant) {
             if (applicant.archive) {
@@ -171,7 +162,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 toggle = false;
             }
             for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-                if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
+                if ($rootScope.allApplicants[index].isArchived === $rootScope.archiveApplicantToggle) {
                     $rootScope.allApplicants[index].archive = toggle;
                     if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(functions.containsObject($rootScope.allApplicants[index], $rootScope.multipleArchiveApplicant))) {
                         $rootScope.multipleArchiveApplicant.push($rootScope.allApplicants[index]);
@@ -189,7 +180,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 toggle = false;
             }
             for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-                if ($rootScope.allApplicants[index].isArchived === $scope.toggleArchives) {
+                if ($rootScope.allApplicants[index].isArchived === $rootScope.archiveApplicantToggle) {
                     $rootScope.allApplicants[index].archive = toggle;
                     if ($rootScope.allApplicants[index].archive && !($rootScope.allApplicants[index].hired) && !(functions.containsObject($rootScope.allApplicants[index], $rootScope.multipleArchiveApplicant))) {
                         $rootScope.multipleArchiveApplicant.push($rootScope.allApplicants[index]);

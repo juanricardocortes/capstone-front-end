@@ -1,39 +1,46 @@
-<div ng-show="startJS()" ng-controller="addApplicantCtrl" class="modal-background">
+<div ng-show="startJS()" ng-controller="addEmployeeCtrl" class="modal-background">
     <div class="row">
         <div class="col s3"></div>
         <div class="col s6">
             <div class="card modal-size">
                 <div class="card-content scrollable-content scroll">
-                    <span class="card-title grey-text text-darken-4">Add applicant
-                        <i ng-click="functions.hideAddApplicantModal()" class="material-icons right cursor-button">close</i>
+                    <span class="card-title grey-text text-darken-4">Add employee
+                        <i ng-click="functions.hideAddEmployeeModal()" class="material-icons right cursor-button">close</i>
                     </span>
                     <div class="row"></div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="mail" class="prefix input-icon"></i>
-                            <input id="addApplicant_email" ng-model="addApplicant_email" type="email" class="validate">
-                            <label for="addApplicant_email">Email</label>
+                            <input id="addEmployee_email" ng-model="addEmployee_email" type="email" class="validate">
+                            <label for="addEmployee_email">Email</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="user" class="prefix input-icon"></i>
-                            <input id="addApplicant_lastname" ng-model="addApplicant_lastname" type="text" class="validate">
-                            <label for="addApplicant_lastname">Last Name</label>
+                            <input id="addEmployee_lastname" ng-model="addEmployee_lastname" type="text" class="validate">
+                            <label for="addEmployee_lastname">Last Name</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="user" class="prefix input-icon"></i>
-                            <input id="addApplicant_firstname" ng-model="addApplicant_firstname" type="text" class="validate">
-                            <label for="addApplicant_firstname">First Name</label>
+                            <input id="addEmployee_firstname" ng-model="addEmployee_firstname" type="text" class="validate">
+                            <label for="addEmployee_firstname">First Name</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="award" class="prefix input-icon"></i>
-                            <input id="addApplicant_position" ng-model="addApplicant_position" type="text" class="validate">
-                            <label for="addApplicant_position">Position</label>
+                            <input id="addEmployee_position" ng-model="addEmployee_position" type="text" class="validate">
+                            <label for="addEmployee_position">Position</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="phone" class="prefix input-icon"></i>
+                            <input id="addEmployee_contact" ng-model="addEmployee_contact" type="text" class="validate">
+                            <label for="addEmployee_contact">Contact Number</label>
                         </div>
                     </div>
                     <div class="row">
@@ -50,10 +57,10 @@
                         </div>
                     </div>
                     <div class="modal-buttons">
-                        <a class="btn-floating btn-large waves-effect waves-light warning-button" ng-click="functions.viewApplicants()">
+                        <a class="btn-floating btn-large waves-effect waves-light warning-button" ng-click="functions.viewEmployees()">
                             <i data-feather="eye" class="center-feather-icon"></i>
                         </a>
-                        <a class="btn-floating btn-large waves-effect waves-light success-button" ng-click="functions.addApplicant()">
+                        <a class="btn-floating btn-large waves-effect waves-light success-button" ng-click="functions.addEmployee()">
                             <i data-feather="user-plus" class="center-feather-icon"></i>
                         </a>
                     </div>

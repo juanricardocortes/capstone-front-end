@@ -1,17 +1,17 @@
-<div ng-controller="multipleAddApplicantCtrl" class="add-applicant-modal-bg">
+<div ng-controller="multipleAddApplicantCtrl" class="modal-background">
     <div class="row">
         <div class="col s3"></div>
         <div class="col s6">
-            <div class="card archive-applicant-modal">
-                <div class="card-content">
-                    <span class="card-title grey-text text-darken-4">{{archiveModalText}}
-                        <i ng-click="hideMultipleAddApplicant()" class="material-icons right add-applicant-modal-close-button">close</i>
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scrol">
+                    <span class="card-title grey-text text-darken-4">{{archiveApplicantModalText}}
+                        <i ng-click="functions.hideMultipleArchiveApplicant()" class="material-icons right cursor-button">close</i>
                     </span>
                     <div class="row">
                         <ul class="collapsible" data-collapsible="accordion">
-                            <li ng-repeat="applicant in multipleArchiveApplicant track by $index" ng-show="multipleArchiveApplicant.length>0 && applicant.isArchived === archiveToggle">
+                            <li ng-repeat="applicant in multipleArchiveApplicant track by $index" ng-show="multipleArchiveApplicant.length>0 && applicant.isArchived === archiveApplicantToggle">
                                 <div class="collapsible-header">
-                                    <i ng-click="removeApplicant(applicant)" class="material-icons">close</i>
+                                    <i ng-click="functions.removeApplicant(applicant)" class="material-icons">close</i>
                                     {{applicant.email}}
                                 </div>
                                 <div class="collapsible-body">
@@ -20,8 +20,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="archive-applicant-modal-button ">
-                        <a class="btn-floating btn-large waves-effect waves-light archive-applicant-button z-depth-5" ng-click="archiveApplicants()">
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large waves-effect waves-light danger-button z-depth-5" ng-click="functions.archiveApplicants()">
                             <i data-feather="archive" class="center-feather-icon"></i>
                         </a>
                     </div>

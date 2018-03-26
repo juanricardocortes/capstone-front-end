@@ -27,7 +27,7 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
     }
 
     function getInitialValues() {
-        $scope.projectsSwitchText = "Archived Projects";
+        $scope.projectsSwitchText = "Active Projects";
         $scope.archiveButtonText = "Archive";
         $scope.projectArchiveToggle = false;
     }
@@ -47,10 +47,10 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
 
     $scope.toggleProjectArchive = function () {
         if ($scope.projectArchiveToggle) {
-            $scope.projectsSwitchText = "Active Projects";
+            $scope.projectsSwitchText = "Archived Projects";
             $scope.archiveButtonText = "Unarchive";
         } else {
-            $scope.projectsSwitchText = "Archived Projects";
+            $scope.projectsSwitchText = "Active Projects";
             $scope.archiveButtonText = "Archive";
         }
     }

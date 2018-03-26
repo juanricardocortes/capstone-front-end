@@ -1,17 +1,17 @@
-<div ng-controller="allAddApplicantsCtrl" class="add-applicant-modal-bg">
+<div ng-show="startJS()" ng-controller="allAddApplicantsCtrl" class="modal-background">
     <div class="row">
         <div class="col s3"></div>
         <div class="col s6">
-            <div class="card add-applicant-modal">
-                <div class="card-content">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
                     <span class="card-title grey-text text-darken-4">All applicants to be added
-                        <i ng-click="hideAllAddApplicantModal()" class="material-icons right add-applicant-modal-close-button">navigate_before</i>
+                        <i ng-click="functions.hideAllAddApplicantModal()" class="material-icons right cursor-button">navigate_before</i>
                     </span>
                     <div class="row">
                         <ul class="collapsible" data-collapsible="accordion">
                             <li ng-show="allApplicantsToBeAdded.length>0" ng-repeat="applicant in allApplicantsToBeAdded track by $index">
                                 <div class="collapsible-header">
-                                    <i ng-click="removeApplicant(applicant)" class="material-icons">close</i>
+                                    <i ng-click="functions.removeApplicant(applicant)" class="material-icons">close</i>
                                     {{applicant.email}}
                                 </div>
                                 <div class="collapsible-body">
@@ -20,9 +20,9 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="add-applicant-modal-buttons">
-                        <a class="btn-floating btn-large waves-effect waves-light default-button-color" ng-click="addApplicants()">
-                            <i class="material-icons">add</i>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large waves-effect waves-light success-button" ng-click="functions.addApplicants()">
+                            <i data-feather="user-plus" class="center-feather-icon"></i>
                         </a>
                     </div>
                 </div>

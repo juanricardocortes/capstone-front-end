@@ -63,6 +63,8 @@ angular.module("app", ["ngRoute", "blockUI"])
                     if (user) {
                         functions.applicantListeners();
                         functions.projectListeners();
+                        functions.employeeListeners();
+                        functions.leavesListeners();
                     } else {
                         // No user is signed in.
                     }
@@ -148,7 +150,48 @@ angular.module("app", ["ngRoute", "blockUI"])
                 });
             },
             leavesListeners: function () {},
-            employeeListeners: function () {},
+            employeeListeners: function () {
+                $rootScope.empNotifCounter = 0;
+                $rootScope.employeeNotifications = [];
+                $rootScope.allEmployees = [];
+
+                firebase.database().ref("HRMS_Storage/Notifications/Employees/").on("child_added", function (snapshot) {
+                    if (!(snapshot.val().seen)) {
+                        $rootScope.empNotifCounter++;
+                    }
+                    $rootScope.unseenNotifications["employees"] = $rootScope.empNotifCounter;
+                    $rootScope.employeeNotifications.push(snapshot.val());
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
+                    $rootScope.allEmployees.push(snapshot.val());
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
+                    $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(snapshot.val()), 1);
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
+                    for (var index = 0; index < $rootScope.allEmployees.length; index++) {
+                        if ($rootScope.allEmployees[index].userkey === snapshot.val().userkey) {
+                            $rootScope.allEmployees[index] = snapshot.val();
+                            try {
+                                if ($rootScope.selectedEmployee.userkey === snapshot.val().userkey) {
+                                    $rootScope.selectedEmployee = snapshot.val();
+                                    localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
+                                }
+                            } catch (err) {
+                                console.log("No selected employee");
+                            }
+                            break;
+                        }
+                    }
+                    functions.refresh();
+                });
+            },
             refresh: function () {
                 setTimeout(function () {
                     $scope.$apply();

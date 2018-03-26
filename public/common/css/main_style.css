@@ -123,3 +123,145 @@ td {
 .item-title {
     font-weight: 600;
 }
+
+/* Button Colors */
+
+.success-button {
+    background-color: #03e54d !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+.success-button:hover {
+    background-color: #0bef51 !important;
+}
+
+.warning-button {
+    background-color: #f7d74f !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+.warning-button:hover {
+    background-color: #efc30b !important;
+}
+
+.danger-button {
+    background-color: #f74f6f !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+.danger-button:hover {
+    background-color: #ef0b36 !important;
+}
+
+.info-button {
+    background-color: #4fc3f7 !important;
+    z-index: 0 !important;
+    font-size: 14px !important;
+}
+
+.info-button:hover {
+    background-color: #0ba8ef !important;
+}
+
+/* Main divisions per page */
+
+.top-section {
+    position: relative;
+    height: 10% !important;
+    width: 100%;
+}
+
+.middle-section {
+    position: relative;
+    height: 70%;
+    width: 100%;
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+
+.bottom-section {
+    position: relative;
+    height: auto;
+    width: 100%;
+}
+
+.crud-buttons {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+}
+
+.whole-page {
+    float: left;
+    height: 87% !important;
+    width: 100%;
+}
+
+.scrollable-content {
+    position: absolute !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.modal-background {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.modal-size {
+    position: relative;
+    height: 95% !important;
+}
+
+.modal-buttons {
+    position: relative;
+    /* bottom: 2%; */
+    /* right: 5%; */
+    float: right;
+}
+
+.table-switch {
+    float: right;
+    margin-top: 2%;
+}
+
+.table-filter {
+    float: left;
+    width: 40% !important;
+    margin-left: 2%;
+    position: relative;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #039be5;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #84c7c1;
+}
+
+.fit-table-column {
+    width: 1%;
+    cursor: pointer;
+    white-space:nowrap;
+}   
+
+.checkbox-table-column {
+    width: 1%;
+}
+
+.input-icon {
+    margin-top: 3% !important;
+}
+
+.cursor-button {
+    cursor: pointer !important;
+}

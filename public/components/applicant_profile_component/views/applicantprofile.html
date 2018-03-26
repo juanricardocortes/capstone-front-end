@@ -41,6 +41,7 @@
                             <li class="collection-item item-title">Reference Number</li>
                             <li class="collection-item item-title">Status</li>
                             <li class="collection-item item-title">Position</li>
+                            <li class="collection-item item-title">Contact Number</li>
                         </ul>
                     </div>
                     <div class="applicant-content-data">
@@ -53,6 +54,7 @@
                             <li class="collection-item item-clickable" ng-click="displayInformation('Reference Number', selectedApplicant.referenceNumber)">{{selectedApplicant.referenceNumber}}</li>
                             <li class="collection-item item-clickable" ng-click="displayInformation('Status', selectedApplicant.completion + '%')">{{selectedApplicant.completion}}%</li>
                             <li class="collection-item item-clickable" ng-click="displayInformation('Position', 'selectedApplicant.position')">selectedApplicant.position</li>
+                            <li class="collection-item item-clickable" ng-click="displayInformation('Contact Number', 'selectedApplicant.contactNumber')">selectedApplicant.contactNumber</li>
                         </ul>
                     </div>
                 </div>

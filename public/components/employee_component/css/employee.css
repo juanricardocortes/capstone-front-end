@@ -1,12 +1,12 @@
-.applicant-table-table {
+.employee-table-table {
     font-size: 12px !important;
 }
 
-.applicant-table-row {
+.employee-table-row {
     cursor: pointer !important;
     font-weight: 400;
 }
 
-.applicant-table-row:hover {
+.employee-table-row:hover {
     background-color: rgba(211, 211, 211, 0.6);
 }
