@@ -33,7 +33,7 @@ angular.module("app").controller("employeeCtrl", function ($scope, $rootScope, $
             $rootScope.profileactive = false;
         },
         getInitialValues: function () {
-            $scope.employeeTableSorter = "userkey";
+            $scope.employeeTableSorter = null;
             $rootScope.multipleArchiveEmployee = [];
             $rootScope.archiveEmployeeToggle = false;
             $rootScope.currentPage = "Weltanchaung > Employees"

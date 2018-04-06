@@ -3,8 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> -->
+
+    <!-- <link rel="stylesheet" href="common/css/material.min.css"> -->
+
     <link rel="stylesheet" href="node_modules/materialize-css/dist/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.css" />
@@ -22,7 +26,11 @@
 
     <link rel="stylesheet" href="components/employee_component/css/employee.css">
 
+    <link rel="stylesheet" href="components/employee_profile_component/css/employeeprofile.css">
+
     <link rel="stylesheet" href="components/projects_component/css/projects.css">
+
+    <link rel="stylesheet" href="components/project_profile_component/css/projectprofile.css">
 
     <link rel="stylesheet" href="components/leaves_component/css/leaves.css">
     <link rel="stylesheet" href="common/css/loader.css">
@@ -50,9 +58,10 @@
 
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="common/js/firebaseInit/firebaseInit.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    
     <script src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
 
     <script src="node_modules/angular/angular.min.js"></script>
@@ -82,6 +91,8 @@
     <script src="components/employee_component/js/allAddEmployeesController.js"></script>
     <script src="components/employee_component/js/multipleArchiveEmployeeController.js"></script>
     
+    <script src="components/employee_profile_component/js/employeeProfileController.js"></script>
+    
     <script src="components/login_component/js/loginController.js"></script>
     <script src="components/main_component/js/mainpageController.js"></script>
 
@@ -93,6 +104,13 @@
     <script src="components/profile_component/js/profileController.js"></script>
 
     <script src="components/projects_component/js/projectsController.js"></script>
+    <script src="components/projects_component/js/addProjectModalController.js"></script>
+
+    <script src="components/project_profile_component/js/projectProfileController.js"></script>
+    <script src="components/project_profile_component/js/addSlotModalController.js"></script>
+    <script src="components/project_profile_component/js/addShiftModalController.js"></script>
+    <script src="components/project_profile_component/js/addPLModalController.js"></script>
+    <script src="components/project_profile_component/js/addEmployeeModalController.js"></script>
 </body>
 
 </html>

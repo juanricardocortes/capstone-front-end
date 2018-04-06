@@ -1,47 +1,56 @@
 <div ng-show="startJS()">
-    <div class="projects-page">
-        <div class="projects-panel-filter-container">
-            <div class="projects-panel-filter-search">
+    <div class="whole-page">
+        <div class="top-section">
+            <div class="table-filter">
                 <div class="input-field">
                     <i data-feather="search" class="prefix"></i>
                     <input id="projectsFilter" ng-model="projectsFilter" type="text" class="validate z-depth-5">
                     <label for="projectsFilter">Search</label>
                 </div>
             </div>
-            <div class="projects-panel-filter-switch">
+            <div class="table-switch">
                 <div class="switch graytext">
                     <i>{{projectsSwitchText}}</i>
                     <label>
-                        <input type="checkbox" ng-model="projectArchiveToggle" ng-change="toggleProjectArchive()">
+                        <input type="checkbox" ng-model="projectArchiveToggle" ng-change="functions.toggleProjectArchive()">
                         <span class="lever"></span>
                     </label>
                 </div>
             </div>
         </div>
-        <div class="projects-panel-display-container">
-            <div class="projects-panel-display-content scroll">
-                <div ng-repeat="project in allProjects" class="projects-panel-display-projects z-depth-5" ng-show="(project.isArchived === projectArchiveToggle)">
-                    <div class="projects-panel-display-projects-information">
-                        <div class="project-name">
+        <div class="middle-section">
+            <div class="scrollable-content scroll">
+                <div ng-repeat="project in allProjects | filter:projectsFilter" class="projects-card z-depth-3" ng-show="(project.isArchived === projectArchiveToggle)">
+                    <div class="projects-card-information">
+                        <div ng-click="functions.gotoProjectProfile(project)" class="project-name">
                             <h4>{{project.name}}</h4>
                         </div>
                     </div>
-                    <div class="projects-panel-display-projects-buttons">
-                        <a ng-click="archiveProject()" class="btn-floating btn-large waves-effect waves-light archive-project-button z-depth-5 tooltipped"
+                    <div class="projects-card-buttons">
+                        <a ng-show="!projectArchiveToggle" ng-click="functions.archiveProject(project)" class="btn-floating btn-large danger-button z-depth-3 tooltipped"
                             data-position="top" data-tooltip="{{archiveButtonText}} {{project.name}}">
                             <i data-feather="archive" class="center-feather-icon"></i>
+                        </a>
+                        <a ng-show="projectArchiveToggle" ng-click="functions.archiveProject(project)" class="btn-floating btn-large danger-button z-depth-3 tooltipped"
+                            data-position="top" data-tooltip="{{archiveButtonText}} {{project.name}}">
+                            <i data-feather="rotate-ccw" class="center-feather-icon"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="projects-panel-modifiers-container">
-            <div class="projects-panel-modifiers-buttons">
-                <a ng-click="showAddApplicantModal()" class="btn-floating btn-large waves-effect waves-light add-project-button z-depth-5 tooltipped"
+        <div class="bottom-section">
+            <div class="crud-buttons">
+                <a ng-click="functions.showAddProjectModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add project">
                     <i data-feather="plus" class="center-feather-icon"></i>
                 </a>
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-show="showAddProject">
+    <ng-include src="'./components/projects_component/views/addprojectmodal.html'">
+    </ng-include>
 </div>

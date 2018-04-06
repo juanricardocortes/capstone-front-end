@@ -20,7 +20,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             });
         },
         onCreate: function () {
-            functions.jsInitialize();
+            // functions.jsInitialize();
             functions.getInitialValues();
             functions.getActiveSideBarLink();
             functions.createCalendar();
@@ -39,11 +39,11 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 }
             }
         },
-        jsInitialize: function () {
-            $('.datepicker').datepicker();
-            $('.tooltipped').tooltip();
-            $('.fixed-action-btn').floatingActionButton();
-        },
+        // jsInitialize: function () {
+        //     $('.datepicker').datepicker();
+        //     $('.tooltipped').tooltip();
+        //     $('.fixed-action-btn').floatingActionButton();
+        // },
         getInitialValues: function () {
             $rootScope.calendarAttributes = {};
         },

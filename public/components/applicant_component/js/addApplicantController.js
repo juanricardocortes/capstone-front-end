@@ -32,6 +32,8 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
                 lastname: $scope.addApplicant_lastname,
                 email: $scope.addApplicant_email,
                 position: $scope.addApplicant_position,
+                contact: $scope.addApplicant_contact,
+                address: $scope.addApplicant_address,
                 userkey: newUserKey,
                 applicantImageFile: $scope.selectedFile,
                 storageRef: storageRef
@@ -44,6 +46,12 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             $("#addApplicant_lastname").blur();
             $("#addApplicant_email").val(undefined);
             $("#addApplicant_email").blur();
+            $("#addApplicant_position").val(undefined);
+            $("#addApplicant_position").blur();
+            $("#addApplicant_contact").val(undefined);
+            $("#addApplicant_contact").blur();
+            $("#addApplicant_address").val(undefined);
+            $("#addApplicant_address").blur();
             $("#file").val(undefined);
             $("#file").blur();
             $("#filename").val(undefined);

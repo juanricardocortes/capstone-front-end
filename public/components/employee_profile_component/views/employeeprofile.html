@@ -1,0 +1,46 @@
+<div class="profile-container">
+    <div class="employee-picture-container z-depth-5">
+        <img class="employee-picture-specs" src="{{selectedEmployee.files.image}}">
+    </div>
+    <div class="employee-profile-space"></div>
+    <div class="employee-details-container z-depth-5 scroll">
+        <div class="employee-information">
+            <h4>Personal Information</h4>
+            <div class="employee-information-content">
+                <div class="employee-content-titles">
+                    <ul class="collection">
+                        <li class="collection-item item-title">Email</li>
+                        <li class="collection-item item-title">First Name</li>
+                        <li class="collection-item item-title">Last Name</li>
+                        <li class="collection-item item-title">Address</li>
+                        <li class="collection-item item-title">Contact Number</li>
+                    </ul>
+                </div>
+                <div class="employee-content-data">
+                    <ul class="collection">
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', selectedEmployee.email)">{{selectedEmployee.email}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', selectedEmployee.files.firstname)">{{selectedEmployee.files.firstname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', selectedEmployee.files.lastname)">{{selectedEmployee.files.lastname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', selectedEmployee.files.address)">{{selectedEmployee.files.address}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', selectedEmployee.files.contact)">{{selectedEmployee.files.contact}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="employee-projects">
+            <h4>Projects</h4>
+            <div class="employee-information-content">
+                <!-- <div class="employee-content-titles">
+                    <ul class="collection">
+                        <li ng-repeat="(key, value) in selectedEmployee.requirements track by $index" class="collection-item item-title">{{value.name}}</li>
+                    </ul>
+                </div>
+                <div class="employee-content-data">
+                    <ul class="collection">
+                        <li ng-repeat="(key, value) in selectedEmployee.requirements track by $index" ng-click="toggleRequirement(key, value)" class="collection-item item-clickable">{{value.status}}</li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

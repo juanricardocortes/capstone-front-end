@@ -1,33 +1,44 @@
 <div ng-show="startJS()" ng-controller="allAddEmployeesCtrl" class="modal-background">
-        <div class="row">
-            <div class="col s3"></div>
-            <div class="col s6">
-                <div class="card modal-size">
-                    <div class="card-content scrollable-content scroll">
-                        <span class="card-title grey-text text-darken-4">All employees to be added
-                            <i ng-click="functions.hideAllAddEmployeeModal()" class="material-icons right cursor-button">navigate_before</i>
-                        </span>
-                        <div class="row">
-                            <ul class="collapsible" data-collapsible="accordion">
-                                <li ng-show="allEmployeesToBeAdded.length>0" ng-repeat="employee in allEmployeesToBeAdded track by $index">
-                                    <div class="collapsible-header">
-                                        <i ng-click="functions.removeEmployee(employee)" class="material-icons">close</i>
-                                        {{employee.email}}
-                                    </div>
-                                    <div class="collapsible-body">
-                                        <span>{{employee.list.lastname}}, {{employee.list.firstname}}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="modal-buttons">
-                            <a class="btn-floating btn-large waves-effect waves-light success-button" ng-click="functions.addEmployees()">
-                                <i data-feather="user-plus" class="center-feather-icon"></i>
-                            </a>
-                        </div>
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">All employees to be added
+                        <i ng-click="functions.hideAllAddEmployeeModal()" class="material-icons right cursor-button">navigate_before</i>
+                    </span>
+                    <div class="row">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li ng-show="allEmployeesToBeAdded.length>0" ng-repeat="employee in allEmployeesToBeAdded track by $index">
+                                <div class="collapsible-header">
+                                    <i ng-click="functions.removeEmployee(employee)" class="material-icons">close</i>
+                                    {{employee.email}}
+                                </div>
+                                <div class="collapsible-body">
+                                    <p>
+                                        <span>Name: {{employee.lastname}}, {{employee.firstname}}</span>
+                                    </p>
+                                    <p>
+                                        <span>Address: {{employee.address}}</span>
+                                    </p>
+                                    <p>
+                                        <span>Contact Number: {{employee.contact}}</span>
+                                    </p>
+                                    <p>
+                                        <span>Position: {{employee.position}}</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large success-button" ng-click="functions.addEmployees()">
+                            <i data-feather="user-plus" class="center-feather-icon"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="col s3"></div>
         </div>
+        <div class="col s3"></div>
     </div>
+</div>

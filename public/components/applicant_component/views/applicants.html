@@ -101,11 +101,11 @@
         </div>
         <div class="bottom-section">
             <div class="crud-buttons">
-                <a ng-click="functions.showAddApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light success-button z-depth-5 tooltipped"
+                <a ng-click="functions.showAddApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large success-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add applicant?">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showArchiveApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large waves-effect waves-light danger-button z-depth-5 tooltipped"
+                <a ng-click="functions.showArchiveApplicantModal()" ng-show="!(showHired)" class="btn-floating btn-large danger-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="{{archiveApplicantText}} selected applicants?">
                     <div ng-show="!archiveApplicantToggle" class="center-feather-icon">
                         <i data-feather="archive"></i>
@@ -114,7 +114,7 @@
                         <i data-feather="rotate-ccw"></i>
                     </div>
                 </a>
-                <a ng-click="functions.showHiredApplicants()" class="btn-floating btn-large waves-effect waves-light warning-button z-depth-5 tooltipped"
+                <a ng-click="functions.showHiredApplicants()" class="btn-floating btn-large warning-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="{{showhide}} hired applicants">
                     <div ng-show="!(showHired)" class="center-feather-icon">
                         <i data-feather="eye"></i>

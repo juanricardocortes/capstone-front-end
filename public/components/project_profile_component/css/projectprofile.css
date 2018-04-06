@@ -1,0 +1,39 @@
+.project-information {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    padding: 1.5%;
+}
+
+.member-title {
+    position: relative;
+    float: left;
+    width: 20%;
+    height: auto;
+}
+
+.member-holder {
+    position: relative;
+    float: left;
+    width: 60%;
+    height: auto;
+}
+
+.member-schedule {
+    position: relative;
+    float: left;
+    width: 20%;
+    height: auto;
+}
+
+.project-section {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+
+.vacant-slot {
+    cursor: pointer;
+}

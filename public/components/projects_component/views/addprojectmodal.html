@@ -1,0 +1,42 @@
+<div ng-show="startJS() && functions.startLocalJS()" ng-controller="addProjectCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Add project
+                        <i ng-click="functions.hideAddProjectModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="package" class="prefix input-icon"></i>
+                            <input id="addProject_name" ng-model="addProject_name" type="text" class="validate">
+                            <label for="addProject_name">Project name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="addProject_startDate" ng-model="addProject_startDate" type="text" class="datepicker">
+                            <label for="addProject_startDate">Start date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="addProject_endDate" ng-model="addProject_endDate" type="text" class="datepicker">
+                            <label for="addProject_endDate">End date</label>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large success-button" ng-click="functions.addProject()">
+                            <i data-feather="plus" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

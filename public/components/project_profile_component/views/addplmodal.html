@@ -1,0 +1,47 @@
+<div ng-show="startJS()" ng-controller="addPLModalCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Add project lead
+                        <i ng-click="functions.hideAddPLModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="search" class="prefix input-icon"></i>
+                            <input id="addPL_employee" ng-model="addPL_employee" type="text" class="validate">
+                            <label for="addPL_employee">Search</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="collapsible">
+                            <li ng-repeat="employee in allEmployees | filter:addPL_employee">
+                                <div class="collapsible-header">
+                                    {{employee.email}}
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <p>{{employee.files.lastname}}, {{employee.files.firstname}}</p>
+                                        <p ng-if="employee.files.projects">
+                                            <b>Projects</b>
+                                        </p>
+                                        <p ng-if="!employee.files.projects" class="graytext">
+                                            <i>No projects yet.</i>
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <a class="btn-small" ng-click="functions.makeProjectLead(employee)">
+                                            <i class="material-icons left">add</i>Make project lead</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

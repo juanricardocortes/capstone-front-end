@@ -15,9 +15,17 @@ angular.module("app", ["ngRoute", "blockUI"])
                 templateUrl: "components/employee_component/views/employee.html",
                 controller: "employeeCtrl"
             })
+            .when("/employees/profile", {
+                templateUrl: "components/employee_profile_component/views/employeeprofile.html",
+                controller: "employeeProfileCtrl"
+            })
             .when("/projects", {
                 templateUrl: "components/projects_component/views/projects.html",
                 controller: "projectCtrl"
+            })
+            .when("/projects/profile", {
+                templateUrl: "components/project_profile_component/views/projectprofile.html",
+                controller: "projectProfileCtrl"
             })
             .when("/applicants", {
                 templateUrl: "components/applicant_component/views/applicants.html",
@@ -126,7 +134,7 @@ angular.module("app", ["ngRoute", "blockUI"])
                     }
                     $rootScope.unseenNotifications["projects"] = $rootScope.projectNotifCounter;
                     $rootScope.projectNotifications.push(snapshot.val());
-                    functions.refresh
+                    functions.refresh();
                 });
 
                 firebase.database().ref("HRMS_Storage/Projects/").on("child_added", function (snapshot) {
@@ -143,6 +151,14 @@ angular.module("app", ["ngRoute", "blockUI"])
                     for (var index = 0; index < $rootScope.allProjects.length; index++) {
                         if ($rootScope.allProjects[index].projectkey === snapshot.val().projectkey) {
                             $rootScope.allProjects[index] = snapshot.val();
+                            try {
+                                if ($rootScope.selectedProject.projectkey === snapshot.val().projectkey) {
+                                    $rootScope.selectedProject = snapshot.val();
+                                    localStorage.setItem("selectedProject", JSON.stringify($rootScope.selectedProject));
+                                }
+                            } catch (err) {
+                                console.log("No selected project");
+                            }
                             break;
                         }
                     }
@@ -206,8 +222,14 @@ angular.module("app", ["ngRoute", "blockUI"])
 
         $rootScope.startJS = function () {
             feather.replace();
-            $('.collapsible').collapsible();
-            $('.tooltipped').tooltip();
+            $(function () {
+                $('.tooltipped').tooltip();
+                $('.collapsible').collapsible();
+                $('.timepicker').timepicker();
+                $('.select').formSelect();
+                $('.fixed-action-btn').floatingActionButton();
+            });
             return true;
+
         }
     });

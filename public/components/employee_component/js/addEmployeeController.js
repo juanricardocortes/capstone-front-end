@@ -26,13 +26,14 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
         },
         confirmAddEmployee: function () {
             var storageRef = "/images/employeeImages/" + $scope.addEmployee_email + "_" + $scope.addEmployee_lastname + ", " + $scope.addEmployee_firstname;
-            var newUserKey = firebase.database().ref().push().key;
+            var newUserKey = firebase.database().ref("HRMS_Storage/Employees/").push().key;
             $rootScope.allEmployeesToBeAdded.push({
                 firstname: $scope.addEmployee_firstname,
                 lastname: $scope.addEmployee_lastname,
                 email: $scope.addEmployee_email,
                 position: $scope.addEmployee_position,
                 contact: $scope.addEmployee_contact,
+                address: $scope.addEmployee_address,
                 userkey: newUserKey,
                 image: "",
                 employeeImageFile: $scope.selectedFile,
@@ -54,6 +55,8 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
             $("#addEmployee_position").blur();
             $("#addEmployee_contact").val(undefined);
             $("#addEmployee_contact").blur();
+            $("#addEmployee_address").val(undefined);
+            $("#addEmployee_address").blur();
         }
     }
 

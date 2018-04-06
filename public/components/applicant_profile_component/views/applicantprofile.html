@@ -1,77 +1,51 @@
-<div class="row">
-    <!-- <div class="col s8">
-        <div ng-show="informationActive" class="row">
-            <ng-include src="'./components/applicant_component/views/profile/applicantinformation.html'">
-            </ng-include>
-        </div>
-        <div ng-show="requirementsActive" class="row">
-            <ng-include src="'./components/applicant_component/views/profile/applicantrequirements.html'">
-            </ng-include>
-        </div>
+<div class="profile-container">
+    <div class="applicant-picture-container z-depth-5">
+        <img class="applicant-picture-specs" src="common/images/sampleimage.jpeg">
     </div>
-    <div class="col s4">
-        <div class="row profile-picture-container">
-            <div class="profile-picture">
-                <img ng-src="{{selectedApplicant.image}}" alt="Image being uploaded">
-            </div>
-        </div>
-        <div class="row profile-navigation">
-            <h5 ng-if="informationActive" ng-click="toggleInfo()" class="profile-navigation-link-active">Information</h5>
-            <h5 ng-if="!informationActive" ng-click="toggleInfo()" class="profile-navigation-link">Information</h5>
-            <h5 ng-if="requirementsActive" ng-click="toggleReqs()" class="profile-navigation-link-active">Requirements</h5>
-            <h5 ng-if="!requirementsActive" ng-click="toggleReqs()" class="profile-navigation-link">Requirements</h5>
-        </div>
-    </div> -->
-
-    <div class="profile-container">
-        <div class="applicant-picture-container z-depth-5">
-            <img class="applicant-picture-specs" src="common/images/sampleimage.jpeg">
-        </div>
-        <div class="applicant-profile-space"></div>
-        <div class="applicant-details-container z-depth-5 scroll">
-            <div class="applicant-information">
-                <h4>Personal Information</h4>
-                <div class="applicant-information-content">
-                    <div class="applicant-content-titles">
-                        <ul class="collection">
-                            <li class="collection-item item-title">Email</li>
-                            <li class="collection-item item-title">First Name</li>
-                            <li class="collection-item item-title">Last Name</li>
-                            <li class="collection-item item-title">Address</li>
-                            <li class="collection-item item-title">Reference Number</li>
-                            <li class="collection-item item-title">Status</li>
-                            <li class="collection-item item-title">Position</li>
-                            <li class="collection-item item-title">Contact Number</li>
-                        </ul>
-                    </div>
-                    <div class="applicant-content-data">
-                        <ul class="collection">
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Email', selectedApplicant.email)">{{selectedApplicant.email}}</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('First Name', selectedApplicant.firstname)">{{selectedApplicant.firstname}}</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Last Name', selectedApplicant.lastname)">{{selectedApplicant.lastname}}</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Address', 'Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum, brute velit definitiones ei vel. Detracto voluptatibus id sed.')">Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum,
-                                brute velit definitiones ei vel. Detracto voluptatibus id sed.</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Reference Number', selectedApplicant.referenceNumber)">{{selectedApplicant.referenceNumber}}</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Status', selectedApplicant.completion + '%')">{{selectedApplicant.completion}}%</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Position', 'selectedApplicant.position')">selectedApplicant.position</li>
-                            <li class="collection-item item-clickable" ng-click="displayInformation('Contact Number', 'selectedApplicant.contactNumber')">selectedApplicant.contactNumber</li>
-                        </ul>
-                    </div>
+    <div class="applicant-profile-space"></div>
+    <div class="applicant-details-container z-depth-5 scroll">
+        <div class="applicant-information">
+            <h4>Personal Information</h4>
+            <div class="applicant-information-content">
+                <div class="applicant-content-titles">
+                    <ul class="collection">
+                        <li class="collection-item item-title">Email</li>
+                        <li class="collection-item item-title">First Name</li>
+                        <li class="collection-item item-title">Last Name</li>
+                        <li class="collection-item item-title">Address</li>
+                        <li class="collection-item item-title">Reference Number</li>
+                        <li class="collection-item item-title">Status</li>
+                        <li class="collection-item item-title">Position</li>
+                        <li class="collection-item item-title">Contact Number</li>
+                    </ul>
+                </div>
+                <div class="applicant-content-data">
+                    <ul class="collection">
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', selectedApplicant.email)">{{selectedApplicant.email}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', selectedApplicant.firstname)">{{selectedApplicant.firstname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', selectedApplicant.lastname)">{{selectedApplicant.lastname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', 'Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum, brute velit definitiones ei vel. Detracto voluptatibus id sed.')">Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum, brute
+                            velit definitiones ei vel. Detracto voluptatibus id sed.</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Reference Number', selectedApplicant.referenceNumber)">{{selectedApplicant.referenceNumber}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Status', selectedApplicant.completion + '%')">{{selectedApplicant.completion}}%</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Position', 'selectedApplicant.position')">selectedApplicant.position</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', 'selectedApplicant.contactNumber')">selectedApplicant.contactNumber</li>
+                    </ul>
                 </div>
             </div>
-            <div class="applicant-requirements">
-                <h4>Requirements</h4>
-                <div class="applicant-information-content">
-                    <div class="applicant-content-titles">
-                        <ul class="collection">
-                            <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" class="collection-item item-title">{{value.name}}</li>
-                        </ul>
-                    </div>
-                    <div class="applicant-content-data">
-                        <ul class="collection">
-                            <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" ng-click="toggleRequirement(key, value)" class="collection-item item-clickable">{{value.status}}</li>
-                        </ul>
-                    </div>
+        </div>
+        <div class="applicant-requirements">
+            <h4>Requirements</h4>
+            <div class="applicant-information-content">
+                <div class="applicant-content-titles">
+                    <ul class="collection">
+                        <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" class="collection-item item-title">{{value.name}}</li>
+                    </ul>
+                </div>
+                <div class="applicant-content-data">
+                    <ul class="collection">
+                        <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" ng-click="functions.toggleRequirement(key, value)" class="collection-item item-clickable">{{value.status}}</li>
+                    </ul>
                 </div>
             </div>
         </div>

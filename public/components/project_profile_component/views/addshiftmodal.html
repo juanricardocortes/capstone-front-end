@@ -1,0 +1,35 @@
+<div ng-show="startJS()" ng-controller="addShiftModalCtrl" class="modal-background">
+        <div class="row">
+            <div class="col s3"></div>
+            <div class="col s6">
+                <div class="card modal-size">
+                    <div class="card-content scrollable-content scroll">
+                        <span class="card-title grey-text text-darken-4">Add Shift
+                            <i ng-click="functions.hideAddShiftModal()" class="material-icons right cursor-button">close</i>
+                        </span>
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i data-feather="calendar" class="prefix input-icon"></i>
+                                <input id="addShift_startTime" ng-model="addShift_startTime" type="text" class="validate timepicker">
+                                <label for="addShift_startTime">Start time</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i data-feather="calendar" class="prefix input-icon"></i>
+                                <input id="addShift_endTime" ng-model="addShift_endTime" type="text" class="validate timepicker">
+                                <label for="addShift_endTime">End time</label>
+                            </div>
+                        </div>
+                        <div class="modal-buttons">
+                            <a class="btn-floating btn-large success-button" ng-click="functions.addShift()">
+                                <i data-feather="plus" class="center-feather-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s3"></div>
+        </div>
+    </div>

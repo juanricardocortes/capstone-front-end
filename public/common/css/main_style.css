@@ -113,7 +113,7 @@ td {
 }
 
 .graytext {
-    color: #a9a9a9;
+    color: #a9a9a9 !important;
 }
 
 .item-clickable {
@@ -184,8 +184,8 @@ td {
 
 .bottom-section {
     position: relative;
-    height: auto;
     width: 100%;
+    height: 20%;
 }
 
 .crud-buttons {
@@ -223,8 +223,6 @@ td {
 
 .modal-buttons {
     position: relative;
-    /* bottom: 2%; */
-    /* right: 5%; */
     float: right;
 }
 
@@ -259,7 +257,7 @@ td {
 }
 
 .input-icon {
-    margin-top: 3% !important;
+    margin-top: 1.5% !important;
 }
 
 .cursor-button {

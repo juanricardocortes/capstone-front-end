@@ -1,69 +1,25 @@
-.projects-page {
-    float: left;
-    height: 87% !important;
-    width: 100%;
-}
-
-.projects-panel-filter-container {
-    position: relative;
-    height: 10%;
-    width: 100%;
-}
-
-.projects-panel-display-container {
-    position: relative;
-    height: 70%;
-    width: 100%;
-    margin-top: 2%;
-    margin-bottom: 1.5%;
-}
-
-.projects-panel-modifiers-container {
-    position: relative;
-    height: 20%;
-    width: 100%;
-}
-
-.projects-panel-filter-search {
-    float: left;
-    height: 100%;
-    width: 40% !important;
-    margin-left: 1.5%;
-}
-
-.projects-panel-filter-switch {
-    float: right;
-    margin-top: 2%;
-}
-
-.projects-panel-display-content {
-    position: absolute;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-}
-
-.projects-panel-display-projects {
+.projects-card {
     float: left;
     position: relative;
     margin: 1.66%;
     width: 30%;
-    height: 50%;
+    height: 30%;
     padding: 1%;
 }
 
-.projects-panel-display-projects-buttons {
+.projects-card-buttons {
     position: absolute;
     right: 5%;
-    bottom: -13%;
+    bottom: -25%;
 }
 
-.projects-panel-display-projects-information {
-    height: 50%;
+.projects-card-information {
+    height: 100%;
     width: 100%;
 }
 
-.projects-panel-display-projects-information>.project-name {
+.projects-card-information>.project-name {
+    cursor: pointer;
     height: 100%;
     width: 100%;
     text-align: center;
@@ -71,31 +27,4 @@
     text-overflow: ellipsis !important;
     display: block;
     overflow: hidden
-}
-
-.projects-panel-modifiers-buttons {
-    position: fixed;
-    right: 5%;
-    bottom: 5%;
-}
-
-.archive-project-button {
-    /* background-color: #e5032a !important; */
-    background-color: #f74f6f !important;
-    z-index: 0 !important;
-    font-size: 14px !important;
-}
-
-.archive-project-button:hover {
-    background-color: #ef0b36 !important;
-}
-
-.add-project-button {
-    background-color: #03e54d !important;
-    z-index: 0 !important;
-    font-size: 14px !important;
-}
-
-.add-project-button:hover {
-    background-color: #0bef51 !important;
 }
