@@ -75,7 +75,7 @@ angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootS
         },
         removeEmployee: function (employee) {
             setTimeout(function () {
-                $rootScope.allEmployeesToBeAdded.splice($rootScope.allEmployeesToBeAdded.indexOf(employee, 1));
+                $rootScope.allEmployeesToBeAdded.splice($rootScope.allEmployeesToBeAdded.indexOf(employee), 1);
                 $scope.$apply();
             });
         }

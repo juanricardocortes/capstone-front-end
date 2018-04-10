@@ -8,8 +8,8 @@
                         <i ng-click="functions.hideAllAddApplicantModal()" class="material-icons right cursor-button">navigate_before</i>
                     </span>
                     <div class="row">
-                        <ul class="collapsible" data-collapsible="accordion">
-                            <li ng-show="allApplicantsToBeAdded.length>0" ng-repeat="applicant in allApplicantsToBeAdded track by $index">
+                        <ul ng-show="allApplicantsToBeAdded.length>0" class="collapsible" data-collapsible="accordion">
+                            <li ng-repeat="applicant in allApplicantsToBeAdded track by $index">
                                 <div class="collapsible-header">
                                     <i ng-click="functions.removeApplicant(applicant)" class="material-icons">close</i>
                                     {{applicant.email}}

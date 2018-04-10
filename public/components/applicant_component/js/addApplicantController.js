@@ -34,6 +34,7 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
                 position: $scope.addApplicant_position,
                 contact: $scope.addApplicant_contact,
                 address: $scope.addApplicant_address,
+                birthdate: $scope.addApplicant_birthdate,
                 userkey: newUserKey,
                 applicantImageFile: $scope.selectedFile,
                 storageRef: storageRef
@@ -52,6 +53,8 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
             $("#addApplicant_contact").blur();
             $("#addApplicant_address").val(undefined);
             $("#addApplicant_address").blur();
+            $("#addApplicant_birthdate").val(undefined);
+            $("#addApplicant_birthdate").blur();
             $("#file").val(undefined);
             $("#file").blur();
             $("#filename").val(undefined);
@@ -62,6 +65,15 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
     functions.initialize();
 
     $scope.functions = {
+        startLocalJS: function () {
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 99,
+                max: moment().year(moment().year() - 18).toDate(),
+                closeOnSelect: true
+            });
+            return true;
+        },
         hideAddApplicantModal: function () {
             $rootScope.showAddApplicant = false;
         },
@@ -71,14 +83,15 @@ angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScop
         },
         addApplicant: function () {
             var errors = 0;
-            if ($scope.addApplicant_firstname === undefined) {
+            if ($scope.addApplicant_firstname === undefined ||
+                $scope.addApplicant_lastname === undefined ||
+                $scope.addApplicant_email === undefined ||
+                $scope.filename === undefined ||
+                $scope.addApplicant_position === undefined ||
+                $scope.addApplicant_contact === undefined ||
+                $scope.addApplicant_address === undefined ||
+                $scope.addApplicant_birthdate === undefined) {
                 errors = 1;
-            }
-            if ($scope.addApplicant_lastname === undefined) {
-                errors = 2;
-            }
-            if ($scope.addApplicant_email === undefined) {
-                errors = 3;
             }
             if (errors === 0) {
                 if (functions.checkEmail($scope.addApplicant_email, $rootScope.allApplicantsToBeAdded)) {

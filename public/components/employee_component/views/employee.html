@@ -64,13 +64,13 @@
                             <td ng-click="functions.gotoEmployeeProfile(employee)">{{employee.files.firstname}}</td>
                             <td ng-click="functions.gotoEmployeeProfile(employee)">{{employee.files.contact}}</td>
                             <td ng-show="!employee.isArchived">
-                                <a class="waves-effect waves-light btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveEmployee(employee,$event)"
+                                <a class="btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveEmployee(employee,$event)"
                                     data-position="top" data-tooltip="Archive {{employee.files.lastname}}?">
                                     <i data-feather="archive" class="button-center-icon"></i>
                                 </a>
                             </td>
                             <td ng-show="employee.isArchived">
-                                <a class="waves-effect waves-light btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveEmployee(employee,$event)"
+                                <a class="btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveEmployee(employee,$event)"
                                     data-position="top" data-tooltip="Unarchive {{employee.files.lastname}}?">
                                     <i data-feather="rotate-ccw" class="button-center-icon"></i>
                                 </a>

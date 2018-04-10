@@ -35,11 +35,9 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
         },
         addShift: function () {
             var errors = 0;
-            if ($scope.addShift_startTime === undefined) {
+            if ($scope.addShift_startTime === undefined ||
+                $scope.addShift_endTime === undefined) {
                 errors = 1;
-            }
-            if ($scope.addShift_endTime === undefined) {
-                errors = 2;
             }
             if (errors === 0) {
                 $http({
@@ -47,7 +45,8 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
                     method: "POST",
                     data: {
                         token: localStorage.getItem("token"),
-                        projectkey: $rootScope.selectedProject.projectkey,
+                        project: $rootScope.selectedProject,
+                        employee: $rootScope.userlogged,
                         time: $scope.addShift_startTime + " - " + $scope.addShift_endTime
                     }
                 }).then(function (response) {
@@ -58,7 +57,7 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
                         type: response.data.success,
                         title: response.data.message,
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1500
                     });
                 });
             } else {

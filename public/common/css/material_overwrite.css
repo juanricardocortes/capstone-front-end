@@ -28,6 +28,10 @@ nav {
 
 .fixed-action-btn {
     position: fixed !important;
-    right: 5% !important;
-    bottom: 5% !important;
+    right: 2% !important;
+    bottom: 2% !important;
+}
+
+.modal .modal-content {
+    padding: 0 !important;
 }

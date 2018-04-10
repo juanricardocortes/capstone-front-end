@@ -9,6 +9,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                 console.log("Uploading images: " + $rootScope.allApplicantsToBeAdded[index].firstname);
                 functions.uploadImageAsPromise($rootScope.allApplicantsToBeAdded[index]);
             }
+            $rootScope.allApplicantsToBeAdded = [];
         },
         uploadImageAsPromise: function(applicant) {
             console.log("Uploading images step 2");

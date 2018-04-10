@@ -10,6 +10,16 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                 .catch(function (error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
+                    console.log(errorMessage);
+                    functions.createUser();
+                });
+        },
+        createUser: function () {
+            firebase.auth().createUserWithEmailAndPassword($scope.email, $scope.password)
+                .catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorMessage);
                 });
         },
         resetForm: function () {

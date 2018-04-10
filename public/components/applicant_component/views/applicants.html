@@ -68,21 +68,21 @@
                             <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
                             <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
                             <td ng-show="!applicant.isArchived">
-                                <a class="waves-effect waves-light btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
+                                <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                     <i data-feather="user-check" class="button-center-icon "></i>
                                 </a>
-                                <a class="waves-effect waves-light btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
+                                <a class="btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Archive {{applicant.lastname}}?">
                                     <i data-feather="archive" class="button-center-icon"></i>
                                 </a>
                             </td>
                             <td ng-show="applicant.isArchived">
-                                <a class="waves-effect waves-light btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
+                                <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                     <i data-feather="user-check" class="button-center-icon"></i>
                                 </a>
-                                <a class="waves-effect waves-light btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
+                                <a class="btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Unarchive {{applicant.lastname}}?">
                                     <i data-feather="rotate-ccw" class="button-center-icon"></i>
                                 </a>

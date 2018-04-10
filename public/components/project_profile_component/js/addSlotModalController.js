@@ -29,11 +29,9 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
         },
         addSlot: function () {
             var errors = 0;
-            if ($scope.addSlot_position === undefined) {
+            if ($scope.addSlot_position === undefined ||
+                $scope.addSlot_shift === undefined) {
                 errors = 1;
-            }
-            if ($scope.addSlot_shift === undefined) {
-                errors = 2;
             }
             if (errors === 0) {
                 $http({
@@ -41,8 +39,9 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
                     method: "POST",
                     data: {
                         token: localStorage.getItem("token"),
-                        projectkey: $rootScope.selectedProject.projectkey,
-                        shiftkey: JSON.parse($scope.addSlot_shift).shiftkey,
+                        project: $rootScope.selectedProject,
+                        employee: $rootScope.userlogged,
+                        shift: JSON.parse($scope.addSlot_shift),
                         role: $scope.addSlot_position
                     }
                 }).then(function (response) {
@@ -52,7 +51,7 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
                         type: response.data.success,
                         title: response.data.message,
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1500
                     });
                 });
             } else {

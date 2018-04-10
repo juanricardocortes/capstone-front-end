@@ -1,12 +1,11 @@
-angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope, $http) {
 
     var functions = {
         initialize: function () {
-            console.log("Add project controller");
+            console.log("Add Request controller");
             functions.getInitialValues();
         },
         getInitialValues: function () {
-            // alert(moment());
             $scope.startDateSet = true;
         },
         checkEmail: function (obj, list) {
@@ -24,18 +23,20 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
             });
         },
         resetForm: function () {
-            $("#addProject_name").val(undefined);
-            $("#addProject_name").blur();
-            $("#addProject_startDate").val(undefined);
-            $("#addProject_startDate").blur();
-            $("#addProject_endDate").val(undefined);
-            $("#addProject_endDate").blur();
+            $("#addRequest_type").val(undefined);
+            $("#addRequest_type").blur();
+            $("#addRequest_reason").val(undefined);
+            $("#addRequest_reason").blur();
+            $("#addRequest_startDate").val(undefined);
+            $("#addRequest_startDate").blur();
+            $("#addRequest_endDate").val(undefined);
+            $("#addRequest_endDate").blur();
         },
         resetMinMax: function () {
-            $('#addProject_startDate').pickadate('picker').set('min', moment());
-            $('#addProject_endDate').pickadate('picker').set('min', moment());
-            $('#addProject_startDate').pickadate('picker').set('max', false);
-            $('#addProject_endDate').pickadate('picker').set('max', false);
+            $('#addRequest_startDate').pickadate('picker').set('min', moment());
+            $('#addRequest_endDate').pickadate('picker').set('min', moment());
+            $('#addRequest_startDate').pickadate('picker').set('max', false);
+            $('#addRequest_endDate').pickadate('picker').set('max', false);
         }
     }
 
@@ -53,45 +54,47 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                 closeOnSelect: true
             });
             $('.datepicker').on('change', function () {
-                if ($(this).attr('id') === 'addProject_startDate') {
-                    if ($(this).val() === "") {
-                        $('#addProject_endDate').pickadate('picker').set('min', moment());
+                if ($(this).attr('id') === 'addRequest_startDate') {
+                    if($(this).val()===""){
+                        $('#addRequest_endDate').pickadate('picker').set('min', moment());
                     } else {
-                        $('#addProject_endDate').pickadate('picker').set('min', $(this).val());
+                        $('#addRequest_endDate').pickadate('picker').set('min', $(this).val());
                     }
                 }
-                if ($(this).attr('id') === 'addProject_endDate') {
-                    $('#addProject_startDate').pickadate('picker').set('max', $(this).val());
+                if ($(this).attr('id') === 'addRequest_endDate') {
+                    $('#addRequest_startDate').pickadate('picker').set('max', $(this).val());
                 }
             });
             return true;
         },
-        hideAddProjectModal: function () {
-            $rootScope.showAddProject = false;
+        hideAddRequestModal: function () {
+            $rootScope.requestsShown = false;
         },
-        addProject: function () {
+        addRequest: function () {
             var errors = 0;
-            if ($scope.addProject_name === undefined ||
-                $scope.addProject_startDate === undefined ||
-                $scope.addProject_endDate === undefined) {
+            if ($scope.addRequest_type === undefined || 
+                $scope.addRequest_startDate === undefined ||
+                $scope.addRequest_endDate === undefined ||
+                $scope.addRequest_reason === undefined){
                 errors = 1;
             }
             if (errors === 0) {
                 $http({
-                    url: $rootScope.baseURL + "secure-api/addProject",
+                    url: $rootScope.baseURL + "secure-api/requestLeave",
                     method: "POST",
                     data: {
                         token: localStorage.getItem("token"),
-                        project: {
-                            name: $scope.addProject_name
-                        },
-                        dates: {
-                            startDate: $scope.addProject_startDate,
-                            endDate: $scope.addProject_endDate
+                        employee: $rootScope.userlogged,
+                        projects: $rootScope.allProjects,
+                        request: {
+                            startDate: $scope.addRequest_startDate,
+                            endDate: $scope.addRequest_endDate,
+                            type: $scope.addRequest_type,
+                            reason: $scope.addRequest_reason,
                         }
                     }
                 }).then(function (response) {
-                    $rootScope.showAddProject = false;
+                    $rootScope.requestsShown = false;
                     functions.resetForm();
                     functions.resetMinMax();
                     swal({

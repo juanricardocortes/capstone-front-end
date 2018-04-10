@@ -4,6 +4,7 @@
     "dependencies": {
         "angular": "^1.6.9",
         "angular-route": "^1.6.9",
+        "angular-toarrayfilter": "^1.0.3",
         "fullcalendar": "^3.9.0",
         "fullcalendar-scheduler": "^1.9.3",
         "jquery": "^3.3.1",

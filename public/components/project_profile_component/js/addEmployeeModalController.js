@@ -22,10 +22,10 @@ angular.module("app").controller("addEmployeeModalCtrl", function ($scope, $root
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
-                    slotkey: $rootScope.selectedSlot.slotkey,
-                    projectkey: $rootScope.selectedProject.projectkey,
-                    userkey: employee.userkey,
-                    dates: $rootScope.selectedProject.schedule.dates
+                    slot: $rootScope.selectedSlot,
+                    project: $rootScope.selectedProject,
+                    employee: employee,
+                    user:  $rootScope.userlogged
                 }
             }).then(function (response) {
                 $rootScope.showAddEmployee = false;
@@ -33,7 +33,7 @@ angular.module("app").controller("addEmployeeModalCtrl", function ($scope, $root
                     type: response.data.success,
                     title: response.data.message,
                     showConfirmButton: false,
-                    timer: 1000
+                    timer: 1500
                 });
             });
         }

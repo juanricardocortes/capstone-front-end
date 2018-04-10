@@ -1,4 +1,4 @@
-angular.module("app", ["ngRoute", "blockUI"])
+angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
 
     .config(function ($routeProvider, blockUIConfig) {
         blockUIConfig.templateUrl = "common/views/blockui_spinner.html";
@@ -202,6 +202,14 @@ angular.module("app", ["ngRoute", "blockUI"])
                             } catch (err) {
                                 console.log("No selected employee");
                             }
+                            try {
+                                if ($rootScope.userlogged.userkey === snapshot.val().userkey) {
+                                    $rootScope.userlogged = snapshot.val();
+                                    localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
+                                }
+                            } catch(err) {
+                                console.log("No logged in user");
+                            }
                             break;
                         }
                     }
@@ -230,6 +238,28 @@ angular.module("app", ["ngRoute", "blockUI"])
                 $('.fixed-action-btn').floatingActionButton();
             });
             return true;
+        }
 
+        $rootScope.rootfunctions = {
+            isEmpty: function (object) {
+                console.log(JSON.stringify(object));
+                return true;
+            }
+        }
+    })
+
+    .filter('custom', function () {
+        return function (input, search) {
+            if (!input) return input;
+            if (!search) return input;
+            var expected = ('' + search).toLowerCase();
+            var result = {};
+            angular.forEach(input, function (value, key) {
+                var actual = ('' + value).toLowerCase();
+                if (actual.indexOf(expected) !== -1) {
+                    result[key] = value;
+                }
+            });
+            return result;
         }
     });

@@ -1,42 +1,150 @@
 <div ng-show="startJS()">
-    <div class="leaves-page">
-        <div class="calendar-search">
-            <div class="search-date">
-                <div class="input-field">
-                    <i data-feather="search" class="prefix input-icon"></i>
-                    <input id="calendarFilter" ng-model="calendarFilter" type="text" class="validate z-depth-5 datepicker">
+    <div class="whole-page">
+        <div class="top-section">
+            <div class="table-filter">
+                <div ng-if="calendarShown" class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="calendarFilter" ng-model="calendarFilter" type="text" class="validate z-depth-5">
+                    <label for="calendarFilter">Search</label>
+                </div>
+                <div ng-if="employeesShown" class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="employeesFilter" ng-model="employeesFilter" type="text" class="validate z-depth-5">
+                    <label for="employeesFilter">Search</label>
+                </div>
+                <div ng-if="membersShown" class="input-field">
+                    <i data-feather="search" class="prefix"></i>
+                    <input id="membersFilter" ng-model="membersFilter.name" type="text" class="validate z-depth-5">
+                    <label for="membersFilter">Search</label>
+                </div>
+            </div>
+            <div class="table-switch" ng-if="calendarShown">
+                <a ng-click="functions.navigatePrevious()" class="btn-small info-button">
+                    <i class="material-icons left">chevron_left</i>Previous
+                </a>
+                <a ng-click="functions.navigateNext()" class="btn-small info-button">
+                    <i class="material-icons right">chevron_right</i>Next
+                </a>
+                <a ng-click="functions.navigateToday()" class="btn-small info-button">
+                    Today
+                </a>
+            </div>
+        </div>
+        <div class="middle-section z-depth-5">
+            <div class="scrollable-content scroll">
+                <div ng-show="calendarShown" id='calendar' class="padding-content">
+                </div>
+                <div ng-show="employeesShown" class="padding-content">
+                    <h1>*Employee leaves here</h1>
+                </div>
+                <div ng-show="membersShown" class="padding-content">
+                    <ul class="collection">
+                        <li class="collection-item" ng-repeat="project in allProjects | filter:membersFilter" ng-if="project.projectlead.userkey === userlogged.userkey">
+                            <div class="one-half">
+                                <p>
+                                    <b>{{project.name}}</b>
+                                </p>
+                            </div>
+                            <div class="one-half">
+                                <div ng-if="membersShown" class="input-field">
+                                    <i data-feather="search" class="prefix"></i>
+                                    <input ng-model="project.search" type="text" class="validate z-depth-5">
+                                    <label for="perProjectFilter">Search</label>
+                                </div>
+                            </div>
+                            <div ng-repeat="request in project.requests | toArray:false | filter:project.search" ng-if="project.requests">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="one-fifth">
+                                            <ul class="collection">
+                                                <li class="collection-item item-title">Employee</li>
+                                                <li class="collection-item item-title">Type</li>
+                                                <li class="collection-item item-title">Reason</li>
+                                                <li class="collection-item item-title">Requested Dates</li>
+                                                <li class="collection-item item-title">Affected Dates</li>
+                                            </ul>
+                                        </div>
+                                        <div class="four-fifths">
+                                            <ul class="collection">
+                                                <li class="collection-item">{{request.employee.email}}</li>
+                                                <li class="collection-item">{{request.request.type}}</li>
+                                                <li class="collection-item">{{request.request.reason}}</li>
+                                                <li class="collection-item">{{request.request.startDate}} - {{request.request.endDate}}</li>
+                                                <li class="collection-item">{{request.affected.startDate}} - {{request.affected.endDate}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="put-right">
+                                            <a class="btn danger-button">
+                                                <i class="material-icons left">clear</i>Decline</a>
+                                            <a class="btn success-button">
+                                                <i class="material-icons left">check</i>Accept</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-if="!project.requests">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <i class="graytext">No leave requests for this project yet</i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="collection-item" ng-if="!userlogged.files.projects">
+                            <i class="graytext">No projects with leave requests yet</i>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="calendar-container z-depth-5">
-            <div id='calendar' class="scroll"></div>
-        </div>
-        <div class="calendar-modifiers">
-            <div class="fixed-action-btn">
-                <a class="btn-floating btn-large calendar-options-button z-depth-5">
-                    <i data-feather="eye" class="center-feather-icon"></i>
+        <div class="bottom-section">
+            <div class="crud-buttons">
+                <div ng-show="calendarShown" class="fixed-action-btn">
+                    <a class="btn-floating btn-large info-button z-depth-5">
+                        <i data-feather="eye" class="center-feather-icon"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a ng-click="functions.viewByDay()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by day">
+                                D
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="functions.viewByWeek()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by week">
+                                W
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="functions.viewByMonth()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by month">
+                                M
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a ng-click="functions.showRequests()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Request">
+                    <i data-feather="mail" class="center-feather-icon"></i>
                 </a>
-                <ul>
-                    <li>
-                        <a ng-click="functions.viewByDay()" class="btn-floating option-view z-depth-5 tooltipped" data-position="left"
-                            data-tooltip="View by day">
-                            D
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="functions.viewByWeek()" class="btn-floating option-view z-depth-5 tooltipped" data-position="left"
-                            data-tooltip="View by week">
-                            W
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="functions.viewByMonth()" class="btn-floating option-view z-depth-5 tooltipped" data-position="left"
-                            data-tooltip="View by month">
-                            M
-                        </a>
-                    </li>
-                </ul>
+                <a ng-click="functions.showEmployees()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Employees">
+                    <i data-feather="users" class="center-feather-icon"></i>
+                </a>
+                <a ng-click="functions.showMembers()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Project Members">
+                    <i data-feather="package" class="center-feather-icon"></i>
+                </a>
+                <a ng-click="functions.showCalendar()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Calendar">
+                    <i data-feather="calendar" class="center-feather-icon"></i>
+                </a>
+                <a ng-show="calendarShown" class="btn-floating btn-large success-button">
+                </a>
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-show="requestsShown">
+    <ng-include src="'./components/leaves_component/views/addrequestmodal.html'">
+    </ng-include>
 </div>

@@ -32,7 +32,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $rootScope.profileactive = false;
         },
         getInitialValues: function () {
-            $scope.applicantTableSorter = "userkey";
+            $scope.applicantTableSorter = null;
             $rootScope.multipleArchiveApplicant = [];
             $rootScope.archiveApplicantToggle = false;
             $rootScope.showHired = false;
@@ -133,7 +133,11 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                         password: applicant.lastname,
                         firstname: applicant.firstname,
                         lastname: applicant.lastname,
-                        applicantkey: applicant.userkey
+                        applicantkey: applicant.userkey,
+                        contact: applicant.contactNumber,
+                        address: applicant.address,
+                        birthdate: applicant.birthdate,
+                        position: applicant.position
                     }],
                     hireFrom: "applicants"
                 }

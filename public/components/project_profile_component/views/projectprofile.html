@@ -4,8 +4,15 @@
             <div class="scrollable-content scroll">
                 <div class="project-information">
                     <h2>{{selectedProject.name}}</h2>
-                    <p ng-if="selectedProject.projectlead" class="graytext"><i>Project lead: {{selectedProject.projectlead.email}}</i></p>
-                    <p ng-if="!selectedProject.projectlead" class="graytext"><i>No project lead yet!</i></p>
+                    <p ng-if="selectedProject.projectlead" class="graytext">
+                        <i>Project lead: {{selectedProject.projectlead.email}}</i>
+                    </p>
+                    <p ng-if="!selectedProject.projectlead" class="graytext">
+                        <i>No project lead yet!</i>
+                    </p>
+                    <p>
+                        <i class="graytext">{{selectedProject.schedule.dates.startDate}} - {{selectedProject.schedule.dates.endDate}}</i>
+                    </p>
                     <h5>Schedules</h5>
                     <div class="schedule-tiles">
                         <ul class="collection">
@@ -13,7 +20,9 @@
                                 <b>Schedules</b>
                             </li>
                             <li ng-if="selectedProject.schedule.shifts" ng-repeat="(key, value) in selectedProject.schedule.shifts" class="collection-item">{{value.time}}</li>
-                            <li ng-if="!selectedProject.schedule.shifts" class="collection-item"><i class="graytext">No schedules for this project yet.</i></li>
+                            <li ng-if="!selectedProject.schedule.shifts" class="collection-item">
+                                <i class="graytext">No schedules for this project yet.</i>
+                            </li>
                         </ul>
 
                     </div>
@@ -24,7 +33,9 @@
                                 <b>Position</b>
                             </li>
                             <li ng-if="selectedProject.slots" ng-repeat="(key, value) in selectedProject.slots" class="collection-item">{{value.role}}</li>
-                            <li ng-if="!selectedProject.slots" class="collection-item"><i class="graytext">No positions for this project yet.</i></li> 
+                            <li ng-if="!selectedProject.slots" class="collection-item">
+                                <i class="graytext">No positions for this project yet.</i>
+                            </li>
                         </ul>
                     </div>
                     <div class="member-holder">
@@ -33,14 +44,20 @@
                                 <b>Employee</b>
                             </li>
                             <li ng-if="selectedProject.slots" ng-repeat="(key, value) in selectedProject.slots" class="collection-item">
-                                <div ng-if="value.currentholder.userkey">
-                                    {{value.currentholder.userkey}}
+                                <div class="cursor-button" ng-if="value.currentholder.userkey" ng-click="functions.gotoEmployeeProfile(value.currentholder)">
+                                    {{value.currentholder.files.lastname}}, {{value.currentholder.files.firstname}}
                                 </div>
-                                <div class="vacant-slot" ng-if="!value.currentholder.userkey" ng-click="functions.showAddEmployeeModal(value)">
+                                <div class="vacant-slot" ng-if="(!value.currentholder.userkey && selectedProject.projectlead.userkey === userlogged.userkey)"
+                                    ng-click="functions.showAddEmployeeModal(value)">
                                     <i class="graytext">*Click to add employee</i>
                                 </div>
+                                <div ng-if="(!value.currentholder.userkey && userlogged.isAdmin && !(selectedProject.projectlead.userkey === userlogged.userkey))">
+                                    <i class="graytext">No employee for this slot yet.</i>
+                                </div>
                             </li>
-                            <li ng-if="!selectedProject.slots" class="collection-item"><i class="graytext">No employees for this project yet.</i></li> 
+                            <li ng-if="!selectedProject.slots" class="collection-item">
+                                <i class="graytext">No employees for this project yet.</i>
+                            </li>
                         </ul>
                     </div>
                     <div class="member-schedule">
@@ -49,7 +66,9 @@
                                 <b>Schedule</b>
                             </li>
                             <li ng-if="selectedProject.slots" ng-repeat="(key, value) in selectedProject.slots" class="collection-item">{{value.shiftdetails.time}}</li>
-                            <li ng-if="!selectedProject.slots" class="collection-item"><i class="graytext">No schedules for this project yet.</i></li> 
+                            <li ng-if="!selectedProject.slots" class="collection-item">
+                                <i class="graytext">No schedules for this project yet.</i>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -57,15 +76,15 @@
         </div>
         <div class="bottom-section">
             <div class="crud-buttons">
-                <a ng-click="functions.showAddPLModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
-                    data-position="top" data-tooltip="Add project lead">
+                <a ng-click="functions.showAddPLModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Add project lead">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                <a ng-if="selectedProject.projectlead" ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add shift">
                     <i data-feather="clock" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                <a ng-if="selectedProject.projectlead" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add slot">
                     <i data-feather="layers" class="center-feather-icon"></i>
                 </a>

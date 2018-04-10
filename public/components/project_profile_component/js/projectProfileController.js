@@ -38,13 +38,30 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
             $rootScope.applicantsactive = false;
             $rootScope.leavesactive = false;
             $rootScope.profileactive = false;
+        },
+        getEmployee: function (employee) {
+            $http({
+                url: $rootScope.baseURL + "secure-api/getEmployee",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    userkey: employee.userkey
+                }
+            }).then(function (response) {
+                $rootScope.selectedEmployee = response.data.employee;
+                localStorage.setItem("selectedEmployee", JSON.stringify(employee));
+                window.location.href = "#!/employees/profile";
+            })
         }
     }
 
     functions.onInit();
 
     $scope.functions = {
-        showAddEmployeeModal: function(value) {
+        gotoEmployeeProfile: function (employee) {
+            functions.getEmployee(employee);
+        },
+        showAddEmployeeModal: function (value) {
             $rootScope.selectedSlot = value;
             $rootScope.showAddEmployee = true;
         },
@@ -54,7 +71,7 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
         showAddSlotModal: function () {
             $rootScope.showAddSlot = true;
         },
-        showAddPLModal: function(){
+        showAddPLModal: function () {
             $rootScope.showAddPL = true;
         }
     }

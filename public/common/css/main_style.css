@@ -189,9 +189,9 @@ td {
 }
 
 .crud-buttons {
-    position: fixed;
-    bottom: 2%;
-    right: 2%;
+    position: fixed !important;
+    bottom: 2% !important;
+    right: 2% !important;
 }
 
 .whole-page {
@@ -214,6 +214,7 @@ td {
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 99;
 }
 
 .modal-size {
@@ -249,8 +250,8 @@ td {
 .fit-table-column {
     width: 1%;
     cursor: pointer;
-    white-space:nowrap;
-}   
+    white-space: nowrap;
+}
 
 .checkbox-table-column {
     width: 1%;
@@ -262,4 +263,37 @@ td {
 
 .cursor-button {
     cursor: pointer !important;
+}
+
+.padding-content {
+    padding: 1.5%;
+}
+
+.one-fifth {
+    position: relative;
+    float: left;
+    width: 20%;
+    height: auto;
+}
+
+.four-fifths {
+    position: relative;
+    float: left;
+    width: 80%;
+    height: auto;
+}
+
+.put-left {
+    float: left;
+}
+
+.put-right {
+    float: right;
+}
+
+.one-half {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: auto;
 }

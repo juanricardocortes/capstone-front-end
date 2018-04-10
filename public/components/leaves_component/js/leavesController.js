@@ -20,32 +20,33 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             });
         },
         onCreate: function () {
-            // functions.jsInitialize();
             functions.getInitialValues();
             functions.getActiveSideBarLink();
             functions.createCalendar();
-            functions.refreshCalendar();
         },
         createCalendar: function () {
-            $rootScope.calendarAttributes = {
+            $('#calendar').fullCalendar({
                 schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                 navLinks: true,
                 header: {
-                    right: 'prev,next today',
                     left: 'title'
                 },
                 dayClick: function (date, jsEvent, view) {
                     $scope.functions.viewByDay(date.format());
                 }
-            }
+            });
+            setTimeout(function () {
+                $scope.$apply();
+                $('#calendar').fullCalendar('option', 'contentHeight', 700);
+                $('#calendar').fullCalendar('option', 'height', 700);
+            });
         },
-        // jsInitialize: function () {
-        //     $('.datepicker').datepicker();
-        //     $('.tooltipped').tooltip();
-        //     $('.fixed-action-btn').floatingActionButton();
-        // },
         getInitialValues: function () {
             $rootScope.calendarAttributes = {};
+            $scope.calendarShown = true;
+            $scope.employeesShown = false;
+            $scope.membersShown = false;
+            $rootScope.requestsShown = false;
         },
         getActiveSideBarLink: function () {
             $rootScope.dashboardactive = false;
@@ -60,9 +61,6 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 $scope.$apply();
             });
         },
-        refreshCalendar: function () {
-            $rootScope.calendar = $('#calendar').fullCalendar($rootScope.calendarAttributes);
-        }
     }
     functions.onInit();
 
@@ -79,6 +77,41 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
         },
         viewByMonth: function () {
             $('#calendar').fullCalendar('changeView', 'month');
+        },
+        navigateNext: function () {
+            $('#calendar').fullCalendar('next');
+        },
+        navigatePrevious: function () {
+            $('#calendar').fullCalendar('prev');
+        },
+        navigateToday: function () {
+            $('#calendar').fullCalendar('today');
+        },
+        showCalendar: function () {
+            $scope.calendarShown = true;
+            $scope.employeesShown = false;
+            $scope.membersShown = false;
+            $rootScope.requestsShown = false;
+            setTimeout(function () {
+                $scope.$apply();
+                $('#calendar').fullCalendar('option', 'contentHeight', 700);
+                $('#calendar').fullCalendar('option', 'height', 700);
+            });
+        },
+        showEmployees: function () {
+            $scope.calendarShown = false;
+            $scope.employeesShown = true;
+            $scope.membersShown = false;
+            $rootScope.requestsShown = false;
+        },
+        showMembers: function () {
+            $scope.calendarShown = false;
+            $scope.employeesShown = false;
+            $scope.membersShown = true;
+            $rootScope.requestsShown = false;
+        },
+        showRequests: function(){
+            $rootScope.requestsShown = true;
         }
     }
 });

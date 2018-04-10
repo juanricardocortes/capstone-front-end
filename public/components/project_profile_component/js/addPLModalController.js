@@ -37,7 +37,8 @@ angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope,
                     data: {
                         token: localStorage.getItem("token"),
                         projectkey: $rootScope.selectedProject.projectkey,
-                        employee: employee
+                        employee: employee,
+                        project: $rootScope.selectedProject
                     }
                 }).then(function (response) {
                     $rootScope.showAddPL = false;
@@ -46,7 +47,7 @@ angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope,
                         type: response.data.success,
                         title: response.data.message,
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1500
                     });
                 });
             } else {

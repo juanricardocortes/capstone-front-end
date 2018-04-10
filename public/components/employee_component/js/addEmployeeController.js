@@ -34,6 +34,7 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
                 position: $scope.addEmployee_position,
                 contact: $scope.addEmployee_contact,
                 address: $scope.addEmployee_address,
+                birthdate: $scope.addEmployee_birthdate,
                 userkey: newUserKey,
                 image: "",
                 employeeImageFile: $scope.selectedFile,
@@ -57,12 +58,23 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
             $("#addEmployee_contact").blur();
             $("#addEmployee_address").val(undefined);
             $("#addEmployee_address").blur();
+            $("#addEmployee_birthdate").val(undefined);
+            $("#addEmployee_birthdate").blur();
         }
     }
 
     functions.initialize();
 
     $scope.functions = {
+        startLocalJS: function () {
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 99,
+                max: moment().year(moment().year() - 18).toDate(),
+                closeOnSelect: true
+            });
+            return true;
+        },
         hideAddEmployeeModal: function () {
             $rootScope.showAddEmployee = false;
         },
@@ -72,14 +84,15 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
         },
         addEmployee: function () {
             var errors = 0;
-            if ($scope.addEmployee_firstname === undefined) {
+            if ($scope.addEmployee_firstname === undefined || 
+                $scope.addEmployee_lastname === undefined ||
+                $scope.addEmployee_email === undefined ||
+                $scope.filename === undefined ||
+                $scope.addEmployee_position === undefined ||
+                $scope.addEmployee_contact === undefined ||
+                $scope.addEmployee_address === undefined ||
+                $scope.addEmployee_birthdate === undefined) {
                 errors = 1;
-            }
-            if ($scope.addEmployee_lastname === undefined) {
-                errors = 2;
-            }
-            if ($scope.addEmployee_email === undefined) {
-                errors = 3;
             }
             if (errors === 0) {
                 if (functions.checkEmail($scope.addEmployee_email, $rootScope.allEmployeesToBeAdded)) {

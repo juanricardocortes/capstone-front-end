@@ -1,0 +1,49 @@
+<div ng-show="startJS() && functions.startLocalJS()" ng-controller="addRequestCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Add Request
+                        <i ng-click="functions.hideAddRequestModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="package" class="prefix input-icon"></i>
+                            <input id="addRequest_type" ng-model="addRequest_type" type="text" class="validate">
+                            <label for="addRequest_type">Request name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="addRequest_startDate" ng-model="addRequest_startDate" type="text" class="datepicker">
+                            <label for="addRequest_startDate">Start date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="addRequest_endDate" ng-model="addRequest_endDate" type="text" class="datepicker">
+                            <label for="addRequest_endDate">End date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="package" class="prefix input-icon"></i>
+                            <input id="addRequest_reason" ng-model="addRequest_reason" type="text" class="validate">
+                            <label for="addRequest_reason">Reason</label>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large success-button" ng-click="functions.addRequest()">
+                            <i data-feather="plus" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

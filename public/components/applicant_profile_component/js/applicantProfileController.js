@@ -81,6 +81,7 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                     token: localStorage.getItem("token"),
                     requirementKey: key,
                     requirementName: requirement.name,
+                    applicant: $rootScope.selectedApplicant,
                     applicantKey: $rootScope.selectedApplicant.userkey,
                     completion: $rootScope.selectedApplicant.completion,
                     totalRequirements: Object.keys($rootScope.selectedApplicant.requirements).length

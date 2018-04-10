@@ -1,4 +1,4 @@
-<div ng-show="startJS()" ng-controller="addApplicantCtrl" class="modal-background">
+<div ng-show="startJS() && functions.startLocalJS()" ng-controller="addApplicantCtrl" class="modal-background">
     <div class="row">
         <div class="col s3"></div>
         <div class="col s6">
@@ -34,6 +34,13 @@
                             <i data-feather="map-pin" class="prefix input-icon"></i>
                             <input id="addApplicant_address" ng-model="addApplicant_address" type="text" class="validate">
                             <label for="addApplicant_address">Address</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="addApplicant_birthdate" ng-model="addApplicant_birthdate" type="text" class="datepicker">
+                            <label for="addApplicant_birthdate">Birth date</label>
                         </div>
                     </div>
                     <div class="row">
