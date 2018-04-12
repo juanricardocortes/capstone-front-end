@@ -4,7 +4,7 @@
             <div class="scrollable-content scroll">
                 <div class="project-information">
                     <h2>{{selectedProject.name}}</h2>
-                    <p ng-if="selectedProject.projectlead" class="graytext">
+                    <p class="cursor-button graytext" ng-if="selectedProject.projectlead" ng-click="functions.gotoEmployeeProfile({userkey:selectedProject.projectlead.userkey})">
                         <i>Project lead: {{selectedProject.projectlead.email}}</i>
                     </p>
                     <p ng-if="!selectedProject.projectlead" class="graytext">
@@ -76,15 +76,15 @@
         </div>
         <div class="bottom-section">
             <div class="crud-buttons">
-                <a ng-click="functions.showAddPLModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="Add project lead">
+                <a ng-show="userlogged.isAdmin" ng-click="functions.showAddPLModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Add project lead">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-if="selectedProject.projectlead" ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
-                    data-position="top" data-tooltip="Add shift">
+                <a ng-show="selectedProject.projectlead.userkey === userlogged.userkey" ng-click="functions.showAddShiftModal()"
+                    class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top" data-tooltip="Add shift">
                     <i data-feather="clock" class="center-feather-icon"></i>
                 </a>
-                <a ng-if="selectedProject.projectlead" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                <a ng-show="selectedProject.projectlead.userkey === userlogged.userkey" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="Add slot">
                     <i data-feather="layers" class="center-feather-icon"></i>
                 </a>

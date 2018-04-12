@@ -214,7 +214,7 @@ td {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 99;
+    z-index: 96;
 }
 
 .modal-size {
@@ -284,11 +284,13 @@ td {
 }
 
 .put-left {
-    float: left;
+    position: relative;
+    float: left !important;
 }
 
 .put-right {
-    float: right;
+    position: relative;
+    float: right !important;
 }
 
 .one-half {

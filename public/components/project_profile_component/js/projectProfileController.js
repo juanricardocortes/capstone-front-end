@@ -49,9 +49,9 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
                 }
             }).then(function (response) {
                 $rootScope.selectedEmployee = response.data.employee;
-                localStorage.setItem("selectedEmployee", JSON.stringify(employee));
+                localStorage.setItem("selectedEmployee", JSON.stringify(response.data));
                 window.location.href = "#!/employees/profile";
-            })
+            });
         }
     }
 

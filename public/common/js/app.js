@@ -65,6 +65,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                 $rootScope.leavesactive = false;
                 $rootScope.profileactive = false;
                 $rootScope.unseenNotifications = {};
+                $rootScope.dateToday = moment();
             },
             onListeners: function () {
                 firebase.auth().onAuthStateChanged(function (user) {
@@ -165,7 +166,40 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                     functions.refresh();
                 });
             },
-            leavesListeners: function () {},
+            leavesListeners: function () {
+                $rootScope.leaveNotifCounter = 0;
+                $rootScope.leaveNotifications = [];
+                $rootScope.allLeaves = [];
+
+                firebase.database().ref("HRMS_Storage/Notifications/Leaves/").on("child_added", function (snapshot) {
+                    if (!(snapshot.val().seen)) {
+                        $rootScope.leaveNotifCounter++;
+                    }
+                    $rootScope.unseenNotifications["leaves"] = $rootScope.leaveNotifCounter;
+                    $rootScope.leaveNotifications.push(snapshot.val());
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Leaves/").on("child_added", function (snapshot) {
+                    $rootScope.allLeaves.push(snapshot.val());
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Leaves/").on("child_removed", function (snapshot) {
+                    $rootScope.allLeaves.splice($rootScope.allLeaves.indexOf(snapshot.val()), 1);
+                    functions.refresh();
+                });
+
+                firebase.database().ref("HRMS_Storage/Leaves/").on("child_changed", function (snapshot) {
+                    for (var index = 0; index < $rootScope.allLeaves.length; index++) {
+                        if ($rootScope.allLeaves[index].request.leavekey === snapshot.val().request.leavekey) {
+                            $rootScope.allLeaves[index] = snapshot.val();
+                            break;
+                        }
+                    }
+                    functions.refresh();
+                });
+            },
             employeeListeners: function () {
                 $rootScope.empNotifCounter = 0;
                 $rootScope.employeeNotifications = [];
@@ -207,7 +241,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                                     $rootScope.userlogged = snapshot.val();
                                     localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
                                 }
-                            } catch(err) {
+                            } catch (err) {
                                 console.log("No logged in user");
                             }
                             break;
@@ -235,7 +269,9 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                 $('.collapsible').collapsible();
                 $('.timepicker').timepicker();
                 $('.select').formSelect();
-                $('.fixed-action-btn').floatingActionButton();
+                $('.fixed-action-btn').floatingActionButton({
+                    direction: 'left'
+                });
             });
             return true;
         }
@@ -246,20 +282,31 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                 return true;
             }
         }
-    })
-
-    .filter('custom', function () {
-        return function (input, search) {
-            if (!input) return input;
-            if (!search) return input;
-            var expected = ('' + search).toLowerCase();
-            var result = {};
-            angular.forEach(input, function (value, key) {
-                var actual = ('' + value).toLowerCase();
-                if (actual.indexOf(expected) !== -1) {
-                    result[key] = value;
-                }
-            });
-            return result;
-        }
     });
+
+// .filter('custom', function () {
+//     return function (input, search) {
+//         if (!input) return input;
+//         if (!search) return input;
+//         var expected = ('' + search).toLowerCase();
+//         var result = {};
+//         angular.forEach(input, function (value, key) {
+//             var actual = ('' + value).toLowerCase();
+//             if (actual.indexOf(expected) !== -1) {
+//                 result[key] = value;
+//             }
+//         });
+//         return result;
+//     }
+// })
+
+// .filter('singlefilter', function ($filter){                                                           
+//     return function(rows, searchString){  
+//       var split = searchString.split(" ");                                                                       
+//       var array_of_matches = _.map(split, function (subString){   
+//         return $filter('filter')(rows, subStr, false)                                                         
+//       });                                                                                                  
+//       return _.uniq(_.flatten(array_of_matches));                                                          
+//     };                                                                                                     
+
+//   });

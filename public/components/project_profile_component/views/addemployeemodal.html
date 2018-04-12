@@ -8,16 +8,21 @@
                         <i ng-click="functions.hideAddEmployeeModal()" class="material-icons right cursor-button">close</i>
                     </span>
                     <div class="row"></div>
-                    <div class="row">
+                    <div ng-if="(functions.checkIfAllDeployed())" class="row">
+                        <h4 class="graytext">
+                            <i>No available employees</i>
+                        </h4>
+                    </div>
+                    <div ng-if="!(functions.checkIfAllDeployed())" class="row">
                         <div class="input-field col s12">
                             <i data-feather="search" class="prefix input-icon"></i>
                             <input id="addEmployee_employee" ng-model="addEmployee_employee" type="text" class="validate">
                             <label for="addEmployee_employee">Search</label>
                         </div>
                     </div>
-                    <div class="row">
+                    <div ng-if="!(functions.checkIfAllDeployed())" class="row">
                         <ul class="collapsible">
-                            <li ng-repeat="employee in allEmployees | filter:addEmployee_employee">
+                            <li ng-repeat="employee in allEmployees | filter:addEmployee_employee" ng-show="!(functions.checkIfHasProject(employee))">
                                 <div class="collapsible-header">
                                     {{employee.email}}
                                 </div>

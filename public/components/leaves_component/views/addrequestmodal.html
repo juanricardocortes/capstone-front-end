@@ -10,9 +10,14 @@
                     <div class="row"></div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i data-feather="package" class="prefix input-icon"></i>
-                            <input id="addRequest_type" ng-model="addRequest_type" type="text" class="validate">
-                            <label for="addRequest_type">Request name</label>
+                            <i data-feather="corner-up-right" class="prefix input-icon"></i>
+                            <select class="select" ng-model="addRequest_type" class="icons">
+                                <option value="" disabled selected>Choose leave type</option>
+                                <option value="Sick leave">Sick leave</option>
+                                <option value="Vacation leave">Vacation leave</option>
+                                <option value="Emergency leave">Emergency leave</option>
+                                <option value="Mandatory leave">Mandatory leave</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">

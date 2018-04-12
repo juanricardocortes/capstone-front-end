@@ -20,6 +20,11 @@ nav {
     border-bottom: 2px solid #4fc3f7 !important;
 }
 
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right: 2px solid #4fc3f7 !important;
+    border-bottom: 2px solid #4fc3f7 !important;
+}
+
 .collection-item {
     white-space: nowrap !important;
     overflow-x: hidden !important;
@@ -35,3 +40,4 @@ nav {
 .modal .modal-content {
     padding: 0 !important;
 }
+

@@ -42,6 +42,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             });
         },
         getInitialValues: function () {
+            $rootScope.leaveToggle = false;
             $rootScope.calendarAttributes = {};
             $scope.calendarShown = true;
             $scope.employeesShown = false;
@@ -98,6 +99,77 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 $('#calendar').fullCalendar('option', 'height', 700);
             });
         },
+        forwardLeave: function (name, projectkey, request, isAccepted) {
+            $http({
+                url: $rootScope.baseURL + "secure-api/forwardLeave",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    name: name,
+                    projectkey: projectkey,
+                    request: request,
+                    isAccepted: isAccepted
+                }
+            }).then(function (response) {
+                swal({
+                    type: response.data.success,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                functions.refresh();
+            });
+        },
+        hasCurrentProject: function () {
+            var hasProject = false;
+            for (var index = 0; index < $rootScope.allProjects.length; index++) {
+                if (moment(moment()).isSameOrAfter($rootScope.allProjects[index].schedule.dates.startDate) &&
+                    moment(moment()).isSameOrBefore($rootScope.allProjects[index].schedule.dates.endDate) &&
+                    $rootScope.userlogged.userkey === $rootScope.allProjects[index].projectlead.userkey) {
+                    hasProject = true;
+                    break;
+                }
+            }
+            return hasProject;
+        },
+        isCurrentProject: function (project) {
+            if (moment(moment()).isSameOrAfter(project.schedule.dates.startDate) &&
+                moment(moment()).isSameOrBefore(project.schedule.dates.endDate)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        checkIfAllAck: function (requests) {
+            var checker = 0;
+            var size = 0;
+            for (request in requests) {
+                size += 1;
+                if (requests[request].isAcknowledgedByPL) {
+                    checker += 1;
+                }
+            }
+            if (checker === size) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        checkIfNoAck: function (requests) {
+            var checker = 0;
+            var size = 0;
+            for (request in requests) {
+                size += 1;
+                if ((requests[request].isAcknowledgedByPL)) {
+                    checker += 1;
+                }
+            }
+            if (checker === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
         showEmployees: function () {
             $scope.calendarShown = false;
             $scope.employeesShown = true;
@@ -110,7 +182,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             $scope.membersShown = true;
             $rootScope.requestsShown = false;
         },
-        showRequests: function(){
+        showRequests: function () {
             $rootScope.requestsShown = true;
         }
     }

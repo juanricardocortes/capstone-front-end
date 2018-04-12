@@ -30,7 +30,7 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
         addSlot: function () {
             var errors = 0;
             if ($scope.addSlot_position === undefined ||
-                $scope.addSlot_shift === undefined) {
+                $scope.addSlot_shift === null) {
                 errors = 1;
             }
             if (errors === 0) {

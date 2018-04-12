@@ -10,7 +10,7 @@
         <div class="sidebar-links">
             <div class="sidebar-space"></div>
             <div class="sidebar-space"></div>
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProfile()" ng-show="profileactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProfile()" ng-if="profileactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -24,9 +24,9 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoProfile()" ng-show="!profileactive">
+            <div class="sidebar-link" ng-click="functions.gotoProfile()" ng-if="!profileactive">
                 <div class="sidebar-link-hover">
-                    <span ng-show="!profileactive">
+                    <span ng-if="!profileactive">
                         <div class="sidebar-link-icon">
                             <i data-feather="user"></i>
                         </div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoDashboard()" ng-show="dashboardactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoDashboard()" ng-if="dashboardactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -51,7 +51,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoDashboard()" ng-show="!dashboardactive">
+            <div class="sidebar-link" ng-click="functions.gotoDashboard()" ng-if="!dashboardactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
                     <span>
                         <div class="sidebar-link-icon">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoApplicants()" ng-show="applicantsactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoApplicants()" ng-if="applicantsactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active ">
@@ -78,7 +78,7 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoApplicants()" ng-show="!applicantsactive">
+            <div class="sidebar-link" ng-click="functions.gotoApplicants()" ng-if="!applicantsactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
                     <span>
                         <div class="sidebar-link-icon">
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoEmployees()" ng-show="employeeactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoEmployees()" ng-if="employeeactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -105,9 +105,9 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoEmployees()" ng-show="!employeeactive">
+            <div class="sidebar-link" ng-click="functions.gotoEmployees()" ng-if="!employeeactive && userlogged.isAdmin">
                 <div class="sidebar-link-hover">
-                    <span ng-show="!employeeactive">
+                    <span ng-if="!employeeactive">
                         <div class="sidebar-link-icon">
                             <i data-feather="users"></i>
                         </div>
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProjects()" ng-show="projectsactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoProjects()" ng-if="projectsactive && (functions.checkIfProjectLead() || userlogged.isAdmin)">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -132,9 +132,9 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoProjects()" ng-show="!projectsactive">
+            <div class="sidebar-link" ng-click="functions.gotoProjects()" ng-if="!projectsactive && (functions.checkIfProjectLead() || userlogged.isAdmin)">
                 <div class="sidebar-link-hover">
-                    <span ng-show="!projectsactive">
+                    <span ng-if="!projectsactive">
                         <div class="sidebar-link-icon">
                             <i data-feather="package"></i>
                         </div>
@@ -145,7 +145,7 @@
                 </div>
             </div>
 
-            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoLeaveRequests()" ng-show="leavesactive">
+            <div class="sidebar-link link-active z-depth-5" ng-click="functions.gotoLeaveRequests()" ng-if="leavesactive">
                 <div class="sidebar-link-hover">
                     <span>
                         <b class="sidebar-link-active">
@@ -159,9 +159,9 @@
                     </span>
                 </div>
             </div>
-            <div class="sidebar-link" ng-click="functions.gotoLeaveRequests()" ng-show="!leavesactive">
+            <div class="sidebar-link" ng-click="functions.gotoLeaveRequests()" ng-if="!leavesactive">
                 <div class="sidebar-link-hover">
-                    <span ng-show="!leavesactive">
+                    <span ng-if="!leavesactive">
                         <div class="sidebar-link-icon">
                             <i data-feather="calendar"></i>
                         </div>

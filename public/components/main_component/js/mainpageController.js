@@ -9,6 +9,20 @@ angular.module("app").controller("mainpageCtrl", function ($scope, $rootScope, $
     functions.initialize();
 
     $scope.functions = {
+        checkIfProjectLead: function () {
+            var isPL = 0;
+            var userlogged = $rootScope.userlogged;
+            for (project in userlogged.files.projects) {
+                if (userlogged.files.projects[project].isProjectLead) {
+                    isPL++;
+                }
+            }
+            if(isPL){
+                return true;
+            } else {
+                return false;
+            }
+        },
         gotoDashboard: function () {
             $rootScope.dashboardactive = true;
             $rootScope.employeeactive = false;

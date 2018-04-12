@@ -2,57 +2,122 @@
     <div class="whole-page">
         <div class="top-section">
             <div class="table-filter">
-                <div ng-if="calendarShown" class="input-field">
+                <div ng-show="calendarShown" class="input-field">
                     <i data-feather="search" class="prefix"></i>
                     <input id="calendarFilter" ng-model="calendarFilter" type="text" class="validate z-depth-5">
                     <label for="calendarFilter">Search</label>
                 </div>
-                <div ng-if="employeesShown" class="input-field">
+                <div ng-show="employeesShown" class="input-field">
                     <i data-feather="search" class="prefix"></i>
                     <input id="employeesFilter" ng-model="employeesFilter" type="text" class="validate z-depth-5">
                     <label for="employeesFilter">Search</label>
                 </div>
-                <div ng-if="membersShown" class="input-field">
+                <div ng-show="membersShown" class="input-field">
                     <i data-feather="search" class="prefix"></i>
-                    <input id="membersFilter" ng-model="membersFilter.name" type="text" class="validate z-depth-5">
+                    <input id="membersFilter" ng-model="membersFilter" type="text" class="validate z-depth-5">
                     <label for="membersFilter">Search</label>
                 </div>
             </div>
-            <div class="table-switch" ng-if="calendarShown">
-                <a ng-click="functions.navigatePrevious()" class="btn-small info-button">
-                    <i class="material-icons left">chevron_left</i>Previous
-                </a>
-                <a ng-click="functions.navigateNext()" class="btn-small info-button">
-                    <i class="material-icons right">chevron_right</i>Next
-                </a>
-                <a ng-click="functions.navigateToday()" class="btn-small info-button">
-                    Today
-                </a>
+            <div class="table-switch">
+                <div ng-if="calendarShown">
+                    <a ng-click="functions.viewByDay()" class="btn-floating btn-large info-button view-calendar-icons z-depth-5 tooltipped" data-position="top"
+                        data-tooltip="View by day">
+                        D
+                    </a>
+                    <a ng-click="functions.viewByWeek()" class="btn-floating btn-large info-button view-calendar-icons z-depth-5 tooltipped"
+                        data-position="top" data-tooltip="View by week">
+                        W
+                    </a>
+                    <a ng-click="functions.viewByMonth()" class="btn-floating btn-large info-button view-calendar-icons z-depth-5 tooltipped"
+                        data-position="top" data-tooltip="View by month">
+                        M
+                    </a>
+                </div>
             </div>
         </div>
         <div class="middle-section z-depth-5">
             <div class="scrollable-content scroll">
+                <div ng-if="calendarShown" class="put-right calendar-icons">
+                    <a ng-click="functions.navigatePrevious()" class="btn-small info-button">
+                        <i class="material-icons left">chevron_left</i>Previous
+                    </a>
+                    <a ng-click="functions.navigateNext()" class="btn-small info-button">
+                        <i class="material-icons right">chevron_right</i>Next
+                    </a>
+                    <a ng-click="functions.navigateToday()" class="btn-small info-button">
+                        Today
+                    </a>
+                </div>
                 <div ng-show="calendarShown" id='calendar' class="padding-content">
                 </div>
-                <div ng-show="employeesShown" class="padding-content">
-                    <h1>*Employee leaves here</h1>
-                </div>
-                <div ng-show="membersShown" class="padding-content">
+                <div ng-if="employeesShown" class="padding-content">
                     <ul class="collection">
-                        <li class="collection-item" ng-repeat="project in allProjects | filter:membersFilter" ng-if="project.projectlead.userkey === userlogged.userkey">
+                        <li ng-repeat="leave in allLeaves | filter: {projectname:employeesFilter}" class="collection-item">
                             <div class="one-half">
                                 <p>
-                                    <b>{{project.name}}</b>
+                                    <b>{{leave.projectname}}</b>
                                 </p>
                             </div>
                             <div class="one-half">
-                                <div ng-if="membersShown" class="input-field">
+                                <div class="input-field">
                                     <i data-feather="search" class="prefix"></i>
-                                    <input ng-model="project.search" type="text" class="validate z-depth-5">
-                                    <label for="perProjectFilter">Search</label>
+                                    <input ng-model="leave.search" type="text" class="validate z-depth-5">
+                                    <label for="">Search</label>
                                 </div>
                             </div>
-                            <div ng-repeat="request in project.requests | toArray:false | filter:project.search" ng-if="project.requests">
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="one-fifth">
+                                        <ul class="collection">
+                                            <li class="collection-item item-title">Employee</li>
+                                            <li class="collection-item item-title">Type</li>
+                                            <li class="collection-item item-title">Reason</li>
+                                            <li class="collection-item item-title">Requested Dates</li>
+                                            <li class="collection-item item-title">Affected Dates</li>
+                                        </ul>
+                                    </div>
+                                    <div class="four-fifths">
+                                        <ul class="collection">
+                                            <li class="collection-item">{{leave.request.employee.email}}</li>
+                                            <li class="collection-item">{{leave.request.request.type}}</li>
+                                            <li class="collection-item">{{leave.request.request.reason}}</li>
+                                            <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
+                                            <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="put-right">
+                                        <a ng-click="functions.acknowledgeLeave(leave, false)" class="btn danger-button">
+                                            <i class="material-icons left">clear</i>Decline</a>
+                                        <a ng-click="functions.acknowledgeLeave(leave, true)" class="btn success-button">
+                                            <i class="material-icons left">check</i>Accept</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="membersShown" class="padding-content">
+                    <ul class="collection">
+                        <li class="collection-item" ng-repeat="project in allProjects" ng-if="(project.projectlead.userkey === userlogged.userkey) && functions.isCurrentProject(project) && functions.hasCurrentProject()">
+                            <div class="row">
+                                <div class="one-half">
+                                    <p>
+                                        <b>{{project.name}}</b>
+                                    </p>
+                                </div>
+                                <div class="one-half">
+                                    <div class="put-right">
+                                        <div class="switch graytext">
+                                            <i></i>
+                                            <label>
+                                                <input type="checkbox" ng-model="$root.leaveToggle" ng-change="functions.toggleArchiveEmployees()">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-repeat="request in project.requests | toArray:false | filter:membersFilter" ng-if="project.requests && (request.isAcknowledgedByPL === $root.leaveToggle)">
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <div class="one-fifth">
@@ -74,24 +139,31 @@
                                             </ul>
                                         </div>
                                         <div class="put-right">
-                                            <a class="btn danger-button">
+                                            <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, false)" class="btn danger-button">
                                                 <i class="material-icons left">clear</i>Decline</a>
-                                            <a class="btn success-button">
+                                            <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, true)" class="btn success-button">
                                                 <i class="material-icons left">check</i>Accept</a>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
-                            <div ng-if="!project.requests">
+                            <div ng-if="!project.requests || (!(functions.checkIfNoAck(project.requests))) && !$root.leaveToggle">
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <i class="graytext">No leave requests for this project yet</i>
                                     </li>
                                 </ul>
                             </div>
+                            <div ng-if="!project.requests || functions.checkIfNoAck(project.requests) && $root.leaveToggle">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <i class="graytext">No forwarded leave requests for this project yet</i>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="collection-item" ng-if="!userlogged.files.projects">
-                            <i class="graytext">No projects with leave requests yet</i>
+                        <li class="collection-item" ng-if="!functions.hasCurrentProject()">
+                            <i class="graytext">You have no current projects.</i>
                         </li>
                     </ul>
                 </div>
@@ -99,29 +171,7 @@
         </div>
         <div class="bottom-section">
             <div class="crud-buttons">
-                <div ng-show="calendarShown" class="fixed-action-btn">
-                    <a class="btn-floating btn-large info-button z-depth-5">
-                        <i data-feather="eye" class="center-feather-icon"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a ng-click="functions.viewByDay()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by day">
-                                D
-                            </a>
-                        </li>
-                        <li>
-                            <a ng-click="functions.viewByWeek()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by week">
-                                W
-                            </a>
-                        </li>
-                        <li>
-                            <a ng-click="functions.viewByMonth()" class="btn-floating info-button z-depth-5 tooltipped" data-position="left" data-tooltip="View by month">
-                                M
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <a ng-click="functions.showRequests()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
+                <a ng-click="functions.showRequests()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
                     data-tooltip="Request">
                     <i data-feather="mail" class="center-feather-icon"></i>
                 </a>
@@ -137,8 +187,8 @@
                     data-tooltip="Calendar">
                     <i data-feather="calendar" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="calendarShown" class="btn-floating btn-large success-button">
-                </a>
+
+
             </div>
         </div>
     </div>

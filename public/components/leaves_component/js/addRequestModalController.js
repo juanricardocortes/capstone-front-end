@@ -72,7 +72,7 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
         },
         addRequest: function () {
             var errors = 0;
-            if ($scope.addRequest_type === undefined || 
+            if ($scope.addRequest_type === null || 
                 $scope.addRequest_startDate === undefined ||
                 $scope.addRequest_endDate === undefined ||
                 $scope.addRequest_reason === undefined){
@@ -86,6 +86,7 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
                         token: localStorage.getItem("token"),
                         employee: $rootScope.userlogged,
                         projects: $rootScope.allProjects,
+                        leaves: $rootScope.allLeaves,
                         request: {
                             startDate: $scope.addRequest_startDate,
                             endDate: $scope.addRequest_endDate,
