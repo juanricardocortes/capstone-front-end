@@ -12,12 +12,14 @@ angular.module("app").controller("mainpageCtrl", function ($scope, $rootScope, $
         checkIfProjectLead: function () {
             var isPL = 0;
             var userlogged = $rootScope.userlogged;
-            for (project in userlogged.files.projects) {
-                if (userlogged.files.projects[project].isProjectLead) {
-                    isPL++;
+            try {
+                for (project in userlogged.files.projects) {
+                    if (userlogged.files.projects[project].isProjectLead) {
+                        isPL++;
+                    }
                 }
-            }
-            if(isPL){
+            } catch (err) {}
+            if (isPL) {
                 return true;
             } else {
                 return false;

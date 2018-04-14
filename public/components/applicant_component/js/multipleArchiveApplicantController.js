@@ -48,6 +48,7 @@ angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $
                 method: "POST",
                 data: {
                     applicant: $rootScope.multipleArchiveApplicant,
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token")
                 }
             }).then(function (response) {

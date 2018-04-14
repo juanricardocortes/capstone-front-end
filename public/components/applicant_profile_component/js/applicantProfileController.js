@@ -6,7 +6,8 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
                 data: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
                 if (response.data.valid) {
@@ -78,6 +79,7 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                 method: "POST",
                 data: {
                     status: "complete",
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
                     requirementKey: key,
                     requirementName: requirement.name,

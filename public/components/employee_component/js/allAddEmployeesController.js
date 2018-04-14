@@ -31,6 +31,7 @@ angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootS
                             method: "POST",
                             data: {
                                 token: localStorage.getItem("token"),
+                                signature: JSON.stringify($rootScope.userlogged),
                                 userkey: employee.userkey,
                                 email: employee.email,
                                 downloadURL: downloadURL
@@ -62,6 +63,7 @@ angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootS
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged),
                     allEmployees: $rootScope.allEmployeesToBeAdded
                 }
             }).then(function (response) {

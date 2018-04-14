@@ -7,7 +7,8 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
                 data: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
                 if (response.data.valid) {
@@ -38,7 +39,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             setTimeout(function () {
                 $scope.$apply();
                 $('#calendar').fullCalendar('option', 'contentHeight', 700);
-                $('#calendar').fullCalendar('option', 'height', 700);
+                $('#calendar').fullCalendar('option', 'height', "auto");
             });
         },
         getInitialValues: function () {
@@ -99,6 +100,25 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 $('#calendar').fullCalendar('option', 'height', 700);
             });
         },
+        acknowledgeLeave: function (leave, isAccepted) {
+            $http({
+                url: $rootScope.baseURL + "secure-api/acknowledgeLeave",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    leave: leave,
+                    isAccepted: isAccepted
+                }
+            }).then(function (response) {
+                swal({
+                    type: response.data.success,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                functions.refresh();
+            })
+        },
         forwardLeave: function (name, projectkey, request, isAccepted) {
             $http({
                 url: $rootScope.baseURL + "secure-api/forwardLeave",
@@ -115,7 +135,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                     type: response.data.success,
                     title: response.data.message,
                     showConfirmButton: false,
-                    timer: 1000
+                    timer: 1500
                 });
                 functions.refresh();
             });

@@ -6,7 +6,8 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
                 data: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
                 if (response.data.valid) {
@@ -101,6 +102,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 method: "POST",
                 data: {
                     applicant: [applicant],
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token")
                 }
             }).then(function (response) {
@@ -126,6 +128,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                 url: $rootScope.baseURL + "secure-api/addEmployee",
                 method: "POST",
                 data: {
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
                     allEmployees: [{
                         email: applicant.email,

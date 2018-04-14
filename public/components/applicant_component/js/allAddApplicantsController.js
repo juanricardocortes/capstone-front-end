@@ -4,14 +4,14 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
         initialize: function () {
             console.log("All add applicants controller");
         },
-        uploadApplicantImages: function() {
+        uploadApplicantImages: function () {
             for (var index = 0; index < $rootScope.allApplicantsToBeAdded.length; index++) {
                 console.log("Uploading images: " + $rootScope.allApplicantsToBeAdded[index].firstname);
                 functions.uploadImageAsPromise($rootScope.allApplicantsToBeAdded[index]);
             }
             $rootScope.allApplicantsToBeAdded = [];
         },
-        uploadImageAsPromise: function(applicant) {
+        uploadImageAsPromise: function (applicant) {
             console.log("Uploading images step 2");
             return new Promise(function (resolve, reject) {
                 var storageRef = firebase.storage().ref(applicant.storageRef);
@@ -30,6 +30,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                             url: $rootScope.baseURL + "secure-api/uploadApplicantImage",
                             method: "POST",
                             data: {
+                                signature: JSON.stringify($rootScope.userlogged),
                                 token: localStorage.getItem("token"),
                                 userkey: applicant.userkey,
                                 email: applicant.email,
@@ -42,7 +43,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                 );
             });
         },
-        refresh: function() {
+        refresh: function () {
             setTimeout(function () {
                 $scope.$apply();
             });
@@ -50,7 +51,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
     }
 
     functions.initialize();
-    
+
     $scope.functions = {
         hideAllAddApplicantModal: function () {
             $rootScope.showAllAddApplicants = false;
@@ -62,6 +63,7 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged),
                     allApplicants: $rootScope.allApplicantsToBeAdded
                 }
             }).then(function (response) {

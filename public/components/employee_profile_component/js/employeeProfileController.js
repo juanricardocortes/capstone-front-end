@@ -6,7 +6,8 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
                 data: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
                 if (response.data.valid) {

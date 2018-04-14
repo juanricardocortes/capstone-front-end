@@ -48,11 +48,13 @@
                         Today
                     </a>
                 </div>
-                <div ng-show="calendarShown" id='calendar' class="padding-content">
+                <div ng-show="calendarShown" class="auto-fit-container">
+                    <div id='calendar' class="padding-content">
+                    </div>
                 </div>
                 <div ng-if="employeesShown" class="padding-content">
                     <ul class="collection">
-                        <li ng-repeat="leave in allLeaves | filter: {projectname:employeesFilter}" class="collection-item">
+                        <li ng-repeat="leave in allLeaves | filter: {projectname:employeesFilter}" ng-if="allLeaves.length>0" class="collection-item">
                             <div class="one-half">
                                 <p>
                                     <b>{{leave.projectname}}</b>
@@ -89,11 +91,12 @@
                                         <a ng-click="functions.acknowledgeLeave(leave, false)" class="btn danger-button">
                                             <i class="material-icons left">clear</i>Decline</a>
                                         <a ng-click="functions.acknowledgeLeave(leave, true)" class="btn success-button">
-                                            <i class="material-icons left">check</i>Accept</a>
+                                            <i class="material-icons left">check</i>Approve</a>
                                     </div>
                                 </li>
                             </ul>
                         </li>
+                        <li class="collection-item" ng-if="!(allLeaves.length>0)"><i class="graytext">No forwarded leave requests yet</i></li>
                     </ul>
                 </div>
                 <div ng-if="membersShown" class="padding-content">
@@ -138,11 +141,11 @@
                                                 <li class="collection-item">{{request.affected.startDate}} - {{request.affected.endDate}}</li>
                                             </ul>
                                         </div>
-                                        <div class="put-right">
+                                        <div ng-if="!$root.leaveToggle" class="put-right">
                                             <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, false)" class="btn danger-button">
                                                 <i class="material-icons left">clear</i>Decline</a>
                                             <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, true)" class="btn success-button">
-                                                <i class="material-icons left">check</i>Accept</a>
+                                                <i class="material-icons left">check</i>Approve</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -175,8 +178,8 @@
                     data-tooltip="Request">
                     <i data-feather="mail" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showEmployees()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="Employees">
+                <a ng-show="userlogged.isAdmin" ng-click="functions.showEmployees()" class="btn-floating btn-large info-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Employees">
                     <i data-feather="users" class="center-feather-icon"></i>
                 </a>
                 <a ng-click="functions.showMembers()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
@@ -187,8 +190,6 @@
                     data-tooltip="Calendar">
                     <i data-feather="calendar" class="center-feather-icon"></i>
                 </a>
-
-
             </div>
         </div>
     </div>

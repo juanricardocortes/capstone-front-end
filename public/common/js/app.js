@@ -62,6 +62,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                 $rootScope.employeeactive = false;
                 $rootScope.projectsactive = false;
                 $rootScope.applicantsactive = false;
+                $rootScope.applicantsactive = false;
                 $rootScope.leavesactive = false;
                 $rootScope.profileactive = false;
                 $rootScope.unseenNotifications = {};
@@ -70,22 +71,55 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
             onListeners: function () {
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
+                        console.log(user);
                         functions.applicantListeners();
                         functions.projectListeners();
                         functions.employeeListeners();
                         functions.leavesListeners();
                     } else {
                         // No user is signed in.
+                        console.log("NO USER SIGNED IN");
                     }
                 });
             },
             getUserLogged: function () {
                 $rootScope.userlogged = JSON.parse(localStorage.getItem("userlogged"));
             },
+            applicantUpdateListeners() {
+                firebase.database().ref("HRMS_Storage/Applicants/").on("child_removed", function (snapshot) {
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        $rootScope.allApplicants.splice($rootScope.allApplicants.indexOf(decrypted), 1);
+                        functions.refresh();
+                    });
+                });
+                firebase.database().ref("HRMS_Storage/Applicants/").on("child_changed", function (snapshot) {
+                    console.log("APPLICANT CHANGED");
+                    console.log(snapshot.val());
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        console.log(decrypted);
+                        for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+                            if ($rootScope.allApplicants[index].userkey === decrypted.userkey) {
+                                $rootScope.allApplicants[index] = decrypted;
+                                try {
+                                    if ($rootScope.selectedApplicant.userkey === decrypted.userkey) {
+                                        $rootScope.selectedApplicant = decrypted;
+                                        localStorage.setItem("selectedApplicant", JSON.stringify($rootScope.selectedApplicant));
+                                    }
+                                } catch (err) {
+                                    console.log("No selected applicant");
+                                }
+                                break;
+                            }
+                        }
+                        functions.refresh();
+                    });
+                });
+            },
             applicantListeners: function () {
                 $rootScope.appNotifCounter = 0;
                 $rootScope.applicantNotifications = [];
                 $rootScope.allApplicants = [];
+                $rootScope.lastApplicant;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Applicants/").on("child_added", function (snapshot) {
                     if (!(snapshot.val().seen)) {
@@ -95,34 +129,35 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                     $rootScope.applicantNotifications.push(snapshot.val());
                     functions.refresh();
                 });
-
+                firebase.database().ref("HRMS_Storage/Applicants/").orderByKey().limitToLast(1).once('value').then(function (snapshot) {
+                    try {
+                        $rootScope.lastApplicant = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
+                    } catch (err) {
+                        console.log("NO APPLICANTS YET");
+                    }
+                });
                 firebase.database().ref("HRMS_Storage/Applicants/").on("child_added", function (snapshot) {
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        $rootScope.allApplicants.push(decrypted);
+                        functions.refresh();
+                        try {
+                            if (snapshot.val().userkey === $rootScope.lastApplicant.userkey) {
+                                console.log("ALL APPLICANTS");
+                                console.log($rootScope.allApplicants);
+                                functions.applicantUpdateListeners();
+                            }
+                        } catch (err) {
+                            console.log(err.message);
+                            console.log("NO LAST APPLICANT");
+                            functions.applicantUpdateListeners()
+                        }
+                    });
                     $rootScope.allApplicants.push(snapshot.val());
                     functions.refresh();
                 });
+            },
+            projectUpdateListeners: function () {
 
-                firebase.database().ref("HRMS_Storage/Applicants/").on("child_removed", function (snapshot) {
-                    $rootScope.allApplicants.splice($rootScope.allApplicants.indexOf(snapshot.val()), 1);
-                    functions.refresh();
-                });
-
-                firebase.database().ref("HRMS_Storage/Applicants/").on("child_changed", function (snapshot) {
-                    for (var index = 0; index < $rootScope.allApplicants.length; index++) {
-                        if ($rootScope.allApplicants[index].userkey === snapshot.val().userkey) {
-                            $rootScope.allApplicants[index] = snapshot.val();
-                            try {
-                                if ($rootScope.selectedApplicant.userkey === snapshot.val().userkey) {
-                                    $rootScope.selectedApplicant = snapshot.val();
-                                    localStorage.setItem("selectedApplicant", JSON.stringify($rootScope.selectedApplicant));
-                                }
-                            } catch (err) {
-                                console.log("No selected applicant");
-                            }
-                            break;
-                        }
-                    }
-                    functions.refresh();
-                });
             },
             projectListeners: function () {
                 $rootScope.projectNotifCounter = 0;
@@ -137,17 +172,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                     $rootScope.projectNotifications.push(snapshot.val());
                     functions.refresh();
                 });
-
                 firebase.database().ref("HRMS_Storage/Projects/").on("child_added", function (snapshot) {
                     $rootScope.allProjects.push(snapshot.val());
                     functions.refresh();
                 });
-
                 firebase.database().ref("HRMS_Storage/Projects/").on("child_removed", function (snapshot) {
                     $rootScope.allProjects.splice($rootScope.allProjects.indexOf(snapshot.val()), 1);
                     functions.refresh();
                 });
-
                 firebase.database().ref("HRMS_Storage/Projects/").on("child_changed", function (snapshot) {
                     for (var index = 0; index < $rootScope.allProjects.length; index++) {
                         if ($rootScope.allProjects[index].projectkey === snapshot.val().projectkey) {
@@ -200,10 +232,49 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                     functions.refresh();
                 });
             },
+            employeeUpdateListeners: function () {
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(decrypted), 1);
+                    });
+                    functions.refresh();
+                });
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
+                    console.log("EMPLOYEE CHANGED");
+                    console.log(snapshot.val());
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        console.log(decrypted);
+                        for (var index = 0; index < $rootScope.allEmployees.length; index++) {
+                            if ($rootScope.allEmployees[index].userkey === decrypted.userkey) {
+                                $rootScope.allEmployees[index] = decrypted;
+                                try {
+                                    if ($rootScope.selectedEmployee.userkey === decrypted.userkey) {
+                                        $rootScope.selectedEmployee = decrypted;
+                                        localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
+                                    }
+                                } catch (err) {
+                                    console.log("No selected employee");
+                                }
+                                try {
+                                    if ($rootScope.userlogged.userkey === decrypted.userkey) {
+                                        $rootScope.userlogged = decrypted;
+                                        localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
+                                    }
+                                } catch (err) {
+                                    console.log("No logged in user");
+                                }
+                                break;
+                            }
+                        }
+                    })
+                    functions.refresh();
+                });
+            },
             employeeListeners: function () {
                 $rootScope.empNotifCounter = 0;
                 $rootScope.employeeNotifications = [];
                 $rootScope.allEmployees = [];
+                $rootScope.lastEmployee;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Employees/").on("child_added", function (snapshot) {
                     if (!(snapshot.val().seen)) {
@@ -213,41 +284,29 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
                     $rootScope.employeeNotifications.push(snapshot.val());
                     functions.refresh();
                 });
-
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
-                    $rootScope.allEmployees.push(snapshot.val());
-                    functions.refresh();
-                });
-
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
-                    $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(snapshot.val()), 1);
-                    functions.refresh();
-                });
-
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
-                    for (var index = 0; index < $rootScope.allEmployees.length; index++) {
-                        if ($rootScope.allEmployees[index].userkey === snapshot.val().userkey) {
-                            $rootScope.allEmployees[index] = snapshot.val();
-                            try {
-                                if ($rootScope.selectedEmployee.userkey === snapshot.val().userkey) {
-                                    $rootScope.selectedEmployee = snapshot.val();
-                                    localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
-                                }
-                            } catch (err) {
-                                console.log("No selected employee");
-                            }
-                            try {
-                                if ($rootScope.userlogged.userkey === snapshot.val().userkey) {
-                                    $rootScope.userlogged = snapshot.val();
-                                    localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
-                                }
-                            } catch (err) {
-                                console.log("No logged in user");
-                            }
-                            break;
-                        }
+                firebase.database().ref("HRMS_Storage/Employees/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
+                    try {
+                        $rootScope.lastEmployee = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
+                    } catch (err) {
+                        console.log("NO EMPLOYEES YET");
                     }
-                    functions.refresh();
+                });
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        $rootScope.allEmployees.push(decrypted);
+                        functions.refresh();
+                        try{
+                            if (snapshot.val().userkey === $rootScope.lastEmployee.userkey) {
+                                console.log("ALL EMPLOYEES");
+                                console.log($rootScope.allEmployees);
+                                functions.employeeUpdateListeners();
+                            }
+                        }catch(err){
+                            console.log(err.message);
+                            console.log("NO LAST APPLICANT");
+                            functions.employeeUpdateListeners();
+                        }
+                    });
                 });
             },
             refresh: function () {
@@ -257,11 +316,23 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
             },
             jsInitialize: function () {
                 M.AutoInit();
+            },
+            decrypt: function (object, callback) {
+                $http({
+                    url: $rootScope.baseURL + "secure-api/decrypt",
+                    method: "POST",
+                    data: {
+                        token: localStorage.getItem("token"),
+                        signature: JSON.stringify($rootScope.userlogged),
+                        object: object
+                    }
+                }).then(function (response) {
+                    callback(response.data.object);
+                });
             }
         }
 
         functions.initialize();
-
         $rootScope.startJS = function () {
             feather.replace();
             $(function () {
@@ -275,7 +346,6 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
             });
             return true;
         }
-
         $rootScope.rootfunctions = {
             isEmpty: function (object) {
                 console.log(JSON.stringify(object));
@@ -283,30 +353,3 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
             }
         }
     });
-
-// .filter('custom', function () {
-//     return function (input, search) {
-//         if (!input) return input;
-//         if (!search) return input;
-//         var expected = ('' + search).toLowerCase();
-//         var result = {};
-//         angular.forEach(input, function (value, key) {
-//             var actual = ('' + value).toLowerCase();
-//             if (actual.indexOf(expected) !== -1) {
-//                 result[key] = value;
-//             }
-//         });
-//         return result;
-//     }
-// })
-
-// .filter('singlefilter', function ($filter){                                                           
-//     return function(rows, searchString){  
-//       var split = searchString.split(" ");                                                                       
-//       var array_of_matches = _.map(split, function (subString){   
-//         return $filter('filter')(rows, subStr, false)                                                         
-//       });                                                                                                  
-//       return _.uniq(_.flatten(array_of_matches));                                                          
-//     };                                                                                                     
-
-//   });

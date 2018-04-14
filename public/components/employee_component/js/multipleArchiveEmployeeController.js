@@ -48,7 +48,8 @@ angular.module("app").controller("multipleAddEmployeeCtrl", function ($scope, $r
                 method: "POST",
                 data: {
                     employees: $rootScope.multipleArchiveEmployee,
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
                 $rootScope.showMultipleArchiveEmployeeModal = false;
