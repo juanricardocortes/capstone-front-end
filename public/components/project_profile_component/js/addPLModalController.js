@@ -35,16 +35,22 @@ angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope,
             var checker = 0;
             for (var index = 0; index < $rootScope.allEmployees.length; index++) {
                 for (project in $rootScope.allEmployees[index].files.projects) {
-                    if (moment(moment()).isSameOrAfter($rootScope.allEmployees[index].files.projects[project].dates.startDate) &&
-                        moment(moment()).isSameOrBefore($rootScope.allEmployees[index].files.projects[project].dates.endDate)) {
+                    if (moment($rootScope.selectedProject.schedule.dates.startDate).isSameOrAfter($rootScope.allEmployees[index].files.projects[project].dates.startDate) &&
+                        moment($rootScope.selectedProject.schedule.dates.startDate).isSameOrBefore($rootScope.allEmployees[index].files.projects[project].dates.endDate) ||
+                        moment($rootScope.selectedProject.schedule.dates.endDate).isSameOrAfter($rootScope.allEmployees[index].files.projects[project].dates.startDate) &&
+                        moment($rootScope.selectedProject.schedule.dates.endDate).isSameOrBefore($rootScope.allEmployees[index].files.projects[project].dates.endDate)) {
                         checker += 1;
                         break;
                     }
                 }
             }
             if (checker === $rootScope.allEmployees.length) {
+                console.log("CHECKER " + checker);
+                console.log("LENGTH:  " + $rootScope.allEmployees.length)
                 return true;
             } else {
+                console.log("CHECKER " + checker);
+                console.log("LENGTH:  " + $rootScope.allEmployees.length)
                 return false;
             }
         },
@@ -81,6 +87,7 @@ angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope,
                     method: "POST",
                     data: {
                         token: localStorage.getItem("token"),
+                        signature: JSON.stringify($rootScope.userlogged),
                         projectkey: $rootScope.selectedProject.projectkey,
                         employee: employee,
                         project: $rootScope.selectedProject

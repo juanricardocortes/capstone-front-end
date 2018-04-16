@@ -1,1 +1,113 @@
-<h1>Profile</h1>
+<div class="profile-container">
+    <div class="employee-picture-container z-depth-5">
+        <img class="employee-picture-specs" src="{{userlogged.files.image}}">
+    </div>
+    <div class="employee-profile-space"></div>
+    <div class="employee-details-container z-depth-5 scroll">
+        <div class="employee-information">
+            <h4>Personal Information</h4>
+            <div class="employee-information-content">
+                <div class="employee-content-titles">
+                    <ul class="collection">
+                        <li class="collection-item item-title">Employee ID</li>
+                        <li class="collection-item item-title">Email</li>
+                        <li class="collection-item item-title">First Name</li>
+                        <li class="collection-item item-title">Last Name</li>
+                        <li class="collection-item item-title">Address</li>
+                        <li class="collection-item item-title">Contact Number</li>
+                        <li class="collection-item item-title">Birth Date</li>
+                        <li class="collection-item item-title">Date Hired</li>
+                    </ul>
+                </div>
+                <div class="employee-content-data">
+                    <ul class="collection">
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Employee ID', userlogged.files.employeeid)">{{userlogged.files.employeeid}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', userlogged.email)">{{userlogged.email}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', userlogged.files.firstname)">{{userlogged.files.firstname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', userlogged.files.lastname)">{{userlogged.files.lastname}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', userlogged.files.address)">{{userlogged.files.address}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', userlogged.files.contact)">{{userlogged.files.contact}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Birth Date', userlogged.files.birthdate)">{{userlogged.files.birthdate}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Date Hired', userlogged.files.datehired)">{{userlogged.files.datehired}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="employee-projects">
+            <h4>Projects</h4>
+            <div class="employee-information-content">
+                <ul class="collection">
+                    <li ng-if="!userlogged.files.projects" class="collection-item">
+                        <i class="graytext">No projects yet.</i>
+                    </li>
+                    <li ng-if="userlogged.files.projects" ng-repeat="(key, value) in userlogged.files.projects" class="collection-item">
+                        <b>{{value.projectName}}</b>
+                        <i ng-if="value.isProjectLead">(Project Lead)</i>
+                        <div class="employee-information-content">
+                            <div class="employee-content-titles">
+                                <ul class="collection">
+                                    <li class="collection-item item-title">Position</li>
+                                    <li class="collection-item item-title">Start Date</li>
+                                    <li class="collection-item item-title">End Date</li>
+                                    <li class="collection-item item-title">Shift</li>
+                                </ul>
+                            </div>
+                            <div class="employee-content-data">
+                                <ul class="collection">
+                                    <li ng-if="value.role" class="collection-item">{{value.role}}</li>
+                                    <li ng-if="!value.role" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="value.dates.startDate" class="collection-item">{{value.dates.startDate}}</li>
+                                    <li ng-if="!value.dates.startDate" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="value.dates.endDate" class="collection-item">{{value.dates.endDate}}</li>
+                                    <li ng-if="!value.dates.endDate" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="value.shiftdetails.time" class="collection-item">{{value.shiftdetails.time}}</li>
+                                    <li ng-if="!value.shiftdetails.time" class="collection-item"><i class="graytext">None</i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="employee-projects">
+                <h4>Leaves</h4>
+                <div class="employee-information-content">
+                    <ul ng-if="userloggedHasLeaves" class="collection">
+                        <li class="collection-item" ng-repeat="leave in allLeaves" ng-if="leave.request.employee.userkey === userlogged.userkey">
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="one-fifth">
+                                        <ul class="collection">
+                                            <li class="collection-item item-title">Employee</li>
+                                            <li class="collection-item item-title">Type</li>
+                                            <li class="collection-item item-title">Reason</li>
+                                            <li class="collection-item item-title">Requested Dates</li>
+                                            <li class="collection-item item-title">Affected Dates</li>
+                                            <li class="collection-item item-title">Project</li>
+                                            <li class="collection-item item-title">Status</li>
+                                        </ul>
+                                    </div>
+                                    <div class="four-fifths">
+                                        <ul class="collection">
+                                            <li class="collection-item">{{leave.request.employee.email}}</li>
+                                            <li class="collection-item">{{leave.request.request.type}}</li>
+                                            <li class="collection-item">{{leave.request.request.reason}}</li>
+                                            <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
+                                            <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
+                                            <li class="collection-item">{{leave.projectname}}</li>
+                                            <li class="collection-item">{{leave.request.status}}</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul ng-if="!userloggedHasLeaves" class="collection">
+                        <li class="collection-item">
+                            <i class="graytext">No leaves yet</i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div>

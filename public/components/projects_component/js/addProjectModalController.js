@@ -49,6 +49,7 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
             $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 15,
+                format: 'yyyy-mm-dd',
                 min: moment(),
                 closeOnSelect: true
             });
@@ -81,6 +82,7 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                     url: $rootScope.baseURL + "secure-api/addProject",
                     method: "POST",
                     data: {
+                        signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),
                         project: {
                             name: $scope.addProject_name

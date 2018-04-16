@@ -39,6 +39,7 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
                     method: "POST",
                     data: {
                         token: localStorage.getItem("token"),
+                        signature: JSON.stringify($rootScope.userlogged),
                         project: $rootScope.selectedProject,
                         employee: $rootScope.userlogged,
                         shift: JSON.parse($scope.addSlot_shift),

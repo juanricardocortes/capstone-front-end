@@ -44,6 +44,7 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
                     url: $rootScope.baseURL + "secure-api/addShift",
                     method: "POST",
                     data: {
+                        signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),
                         project: $rootScope.selectedProject,
                         employee: $rootScope.userlogged,

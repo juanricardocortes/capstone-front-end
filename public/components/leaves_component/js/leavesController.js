@@ -29,6 +29,21 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             $('#calendar').fullCalendar({
                 schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                 navLinks: true,
+                eventLimit: true,
+                views: {
+                    basic: {
+                        displayEventEnd: true
+                    },
+                    agenda: {
+                        displayEventEnd: true
+                    },
+                    week: {
+                        displayEventEnd: true
+                    },
+                    day: {
+                        displayEventEnd: true
+                    }
+                },
                 header: {
                     left: 'title'
                 },
@@ -49,6 +64,8 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             $scope.employeesShown = false;
             $scope.membersShown = false;
             $rootScope.requestsShown = false;
+            $rootScope.toggleAllLeaveEvents = true;
+            $scope.leaveStatusSwitchText = "Requested leaves";
         },
         getActiveSideBarLink: function () {
             $rootScope.dashboardactive = false;
@@ -62,7 +79,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             setTimeout(function () {
                 $scope.$apply();
             });
-        },
+        }
     }
     functions.onInit();
 
@@ -94,10 +111,22 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             $scope.employeesShown = false;
             $scope.membersShown = false;
             $rootScope.requestsShown = false;
+        },
+        toggleAllLeaveEvents: function () {
+            console.log("GETTING EVENTS");
+            console.log($rootScope.allLeaveEvents);
             setTimeout(function () {
                 $scope.$apply();
-                $('#calendar').fullCalendar('option', 'contentHeight', 700);
-                $('#calendar').fullCalendar('option', 'height', 700);
+                try {
+                    $('#calendar').fullCalendar('removeEventSource', $rootScope.allLeaveEvents);
+                } catch (err) {
+                    console.log(err.message);
+                }
+                $('#calendar').fullCalendar('addEventSource', $rootScope.allLeaveEvents);
+            });
+            setTimeout(function () {
+                $rootScope.toggleAllLeaveEvents = false;
+                $scope.$apply();
             });
         },
         acknowledgeLeave: function (leave, isAccepted) {
@@ -105,6 +134,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 url: $rootScope.baseURL + "secure-api/acknowledgeLeave",
                 method: "POST",
                 data: {
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
                     leave: leave,
                     isAccepted: isAccepted
@@ -124,6 +154,7 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 url: $rootScope.baseURL + "secure-api/forwardLeave",
                 method: "POST",
                 data: {
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
                     name: name,
                     projectkey: projectkey,
@@ -139,6 +170,14 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 });
                 functions.refresh();
             });
+        },
+        toggleLeaveStatus: function () {
+            if ($rootScope.leaveStatusToggle) {
+                $scope.leaveStatusSwitchText = "Requested leaves";
+            } else {
+                $scope.leaveStatusSwitchText = "Acknowledged leaves";
+            }
+            $rootScope.leaveStatusToggle = !$rootScope.leaveStatusToggle;
         },
         hasCurrentProject: function () {
             var hasProject = false;
@@ -160,6 +199,30 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
                 return false;
             }
         },
+        hasProject: function () {
+            var isTrue = true;
+            for (var index = 0; index < $rootScope.allProjects.length; index++) {
+                if ($rootScope.userlogged.userkey === $rootScope.allProjects[index].projectlead.userkey) {
+                    isTrue = false;
+                }
+            }
+            return isTrue;
+        },
+        hasForwardedLeaves: function () {
+            var hasFLeaves = false;
+            var index;
+            for (index = 0; index < $rootScope.allLeaves.length; index++) {
+                if($rootScope.allLeaves[index].request.isAcknowledgedByPL && !$rootScope.allLeaves[index].request.isAcknowledgedByHR) {
+                    hasFLeaves = !hasFLeaves;
+                    break;
+                }
+            }
+            index++;
+            if(index === $rootScope.allLeaves.length){
+                hasFLeaves = true;
+            }
+            return hasFLeaves;
+        },
         checkIfAllAck: function (requests) {
             var checker = 0;
             var size = 0;
@@ -171,24 +234,45 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             }
             if (checker === size) {
                 return true;
+            } else if (checker === 0) {
+                return false;
             } else {
                 return false;
             }
         },
-        checkIfNoAck: function (requests) {
+        checkIfSomeAckHR: function () {
             var checker = 0;
-            var size = 0;
-            for (request in requests) {
-                size += 1;
-                if ((requests[request].isAcknowledgedByPL)) {
+            var index;
+            for (index = 0; index < $rootScope.allLeaves.length; index++) {
+                if ($rootScope.allLeaves[index].request.isAcknowledgedByHR) {
                     checker += 1;
                 }
             }
             if (checker === 0) {
-                return true;
-            } else {
                 return false;
+            } else {
+                return true;
             }
+        },
+        hasRequests: function (project) {
+            var hasRequests = false;
+            for (request in project.requests) {
+                hasRequests = true;
+            }
+            return hasRequests;
+
+        },
+        switchProjectToggle: function (project) {
+            project.leaveToggle = !project.leaveToggle;
+            functions.refresh();
+        },
+        initProjectToggle: function (project) {
+            project.leaveToggle = false;
+            functions.refresh();
+            return true;
+        },
+        initLeaveStatusToggle: function () {
+            $rootScope.leaveStatusToggle = false;
         },
         showEmployees: function () {
             $scope.calendarShown = false;

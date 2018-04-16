@@ -49,6 +49,7 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
         startLocalJS: function () {
             $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
+                format: 'yyyy-mm-dd',
                 selectYears: 15,
                 min: moment(),
                 closeOnSelect: true
@@ -83,6 +84,7 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
                     url: $rootScope.baseURL + "secure-api/requestLeave",
                     method: "POST",
                     data: {
+                        signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),
                         employee: $rootScope.userlogged,
                         projects: $rootScope.allProjects,

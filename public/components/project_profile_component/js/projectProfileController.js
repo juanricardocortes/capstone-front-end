@@ -45,6 +45,7 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
                 url: $rootScope.baseURL + "secure-api/getEmployee",
                 method: "POST",
                 data: {
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
                     userkey: employee.userkey
                 }

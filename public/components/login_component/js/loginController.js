@@ -92,7 +92,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                     $rootScope.userlogged = response.data.user;
                     localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
                     localStorage.setItem("token", response.data.token);
-                    window.location.href = "#!/dashboard";
+                    window.location.href = "#!/";
                 } else {
                     M.toast({
                         html: "Invalid code",

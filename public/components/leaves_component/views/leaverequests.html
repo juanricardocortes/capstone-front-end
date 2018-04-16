@@ -33,6 +33,13 @@
                         M
                     </a>
                 </div>
+                <div ng-show="employeesShown" ng-init="functions.initLeaveStatusToggle()" class="switch graytext">
+                    <i>{{leaveStatusSwitchText}}</i>
+                    <label>
+                        <input type="checkbox" ng-model="leaveStatusToggle" ng-change="functions.toggleLeaveStatus()">
+                        <span class="lever"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="middle-section z-depth-5">
@@ -51,22 +58,12 @@
                 <div ng-show="calendarShown" class="auto-fit-container">
                     <div id='calendar' class="padding-content">
                     </div>
+                    <div ng-if="toggleAllLeaveEvents" ng-init="functions.toggleAllLeaveEvents()"></div>
                 </div>
                 <div ng-if="employeesShown" class="padding-content">
                     <ul class="collection">
-                        <li ng-repeat="leave in allLeaves | filter: {projectname:employeesFilter}" ng-if="allLeaves.length>0" class="collection-item">
-                            <div class="one-half">
-                                <p>
-                                    <b>{{leave.projectname}}</b>
-                                </p>
-                            </div>
-                            <div class="one-half">
-                                <div class="input-field">
-                                    <i data-feather="search" class="prefix"></i>
-                                    <input ng-model="leave.search" type="text" class="validate z-depth-5">
-                                    <label for="">Search</label>
-                                </div>
-                            </div>
+                        <li ng-repeat="leave in allLeaves | filter: employeesFilter" ng-if="allLeaves.length>0 && (leaveStatusToggle === leave.request.isAcknowledgedByHR) && leave.request.isAcceptedByPL"
+                            class="collection-item">
                             <ul class="collection">
                                 <li class="collection-item">
                                     <div class="one-fifth">
@@ -76,6 +73,7 @@
                                             <li class="collection-item item-title">Reason</li>
                                             <li class="collection-item item-title">Requested Dates</li>
                                             <li class="collection-item item-title">Affected Dates</li>
+                                            <li class="collection-item item-title">Project</li>
                                         </ul>
                                     </div>
                                     <div class="four-fifths">
@@ -85,9 +83,10 @@
                                             <li class="collection-item">{{leave.request.request.reason}}</li>
                                             <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
                                             <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
+                                            <li class="collection-item">{{leave.projectname}}</li>
                                         </ul>
                                     </div>
-                                    <div class="put-right">
+                                    <div ng-if="!leaveStatusToggle" class="put-right">
                                         <a ng-click="functions.acknowledgeLeave(leave, false)" class="btn danger-button">
                                             <i class="material-icons left">clear</i>Decline</a>
                                         <a ng-click="functions.acknowledgeLeave(leave, true)" class="btn success-button">
@@ -96,33 +95,41 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="collection-item" ng-if="!(allLeaves.length>0)"><i class="graytext">No forwarded leave requests yet</i></li>
+                        <li class="collection-item" ng-if="(!allLeaves.length>0  || !functions.hasForwardedLeaves()) && !leaveStatusToggle">
+                            <i class="graytext">No forwarded leave requests yet</i>
+                        </li>
+                        <li class="collection-item" ng-if="(!allLeaves.length>0 || !functions.checkIfSomeAckHR()) && leaveStatusToggle">
+                            <i class="graytext">No acknowledged leave requests yet</i>
+                        </li>
                     </ul>
                 </div>
                 <div ng-if="membersShown" class="padding-content">
                     <ul class="collection">
-                        <li class="collection-item" ng-repeat="project in allProjects" ng-if="(project.projectlead.userkey === userlogged.userkey) && functions.isCurrentProject(project) && functions.hasCurrentProject()">
+                        <li class="collection-item" ng-repeat="project in allProjects | filter: {name:membersFilter}" ng-init="functions.initProjectToggle(project)"
+                            ng-if="(project.projectlead.userkey === userlogged.userkey)">
                             <div class="row">
                                 <div class="one-half">
-                                    <p>
-                                        <b>{{project.name}}</b>
-                                    </p>
+                                    <div class="input-field">
+                                        <i data-feather="search" class="prefix"></i>
+                                        <input ng-model="project.search" type="text" class="validate z-depth-5">
+                                        <label for="">Search {{project.name}}</label>
+                                    </div>
                                 </div>
                                 <div class="one-half">
                                     <div class="put-right">
                                         <div class="switch graytext">
-                                            <i></i>
+                                            <i>{{project.name}}</i>
                                             <label>
-                                                <input type="checkbox" ng-model="$root.leaveToggle" ng-change="functions.toggleArchiveEmployees()">
+                                                <input type="checkbox" ng-model="project.leaveToggle">
                                                 <span class="lever"></span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div ng-repeat="request in project.requests | toArray:false | filter:membersFilter" ng-if="project.requests && (request.isAcknowledgedByPL === $root.leaveToggle)">
+                            <div ng-repeat="request in project.requests | toArray:false | filter:project.search" ng-if="functions.hasRequests(project) && (request.isAcknowledgedByPL === project.leaveToggle)">
                                 <ul class="collection">
-                                    <li class="collection-item">
+                                    <li class="collection-item" ng-if="request.isAcknowledgedByPL === project.leaveToggle">
                                         <div class="one-fifth">
                                             <ul class="collection">
                                                 <li class="collection-item item-title">Employee</li>
@@ -141,7 +148,7 @@
                                                 <li class="collection-item">{{request.affected.startDate}} - {{request.affected.endDate}}</li>
                                             </ul>
                                         </div>
-                                        <div ng-if="!$root.leaveToggle" class="put-right">
+                                        <div ng-if="!project.leaveToggle" class="put-right">
                                             <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, false)" class="btn danger-button">
                                                 <i class="material-icons left">clear</i>Decline</a>
                                             <a ng-click="functions.forwardLeave(project.name, project.projectkey, request, true)" class="btn success-button">
@@ -150,23 +157,20 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div ng-if="!project.requests || (!(functions.checkIfNoAck(project.requests))) && !$root.leaveToggle">
+                            <div ng-if="(!functions.hasRequests(project) || functions.checkIfAllAck(project.requests)) && !project.leaveToggle">
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <i class="graytext">No leave requests for this project yet</i>
                                     </li>
                                 </ul>
                             </div>
-                            <div ng-if="!project.requests || functions.checkIfNoAck(project.requests) && $root.leaveToggle">
+                            <div ng-if="(!functions.hasRequests(project) || !functions.checkIfAllAck(project.requests)) && project.leaveToggle">
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <i class="graytext">No forwarded leave requests for this project yet</i>
                                     </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li class="collection-item" ng-if="!functions.hasCurrentProject()">
-                            <i class="graytext">You have no current projects.</i>
                         </li>
                     </ul>
                 </div>
@@ -182,8 +186,8 @@
                     data-position="top" data-tooltip="Employees">
                     <i data-feather="users" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showMembers()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="Project Members">
+                <a ng-show="$root.isProjectLead" ng-click="functions.showMembers()" class="btn-floating btn-large info-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Project Members">
                     <i data-feather="package" class="center-feather-icon"></i>
                 </a>
                 <a ng-click="functions.showCalendar()" class="btn-floating btn-large info-button z-depth-5 tooltipped" data-position="top"

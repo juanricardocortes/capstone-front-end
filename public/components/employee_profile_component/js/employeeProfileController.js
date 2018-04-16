@@ -58,6 +58,17 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
     $scope.functions = {
         displayInformation: function (title, message) {
             swal(title, message);
+        },
+        checkIfHasLeaves: function () {
+            console.log($rootScope.leavesDataPopulated);
+            $rootScope.selectedHasLeaves = false;
+            for (var index = 0; index < $rootScope.allLeaves.length; index++) {
+                if($rootScope.allLeaves[index].request.employee.userkey === $rootScope.selectedEmployee.userkey) {
+                    $rootScope.selectedHasLeaves = true;
+                    break;   
+                }
+            }
+            functions.refresh();
         }
     }
 });

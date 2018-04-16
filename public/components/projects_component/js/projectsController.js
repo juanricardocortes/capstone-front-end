@@ -67,6 +67,7 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
                 method: "POST",
                 data: {
                     projects: [project],
+                    signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token")
                 }
             }).then(function (response) {

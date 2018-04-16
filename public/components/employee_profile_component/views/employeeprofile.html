@@ -7,66 +7,129 @@
         <div class="employee-information">
             <h4>Personal Information</h4>
             <div class="employee-information-content">
-                <div class="employee-content-titles">
-                    <ul class="collection">
-                        <li class="collection-item item-title">Employee ID</li>
-                        <li class="collection-item item-title">Email</li>
-                        <li class="collection-item item-title">First Name</li>
-                        <li class="collection-item item-title">Last Name</li>
-                        <li class="collection-item item-title">Address</li>
-                        <li class="collection-item item-title">Contact Number</li>
-                        <li class="collection-item item-title">Birth Date</li>
-                        <li class="collection-item item-title">Date Hired</li>
-                    </ul>
-                </div>
-                <div class="employee-content-data">
-                    <ul class="collection">
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Employee ID', selectedEmployee.files.employeeid)">{{selectedEmployee.files.employeeid}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', selectedEmployee.email)">{{selectedEmployee.email}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', selectedEmployee.files.firstname)">{{selectedEmployee.files.firstname}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', selectedEmployee.files.lastname)">{{selectedEmployee.files.lastname}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', selectedEmployee.files.address)">{{selectedEmployee.files.address}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', selectedEmployee.files.contact)">{{selectedEmployee.files.contact}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Birth Date', selectedEmployee.files.birthdate)">{{selectedEmployee.files.birthdate}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Date Hired', selectedEmployee.files.datehired)">{{selectedEmployee.files.datehired}}</li>
-                    </ul>
-                </div>
+                <ul class="collection">
+                    <li class="collection-item">
+                        <div class="employee-content-titles">
+                            <ul class="collection">
+                                <li class="collection-item item-title">Employee ID</li>
+                                <li class="collection-item item-title">Email</li>
+                                <li class="collection-item item-title">First Name</li>
+                                <li class="collection-item item-title">Last Name</li>
+                                <li class="collection-item item-title">Address</li>
+                                <li class="collection-item item-title">Contact Number</li>
+                                <li class="collection-item item-title">Birth Date</li>
+                                <li class="collection-item item-title">Date Hired</li>
+                            </ul>
+                        </div>
+                        <div class="employee-content-data">
+                            <ul class="collection">
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Employee ID', selectedEmployee.files.employeeid)">{{selectedEmployee.files.employeeid}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', selectedEmployee.email)">{{selectedEmployee.email}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', selectedEmployee.files.firstname)">{{selectedEmployee.files.firstname}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', selectedEmployee.files.lastname)">{{selectedEmployee.files.lastname}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', selectedEmployee.files.address)">{{selectedEmployee.files.address}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', selectedEmployee.files.contact)">{{selectedEmployee.files.contact}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Birth Date', selectedEmployee.files.birthdate)">{{selectedEmployee.files.birthdate}}</li>
+                                <li class="collection-item item-clickable" ng-click="functions.displayInformation('Date Hired', selectedEmployee.files.datehired)">{{selectedEmployee.files.datehired}}</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="employee-projects">
             <h4>Projects</h4>
             <div class="employee-information-content">
                 <ul class="collection">
-                    <li ng-if="!selectedEmployee.files.projects" class="collection-item">
-                        <i class="graytext">No projects yet.</i>
-                    </li>
-                    <li ng-if="selectedEmployee.files.projects" ng-repeat="(key, value) in selectedEmployee.files.projects" class="collection-item">
-                        <b>{{value.projectName}}</b>
-                        <i ng-if="value.isProjectLead">(Project Lead)</i>
-                        <div class="employee-information-content">
-                            <div class="employee-content-titles">
-                                <ul class="collection">
-                                    <li class="collection-item item-title">Position</li>
-                                    <li class="collection-item item-title">Start Date</li>
-                                    <li class="collection-item item-title">End Date</li>
-                                    <li class="collection-item item-title">Shift</li>
-                                </ul>
-                            </div>
-                            <div class="employee-content-data">
-                                <ul class="collection">
-                                    <li ng-if="value.role" class="collection-item">{{value.role}}</li>
-                                    <li ng-if="!value.role" class="collection-item"><i class="graytext">None</i></li>
-                                    <li ng-if="value.dates.startDate" class="collection-item">{{value.dates.startDate}}</li>
-                                    <li ng-if="!value.dates.startDate" class="collection-item"><i class="graytext">None</i></li>
-                                    <li ng-if="value.dates.endDate" class="collection-item">{{value.dates.endDate}}</li>
-                                    <li ng-if="!value.dates.endDate" class="collection-item"><i class="graytext">None</i></li>
-                                    <li ng-if="value.shiftdetails.time" class="collection-item">{{value.shiftdetails.time}}</li>
-                                    <li ng-if="!value.shiftdetails.time" class="collection-item"><i class="graytext">None</i></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <li class="collection-item">
+                        <ul class="collection">
+                            <li ng-if="!selectedEmployee.files.projects" class="collection-item">
+                                <i class="graytext">No projects yet.</i>
+                            </li>
+                            <li ng-if="selectedEmployee.files.projects" ng-repeat="(key, value) in selectedEmployee.files.projects" class="collection-item">
+                                <b>{{value.projectName}}</b>
+                                <i ng-if="value.isProjectLead">(Project Lead)</i>
+                                <div class="employee-information-content">
+                                    <div class="employee-content-titles">
+                                        <ul class="collection">
+                                            <li class="collection-item item-title">Position</li>
+                                            <li class="collection-item item-title">Start Date</li>
+                                            <li class="collection-item item-title">End Date</li>
+                                            <li class="collection-item item-title">Shift</li>
+                                        </ul>
+                                    </div>
+                                    <div class="employee-content-data">
+                                        <ul class="collection">
+                                            <li ng-if="value.role" class="collection-item">{{value.role}}</li>
+                                            <li ng-if="!value.role" class="collection-item">
+                                                <i class="graytext">None</i>
+                                            </li>
+                                            <li ng-if="value.dates.startDate" class="collection-item">{{value.dates.startDate}}</li>
+                                            <li ng-if="!value.dates.startDate" class="collection-item">
+                                                <i class="graytext">None</i>
+                                            </li>
+                                            <li ng-if="value.dates.endDate" class="collection-item">{{value.dates.endDate}}</li>
+                                            <li ng-if="!value.dates.endDate" class="collection-item">
+                                                <i class="graytext">None</i>
+                                            </li>
+                                            <li ng-if="value.shiftdetails.time" class="collection-item">{{value.shiftdetails.time}}</li>
+                                            <li ng-if="!value.shiftdetails.time" class="collection-item">
+                                                <i class="graytext">None</i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
+            </div>
+        </div>
+        <div class="employee-projects">
+            <h4>Leaves</h4>
+            <div class="employee-information-content">
+                <ul ng-if="leavesDataPopulated" ng-init="functions.checkIfHasLeaves()" class="collection">
+                    <li class="collection-item" ng-repeat="leave in allLeaves" ng-if="leave.request.employee.userkey === selectedEmployee.userkey && selectedHasLeaves">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <div class="one-fifth">
+                                    <ul class="collection">
+                                        <li class="collection-item item-title">Employee</li>
+                                        <li class="collection-item item-title">Type</li>
+                                        <li class="collection-item item-title">Reason</li>
+                                        <li class="collection-item item-title">Requested Dates</li>
+                                        <li class="collection-item item-title">Affected Dates</li>
+                                        <li class="collection-item item-title">Project</li>
+                                        <li class="collection-item item-title">Status</li>
+                                    </ul>
+                                </div>
+                                <div class="four-fifths">
+                                    <ul class="collection">
+                                        <li class="collection-item">{{leave.request.employee.email}}</li>
+                                        <li class="collection-item">{{leave.request.request.type}}</li>
+                                        <li class="collection-item">{{leave.request.request.reason}}</li>
+                                        <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
+                                        <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
+                                        <li class="collection-item">{{leave.projectname}}</li>
+                                        <li class="collection-item">{{leave.request.status}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="collection-item" ng-if="!selectedHasLeaves">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <i class="graytext">No leaves yet</i>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- <ul ng-if="!selectedHasLeaves" class="collection">
+                    <li class="collection-item">
+                        <i class="graytext">No leaves yet</i>
+                    </li>
+                </ul> -->
             </div>
         </div>
     </div>

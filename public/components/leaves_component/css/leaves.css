@@ -1,6 +1,7 @@
 .calendar-icons {
     margin-top: 2%;
     margin-right: 2%;
+    z-index: 998;
 }
 .view-calendar-icons {
     margin-top: -10% !important;
