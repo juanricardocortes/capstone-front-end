@@ -34,11 +34,13 @@
                                             <label for="pin">Confirmation Pin</label>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <i ng-click="functions.showForget()" class="hyperlink-text cursor-button">Forgot password?</i>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row"></div>
                             <div class="login-form-buttons">
-                                
                                 <a class="btn-floating btn-large authone-button z-depth-5" ng-show="!auth" ng-click="functions.login()">
                                     <i data-feather="log-in" class="center-feather-icon"></i>
                                 </a>
@@ -56,6 +58,9 @@
         </div>
         <div class="col s2"></div>
     </div>
+</div>
 
-
+<div class="row" ng-show="showForgotPassword">
+    <ng-include src="'./components/login_component/views/forgotpassword.html'">
+    </ng-include>
 </div>

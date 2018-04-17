@@ -55,13 +55,21 @@
                             <div class="employee-content-data">
                                 <ul class="collection">
                                     <li ng-if="value.role" class="collection-item">{{value.role}}</li>
-                                    <li ng-if="!value.role" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="!value.role" class="collection-item">
+                                        <i class="graytext">None</i>
+                                    </li>
                                     <li ng-if="value.dates.startDate" class="collection-item">{{value.dates.startDate}}</li>
-                                    <li ng-if="!value.dates.startDate" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="!value.dates.startDate" class="collection-item">
+                                        <i class="graytext">None</i>
+                                    </li>
                                     <li ng-if="value.dates.endDate" class="collection-item">{{value.dates.endDate}}</li>
-                                    <li ng-if="!value.dates.endDate" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="!value.dates.endDate" class="collection-item">
+                                        <i class="graytext">None</i>
+                                    </li>
                                     <li ng-if="value.shiftdetails.time" class="collection-item">{{value.shiftdetails.time}}</li>
-                                    <li ng-if="!value.shiftdetails.time" class="collection-item"><i class="graytext">None</i></li>
+                                    <li ng-if="!value.shiftdetails.time" class="collection-item">
+                                        <i class="graytext">None</i>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -70,44 +78,65 @@
             </div>
         </div>
         <div class="employee-projects">
-                <h4>Leaves</h4>
-                <div class="employee-information-content">
-                    <ul ng-if="userloggedHasLeaves" class="collection">
-                        <li class="collection-item" ng-repeat="leave in allLeaves" ng-if="leave.request.employee.userkey === userlogged.userkey">
-                            <ul class="collection">
-                                <li class="collection-item">
-                                    <div class="one-fifth">
-                                        <ul class="collection">
-                                            <li class="collection-item item-title">Employee</li>
-                                            <li class="collection-item item-title">Type</li>
-                                            <li class="collection-item item-title">Reason</li>
-                                            <li class="collection-item item-title">Requested Dates</li>
-                                            <li class="collection-item item-title">Affected Dates</li>
-                                            <li class="collection-item item-title">Project</li>
-                                            <li class="collection-item item-title">Status</li>
-                                        </ul>
-                                    </div>
-                                    <div class="four-fifths">
-                                        <ul class="collection">
-                                            <li class="collection-item">{{leave.request.employee.email}}</li>
-                                            <li class="collection-item">{{leave.request.request.type}}</li>
-                                            <li class="collection-item">{{leave.request.request.reason}}</li>
-                                            <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
-                                            <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
-                                            <li class="collection-item">{{leave.projectname}}</li>
-                                            <li class="collection-item">{{leave.request.status}}</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul ng-if="!userloggedHasLeaves" class="collection">
-                        <li class="collection-item">
-                            <i class="graytext">No leaves yet</i>
-                        </li>
-                    </ul>
-                </div>
+            <h4>Leaves</h4>
+            <div class="employee-information-content">
+                <ul class="collection">
+                    <li class="collection-item">
+                        <b>Remaining leaves</b>
+                        <div class="employee-information-content">
+                            <div class="one-fifth">
+                                <ul class="collection">
+                                    <li class="collection-item item-title" ng-repeat="(key, value) in userlogged.files.leaves">
+                                        {{value.leavekey}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="four-fifths">
+                                <ul class="collection">
+                                    <li class="collection-item" ng-repeat="(key, value) in userlogged.files.leaves">
+                                        {{value.remaining}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <ul ng-if="userloggedHasLeaves" class="collection">
+                            <li class="collection-item" ng-repeat="leave in allLeaves" ng-if="leave.request.employee.userkey === userlogged.userkey">
+                                <div class="one-fifth">
+                                    <ul class="collection">
+                                        <li class="collection-item item-title">Employee</li>
+                                        <li class="collection-item item-title">Type</li>
+                                        <li class="collection-item item-title">Reason</li>
+                                        <li class="collection-item item-title">Requested Dates</li>
+                                        <li class="collection-item item-title">Affected Dates</li>
+                                        <li class="collection-item item-title">Project</li>
+                                        <li class="collection-item item-title">Status</li>
+                                        <li class="collection-item item-title">Time</li>
+                                    </ul>
+                                </div>
+                                <div class="four-fifths">
+                                    <ul class="collection">
+                                        <li class="collection-item">{{leave.request.employee.email}}</li>
+                                        <li class="collection-item">{{leave.request.request.type}}</li>
+                                        <li class="collection-item">{{leave.request.request.reason}}</li>
+                                        <li class="collection-item">{{leave.request.request.startDate}} - {{leave.request.request.endDate}}</li>
+                                        <li class="collection-item">{{leave.request.affected.startDate}} - {{leave.request.affected.endDate}}</li>
+                                        <li class="collection-item">{{leave.projectname}}</li>
+                                        <li class="collection-item">{{leave.request.status}}</li>
+                                        <li class="collection-item">{{leave.request.time}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul ng-if="!userloggedHasLeaves" class="collection">
+                            <li class="collection-item">
+                                <i class="graytext">No leaves yet</i>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
+        </div>
     </div>
 </div>

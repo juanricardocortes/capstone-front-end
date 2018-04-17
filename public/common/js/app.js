@@ -1,4 +1,4 @@
-angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter'])
+angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'])
 
     .config(function ($routeProvider, blockUIConfig) {
         blockUIConfig.templateUrl = "common/views/blockui_spinner.html";

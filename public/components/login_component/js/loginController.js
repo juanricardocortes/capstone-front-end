@@ -32,6 +32,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
         },
         getInitialValues: function () {
             $scope.auth = false;
+            $rootScope.showForgotPassword = false;
         }
     }
 
@@ -82,7 +83,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                     user: $scope.user
                 }
             }).then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 if (response.data.valid) {
                     functions.authenticate();
                     $scope.auth = false;
@@ -102,11 +103,8 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
                 }
             });
         },
-        triggerForget: function () {
-            $scope.forgotPassword = true;
-        },
-        cancelForget: function () {
-            $scope.forgotPassword = false;
+        showForget: function () {
+            $rootScope.showForgotPassword = true;
         }
     }
 });
