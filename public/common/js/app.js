@@ -1,6 +1,6 @@
 angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'])
 
-    .config(function ($routeProvider, blockUIConfig) {
+    .config(function ($routeProvider, blockUIConfig ) {
         blockUIConfig.templateUrl = "common/views/blockui_spinner.html";
         $routeProvider
             .when("/", {
@@ -42,7 +42,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
             .when("/leaverequests", {
                 templateUrl: "components/leaves_component/views/leaverequests.html",
                 controller: "leaveRequestsCtrl"
-            });
+            })
     })
 
     .controller("mainCtrl", function ($rootScope, $scope, $http) {
@@ -52,10 +52,40 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 console.log("Main controller");
                 functions.getInitalValues();
                 functions.getUserLogged();
+                functions.startReportFormats();
                 functions.onListeners();
+            },
+            startReportFormats: function () {
+                $rootScope.reportStyles = {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        margin: [0, 0, 0, 10]
+                    },
+                    subtitle: {
+                        fontSize: 11,
+                        italics: true,
+                        color: 'gray',
+                        margin: [0, 0, 0, 10]
+                    },
+                    subheader: {
+                        fontSize: 16,
+                        bold: true,
+                        margin: [0, 10, 0, 5]
+                    },
+                    tableExample: {
+                        margin: [0, 5, 0, 15]
+                    },
+                    tableHeader: {
+                        bold: true,
+                        fontSize: 13,
+                        color: 'black'
+                    }
+                }
             },
             getInitalValues: function () {
                 $rootScope.baseURL = "http://127.0.0.1:9001/";
+                // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
                 $rootScope.currentPage = "Weltanchaung";
                 $rootScope.dashboardactive = true;
                 $rootScope.employeeactive = false;
@@ -66,11 +96,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.profileactive = false;
                 $rootScope.unseenNotifications = {};
                 $rootScope.dateToday = moment();
+                $rootScope.logExam = false;
+                $rootScope.inExamMain = (false || localStorage.getItem("inExamMain"));
             },
             onListeners: function () {
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
                         console.log(user);
+                        $rootScope.firebaseuser = user;
                         functions.projectListeners();
                         functions.applicantListeners();
                         functions.employeeListeners();
@@ -119,6 +152,15 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.applicantNotifications = [];
                 $rootScope.allApplicants = [];
                 $rootScope.lastApplicant;
+                $rootScope.applicantCount = 0;
+                $rootScope.applicantDataPopulated = false;
+                $rootScope.janCountApp = $rootScope.febCountApp =
+                    $rootScope.marCountApp = $rootScope.aprCountApp =
+                    $rootScope.mayCountApp = $rootScope.junCountApp =
+                    $rootScope.julCountApp = $rootScope.augCountApp =
+                    $rootScope.sepCountApp = $rootScope.octCountApp =
+                    $rootScope.novCountApp = $rootScope.decCountApp = 0;
+
 
                 firebase.database().ref("HRMS_Storage/Notifications/Applicants/").on("child_added", function (snapshot) {
                     if (!(snapshot.val().seen)) {
@@ -138,16 +180,20 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 firebase.database().ref("HRMS_Storage/Applicants/").on("child_added", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allApplicants.push(decrypted);
+                        $rootScope.applicantCount++;
+                        functions.getMonthBarGraphApp(decrypted);
                         functions.refresh();
                         try {
                             if (snapshot.val().userkey === $rootScope.lastApplicant.userkey) {
                                 console.log("ALL APPLICANTS");
                                 console.log($rootScope.allApplicants);
+                                $rootScope.applicantDataPopulated = true;
                                 functions.applicantUpdateListeners();
                             }
                         } catch (err) {
                             console.log(err.message);
                             console.log("NO LAST APPLICANT");
+                            $rootScope.applicantDataPopulated = true;
                             functions.applicantUpdateListeners()
                         }
                     });
@@ -193,13 +239,17 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.allProjects = [];
                 $rootScope.lastProject;
                 $rootScope.isProjectLead = false;
+                $rootScope.projectCount = 0;
+
                 firebase.database().ref("HRMS_Storage/Notifications/Projects/").on("child_added", function (snapshot) {
-                    if (!(snapshot.val().seen)) {
-                        $rootScope.projectNotifCounter++;
-                    }
-                    $rootScope.unseenNotifications["projects"] = $rootScope.projectNotifCounter;
-                    $rootScope.projectNotifications.push(snapshot.val());
-                    functions.refresh();
+                    functions.decrypt(snapshot.val(), function(decrypted){
+                        if (!(decrypted.seen)) {
+                            $rootScope.projectNotifCounter++;
+                        }
+                        $rootScope.unseenNotifications["projects"] = $rootScope.projectNotifCounter;
+                        $rootScope.projectNotifications.push(decrypted);
+                        functions.refresh();
+                    })
                 });
                 firebase.database().ref("HRMS_Storage/Projects/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
                     try {
@@ -218,6 +268,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                             console.log("NO PROJECT LEAD YET")
                         }
                         $rootScope.allProjects.push(decrypted);
+                        $rootScope.projectCount++;
                         functions.refresh();
                         try {
                             if (snapshot.val().projectkey === $rootScope.lastProject.projectkey) {
@@ -286,12 +337,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.leavesDataPopulated = false;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Leaves/").on("child_added", function (snapshot) {
-                    if (!(snapshot.val().seen)) {
-                        $rootScope.leaveNotifCounter++;
-                    }
-                    $rootScope.unseenNotifications["leaves"] = $rootScope.leaveNotifCounter;
-                    $rootScope.leaveNotifications.push(snapshot.val());
-                    functions.refresh();
+                    functions.decrypt(snapshot.val(), function(decrypted){
+                        if (!(decrypted.seen)) {
+                            $rootScope.leaveNotifCounter++;
+                        }
+                        $rootScope.unseenNotifications["leaves"] = $rootScope.leaveNotifCounter;
+                        $rootScope.leaveNotifications.push(decrypted);
+                        functions.refresh();
+                    })
                 });
                 firebase.database().ref("HRMS_Storage/Leaves/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
                     try {
@@ -378,6 +431,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.employeeNotifications = [];
                 $rootScope.allEmployees = [];
                 $rootScope.lastEmployee;
+                $rootScope.employeeCount = 0;
+                $rootScope.employeeDataPopulated = false;
+                $rootScope.janCountEmp = $rootScope.febCountEmp =
+                    $rootScope.marCountEmp = $rootScope.aprCountEmp =
+                    $rootScope.mayCountEmp = $rootScope.junCountEmp =
+                    $rootScope.julCountEmp = $rootScope.augCountEmp =
+                    $rootScope.sepCountEmp = $rootScope.octCountEmp =
+                    $rootScope.novCountEmp = $rootScope.decCountEmp = 0;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Employees/").on("child_added", function (snapshot) {
                     if (!(snapshot.val().seen)) {
@@ -397,20 +458,168 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allEmployees.push(decrypted);
+                        $rootScope.employeeCount++;
+                        functions.getMonthBarGraphEmp(decrypted);
                         functions.refresh();
                         try {
                             if (snapshot.val().userkey === $rootScope.lastEmployee.userkey) {
                                 console.log("ALL EMPLOYEES");
                                 console.log($rootScope.allEmployees);
+                                $rootScope.employeeDataPopulated = true;
                                 functions.employeeUpdateListeners();
                             }
                         } catch (err) {
                             console.log(err.message);
                             console.log("NO LAST EMPLOYEE");
+                            $rootScope.employeeDataPopulated = true;
                             functions.employeeUpdateListeners();
                         }
                     });
                 });
+            },
+            getMonthBarGraphEmp: function (employee) {
+                var yearhired = moment(employee.files.datehired, "dddd, MMMM Do YYYY, h:mm:ss a").format("YYYY");
+                var monthhired = moment(employee.files.datehired, "dddd, MMMM Do YYYY, h:mm:ss a").format("MMMM");
+                if (yearhired === moment().format("YYYY")) {
+                    switch (monthhired) {
+                        case "January":
+                            {
+                                $rootScope.janCountEmp++;
+                                break;
+                            }
+                        case "February":
+                            {
+                                $rootScope.febCountEmp++;
+                                break;
+                            }
+                        case "March":
+                            {
+                                $rootScope.marCountEmp++;
+                                break;
+                            }
+                        case "April":
+                            {
+                                $rootScope.aprCountEmp++;
+                                break;
+                            }
+                        case "May":
+                            {
+                                $rootScope.mayCountEmp++;
+                                break;
+                            }
+                        case "June":
+                            {
+                                $rootScope.junCountEmp++;
+                                break;
+                            }
+                        case "July":
+                            {
+                                $rootScope.julCountEmp++;
+                                break;
+                            }
+                        case "August":
+                            {
+                                $rootScope.augCountEmp++;
+                                break;
+                            }
+                        case "September":
+                            {
+                                $rootScope.sepCountEmp++;
+                                break;
+                            }
+                        case "October":
+                            {
+                                $rootScope.octCountEmp++;
+                                break;
+                            }
+                        case "November":
+                            {
+                                $rootScope.novCountEmp++;
+                                break;
+                            }
+                        case "December":
+                            {
+                                $rootScope.decCountEmp++;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                }
+            },
+            getMonthBarGraphApp: function (applicant) {
+                var yearapplied = moment(applicant.dateapplied, "dddd, MMMM Do YYYY, h:mm:ss a").format("YYYY");
+                var monthapplied = moment(applicant.dateapplied, "dddd, MMMM Do YYYY, h:mm:ss a").format("MMMM");
+                if (yearapplied === moment().format("YYYY")) {
+                    switch (monthapplied) {
+                        case "January":
+                            {
+                                $rootScope.janCountApp++;
+                                break;
+                            }
+                        case "February":
+                            {
+                                $rootScope.febCountApp++;
+                                break;
+                            }
+                        case "March":
+                            {
+                                $rootScope.marCountApp++;
+                                break;
+                            }
+                        case "April":
+                            {
+                                $rootScope.aprCountApp++;
+                                break;
+                            }
+                        case "May":
+                            {
+                                $rootScope.mayCountApp++;
+                                break;
+                            }
+                        case "June":
+                            {
+                                $rootScope.junCountApp++;
+                                break;
+                            }
+                        case "July":
+                            {
+                                $rootScope.julCountApp++;
+                                break;
+                            }
+                        case "August":
+                            {
+                                $rootScope.augCountApp++;
+                                break;
+                            }
+                        case "September":
+                            {
+                                $rootScope.sepCountApp++;
+                                break;
+                            }
+                        case "October":
+                            {
+                                $rootScope.octCountApp++;
+                                break;
+                            }
+                        case "November":
+                            {
+                                $rootScope.novCountApp++;
+                                break;
+                            }
+                        case "December":
+                            {
+                                $rootScope.decCountApp++;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                }
             },
             refresh: function () {
                 setTimeout(function () {

@@ -26,6 +26,9 @@ angular.module("app").controller("profileCtrl", function ($scope, $rootScope, $h
             console.log("Personal profile controller");
         },
         getInitialValues: function () {
+            $scope.showProfile = true;
+            $scope.showLeaves = true;
+            $scope.showProjects = true;
             $rootScope.selectedEmployee = JSON.parse(localStorage.getItem("selectedEmployee"));
         },
         getActiveSideBarLink: function () {
@@ -46,9 +49,11 @@ angular.module("app").controller("profileCtrl", function ($scope, $rootScope, $h
     functions.onInit();
 
     $scope.functions = {
+        showChangePassModal: function () {
+            $rootScope.showChangePass = true;
+        },
         displayInformation: function (title, message) {
             swal(title, message);
-        }
+        },
     }
-
 });

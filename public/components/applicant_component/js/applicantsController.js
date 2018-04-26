@@ -33,6 +33,7 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $rootScope.profileactive = false;
         },
         getInitialValues: function () {
+            $scope.isAscending = false;
             $scope.applicantTableSorter = null;
             $rootScope.multipleArchiveApplicant = [];
             $rootScope.archiveApplicantToggle = false;
@@ -199,15 +200,23 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         },
         sortByKey: function () {
             $scope.applicantTableSorter = "userkey";
+            $scope.isAscending = !$scope.isAscending;
         },
         sortByEmail: function () {
             $scope.applicantTableSorter = "email";
+            $scope.isAscending = !$scope.isAscending;
         },
         sortByRefNum: function () {
             $scope.applicantTableSorter = "referenceNumber";
+            $scope.isAscending = !$scope.isAscending;
         },
         sortByStatus: function () {
-            $scope.applicantTableSorter = "Status";
+            $scope.applicantTableSorter = "status";
+            $scope.isAscending = !$scope.isAscending;
+        },
+        sortByScore: function () {
+            $scope.applicantTableSorter = "exam"
+            $scope.isAscending = !$scope.isAscending;
         }
     }
 });

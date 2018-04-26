@@ -22,7 +22,7 @@
                     </div>
                     <div ng-if="!(functions.checkIfAllDeployed())" class="row">
                         <ul class="collapsible">
-                            <li ng-repeat="employee in allEmployees | filter:addEmployee_employee" ng-show="!(functions.checkIfHasProject(employee))">
+                            <li ng-repeat="employee in allEmployees | filter:addEmployee_employee" ng-show="!(employee.files.assigned.isAssigned)">
                                 <div class="collapsible-header">
                                     {{employee.email}}
                                 </div>

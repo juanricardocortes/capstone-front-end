@@ -8,12 +8,12 @@
                         <i ng-click="functions.hideAddPLModal()" class="material-icons right cursor-button">close</i>
                     </span>
                     <div class="row"></div>
-                    <div ng-if="(functions.checkIfAllDeployed())" class="row">
+                    <div ng-show="(functions.checkIfAllDeployed())" class="row">
                         <h4 class="graytext">
                             <i>No available employees</i>
                         </h4>
                     </div>
-                    <div ng-if="!(functions.checkIfAllDeployed())" class="row">
+                    <div ng-show="!(functions.checkIfAllDeployed())" class="row">
                         <div class="input-field col s12">
                             <i data-feather="search" class="prefix input-icon"></i>
                             <input id="addPL_employee" ng-model="addPL_employee" type="text" class="validate">
@@ -22,7 +22,7 @@
                     </div>
                     <div ng-if="!(functions.checkIfAllDeployed())" class="row">
                         <ul class="collapsible">
-                            <li ng-repeat="employee in allEmployees | filter:addPL_employee" ng-show="!(functions.checkIfHasProject(employee))">
+                            <li ng-repeat="employee in allEmployees | filter:addPL_employee" ng-show="!(employee.files.assigned.isAssigned)">
                                 <div class="collapsible-header">
                                     {{employee.email}}
                                 </div>

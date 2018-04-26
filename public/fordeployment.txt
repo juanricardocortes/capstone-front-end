@@ -35,10 +35,12 @@
     <link type="text/css" rel="stylesheet" href="./components/leaves_component/css/leaves.css" />
     <link type="text/css" rel="stylesheet" href="./common/css/loader.css" />
 
+    <link type="text/css" rel="stylesheet" href="./components/dashboard_component/css/dashboard.css">
+
     <link type="text/css" rel="stylesheet" href="./node_modules/fullcalendar/dist/fullcalendar.css" />
     <link type="text/css" rel="stylesheet" href="./node_modules/fullcalendar-scheduler/dist/scheduler.css" />
     <link type="text/css" rel="stylesheet" href="./common/css/full_calendar_overwrite.css" />
-
+    
 </head>
 
 <body ng-app="app" ng-controller="mainCtrl">
@@ -55,21 +57,29 @@
         </ng-include>
     </div>
 
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <!-- <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script> -->
+    <script type="text/javascript" src="./common/js/firebaseInit/firebase.js"></script>
     <script type="text/javascript" src="./common/js/firebaseInit/firebaseInit.js"></script>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 
     <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script type="text/javascript" src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-
+    <!-- <script type="text/javascript" src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script> -->
+    <script type="text/javascript" src="./common/js/google/material.min.js"></script>
+    
     <script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="./node_modules/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.js"></script>
 
+    <script type="text/javascript" src="./node_modules/angular-toarrayfilter/toArrayFilter.js"></script>
+
     <script type="text/javascript" src="./node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="./node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
     <script type="text/javascript" src="./node_modules/fullcalendar-scheduler/dist/scheduler.js"></script>
+
+    <script type="text/javascript" src="./node_modules/chart.js/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="./node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+    <!-- <script type="text/javascript" src="node_modules/tc-angular-chartjs/dist/tc-angular-chartjs.min.js"></script> -->
 
     <script type="text/javascript" src="./common/js/sweetalert/sweetalert2.all.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -93,12 +103,15 @@
     <script type="text/javascript" src="./components/employee_profile_component/js/employeeProfileController.js"></script>
 
     <script type="text/javascript" src="./components/login_component/js/loginController.js"></script>
+    <script type="text/javascript" src="./components/login_component/js/forgotPasswordController.js"></script>
+
     <script type="text/javascript" src="./components/main_component/js/mainpageController.js"></script>
 
     <script type="text/javascript" src="./components/dashboard_component/js/dashboardController.js"></script>
 
 
     <script type="text/javascript" src="./components/leaves_component/js/leavesController.js"></script>
+    <script type="text/javascript" src="./components/leaves_component/js/addRequestModalController.js"></script>
 
     <script type="text/javascript" src="./components/profile_component/js/profileController.js"></script>
 

@@ -101,6 +101,66 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
             setTimeout(function () {
                 $scope.$apply();
             });
+        },
+        getProfileReport: function () {
+            var docDefinition = {
+                // content: [{
+                //     image: data,
+                //     width: 500,
+                // }],
+
+                content: [{
+                        text: "Weltanchaung Corporation",
+                        style: "header"
+                    },
+                    {
+                        text: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+                        style: "subtitle"
+                    },
+                    {
+                        text: "Profile",
+                        style: "subheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ['*', '*'],
+                            body: [
+                                ['Email', $rootScope.selectedApplicant.email],
+                                ['First name', $rootScope.selectedApplicant.firstname],
+                                ['Last name', $rootScope.selectedApplicant.lastname],
+                                ['Address', $rootScope.selectedApplicant.address],
+                                ['Contact number', $rootScope.selectedApplicant.contactNumber],
+                                ['Birth date', $rootScope.selectedApplicant.birthdate],
+                                ['Status', $rootScope.selectedApplicant.completion + "%"],
+                                ['Exam score', $rootScope.selectedApplicant.exam]
+                            ]
+                        }
+                    },
+                    {
+                        text: "Requirements",
+                        style: "subheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ['*', '*'],
+                            body: functions.getRequirementsStatus()
+                        }
+                    }
+                ],
+                styles: $rootScope.reportStyles
+
+            };
+            pdfMake.createPdf(docDefinition).download("applicant_" + $rootScope.selectedApplicant.email + "_profile.pdf");
+        },
+        getRequirementsStatus: function () {
+            var requirements = [];
+            requirements.push(["Requirement", "Status"]);
+            for(req in $rootScope.selectedApplicant.requirements) {
+                requirements.push([$rootScope.selectedApplicant.requirements[req].name, $rootScope.selectedApplicant.requirements[req].status]);
+            }
+            return requirements;
         }
     }
 
@@ -121,6 +181,11 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                     confirmButtonColor: "#4fc3f7"
                 })
             }
+        },
+        printMyProfile: function () {
+            $(document).ready(function () {
+                functions.getProfileReport();
+            });
         }
     }
 });

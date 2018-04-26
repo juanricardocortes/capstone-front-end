@@ -88,6 +88,12 @@
 
 .login-form-buttons {
     position: absolute;
+    bottom: -7%;
+    right: 5%;
+}
+
+.exam-form-buttons {
+    position: absolute;
     bottom: -10%;
     right: 5%;
 }

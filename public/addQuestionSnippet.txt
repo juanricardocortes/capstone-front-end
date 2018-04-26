@@ -1,0 +1,128 @@
+<div class="row">
+                <h4>Enter question and answer</h4>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="question" ng-model="question" type="text" class="validate">
+                    <label for="question">Question</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="answer" ng-model="answer" type="text" class="validate">
+                    <label for="answer">Answer</label>
+                </div>
+            </div>
+            <div class="row">
+                <label>
+                    <input ng-model="$root.hasChoices" type="checkbox" />
+                    <span>Has choices</span>
+                </label>
+            </div>
+            <div ng-show="hasChoices" class="row">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="answerA" ng-model="answerA" type="text" class="validate">
+                        <label for="answerA">Answer A</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="answerB" ng-model="answerB" type="text" class="validate">
+                        <label for="answerB">Answer B</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="answerC" ng-model="answerC" type="text" class="validate">
+                        <label for="answerC">Answer C</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="answerD" ng-model="answerD" type="text" class="validate">
+                        <label for="answerD">Answer D</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="answerE" ng-model="answerE" type="text" class="validate">
+                        <label for="answerE">Answer E</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <a class="btn" ng-click="functions.addQuestion()">Add question</a>
+            </div>
+
+
+
+
+
+
+
+
+
+            
+            $("#question").val(undefined);
+            $("#question").blur();
+            $("#answer").val(undefined);
+            $("#answer").blur();
+            $("#answerA").val(undefined);
+            $("#answerA").blur();
+            $("#answerB").val(undefined);
+            $("#answerB").blur();
+            $("#answerC").val(undefined);
+            $("#answerC").blur();
+            $("#answerD").val(undefined);
+            $("#answerD").blur();
+            $("#answerE").val(undefined);
+            $("#answerE").blur();
+            $rootScope.hasChoices = false;
+            $scope.answerA = $scope.answerB = $scope.answerC = $scope.answerD = $scope.answerE = undefined;
+        
+
+
+
+
+
+
+
+
+
+        addQuestion: function () {
+            var data;
+            if ($rootScope.hasChoices) {
+                data = {
+                    question: $scope.question,
+                    answer: $scope.answer,
+                    hasChoices: $rootScope.hasChoices,
+                    choices: {
+                        answerA: $scope.answerA,
+                        answerB: $scope.answerB,
+                        answerC: $scope.answerC,
+                        answerD: $scope.answerD,
+                        answerE: $scope.answerE
+                    }
+                }
+            } else {
+                data = {
+                    question: $scope.question,
+                    answer: $scope.answer,
+                    hasChoices: $rootScope.hasChoices
+                }
+            }
+            $http({
+                url: $rootScope.baseURL + "api/addQuestion",
+                method: "POST",
+                data: data
+            }).then(function (response) {
+                functions.resetForm();
+                swal({
+                    type: response.data.success,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+        },

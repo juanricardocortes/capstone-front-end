@@ -28,14 +28,9 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
             $("#addProject_name").blur();
             $("#addProject_startDate").val(undefined);
             $("#addProject_startDate").blur();
-            $("#addProject_endDate").val(undefined);
-            $("#addProject_endDate").blur();
         },
         resetMinMax: function () {
             $('#addProject_startDate').pickadate('picker').set('min', moment());
-            $('#addProject_endDate').pickadate('picker').set('min', moment());
-            $('#addProject_startDate').pickadate('picker').set('max', false);
-            $('#addProject_endDate').pickadate('picker').set('max', false);
         }
     }
 
@@ -53,18 +48,7 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                 min: moment(),
                 closeOnSelect: true
             });
-            $('.datepicker').on('change', function () {
-                if ($(this).attr('id') === 'addProject_startDate') {
-                    if ($(this).val() === "") {
-                        $('#addProject_endDate').pickadate('picker').set('min', moment());
-                    } else {
-                        $('#addProject_endDate').pickadate('picker').set('min', $(this).val());
-                    }
-                }
-                if ($(this).attr('id') === 'addProject_endDate') {
-                    $('#addProject_startDate').pickadate('picker').set('max', $(this).val());
-                }
-            });
+            
             return true;
         },
         hideAddProjectModal: function () {
@@ -73,8 +57,7 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
         addProject: function () {
             var errors = 0;
             if ($scope.addProject_name === undefined ||
-                $scope.addProject_startDate === undefined ||
-                $scope.addProject_endDate === undefined) {
+                $scope.addProject_startDate === undefined) {
                 errors = 1;
             }
             if (errors === 0) {
@@ -88,8 +71,7 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                             name: $scope.addProject_name
                         },
                         dates: {
-                            startDate: $scope.addProject_startDate,
-                            endDate: $scope.addProject_endDate
+                            startDate: $scope.addProject_startDate
                         }
                     }
                 }).then(function (response) {

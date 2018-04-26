@@ -1,0 +1,30 @@
+<div ng-controller="examMainCtrl" class="padding-content">
+    <div class="scroll-page">
+        <div class="scrollable-content scroll">
+            <div class="margin-content">
+                <h4>Hello, {{takingApplicant.firstname}}</h4>
+                <ul class="collection">
+                    <li class="collection-item" ng-repeat="question in allQuestions">
+                        {{question.question}}
+                        <div ng-if="question.hasChoices" class="choices">
+                            <div class="row" ng-repeat="(key, value) in question.choices">
+                                <p>
+                                    <label>
+                                        <input name="Q{{question.examkey}}" type="radio" ng-model="myanswer" ng-value="question.myanswer" ng-click="functions.setAnswer(question, value)"
+                                        />
+                                        <span>{{value}}</span>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="row">
+                    <div class="put-right padding-content">
+                        <a class="waves-effect waves-light btn success-button" ng-click="functions.submit()">Submit exam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

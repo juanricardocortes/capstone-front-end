@@ -3,7 +3,12 @@
         <div class="project-section z-depth-5">
             <div class="scrollable-content scroll">
                 <div class="project-information">
-                    <h2>{{selectedProject.name}}</h2>
+                    <h2>{{selectedProject.name}}
+                        <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printMyProfile()" data-position="top"
+                            data-tooltip="Print profile?">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h2>
                     <p class="cursor-button graytext" ng-if="selectedProject.projectlead" ng-click="functions.gotoEmployeeProfile({userkey:selectedProject.projectlead.userkey})">
                         <i>Project lead: {{selectedProject.projectlead.email}}</i>
                     </p>
@@ -11,7 +16,7 @@
                         <i>No project lead yet!</i>
                     </p>
                     <p>
-                        <i class="graytext">{{selectedProject.schedule.dates.startDate}} - {{selectedProject.schedule.dates.endDate}}</i>
+                        <i class="graytext">Start date: {{selectedProject.schedule.dates.startDate}}</i>
                     </p>
                     <h5>Schedules</h5>
                     <div class="schedule-tiles">
@@ -47,13 +52,16 @@
                                 <div class="cursor-button" ng-if="value.currentholder.userkey" ng-click="functions.gotoEmployeeProfile(value.currentholder)">
                                     {{value.currentholder.files.lastname}}, {{value.currentholder.files.firstname}}
                                 </div>
-                                <div class="vacant-slot" ng-if="(!value.currentholder.userkey && selectedProject.projectlead.userkey === userlogged.userkey)"
+                                <div ng-if="!value.currentholder.userkey" class="vacant-slot" ng-click="functions.showAddEmployeeModal(value)">
+                                    <i class="graytext">*Click to add employee</i>
+                                </div>
+                                <!-- <div class="vacant-slot" ng-if="(!value.currentholder.userkey && userlogged.isAdmin)"
                                     ng-click="functions.showAddEmployeeModal(value)">
                                     <i class="graytext">*Click to add employee</i>
                                 </div>
-                                <div ng-if="(!value.currentholder.userkey && userlogged.isAdmin && !(selectedProject.projectlead.userkey === userlogged.userkey))">
+                                <div ng-if="(!value.currentholder.userkey && (selectedProject.projectlead.userkey === userlogged.userkey)) && !userlogged.isAdmin">
                                     <i class="graytext">No employee for this slot yet.</i>
-                                </div>
+                                </div> -->
                             </li>
                             <li ng-if="!selectedProject.slots" class="collection-item">
                                 <i class="graytext">No employees for this project yet.</i>
@@ -71,6 +79,24 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="member-actions">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <b>Actions</b>
+                            </li>
+                            <li ng-if="selectedProject.slots" ng-repeat="(key, value) in selectedProject.slots" class="collection-item">
+                                <i ng-if="value.currentholder" class="cursor-button red-text" ng-click="functions.removeEmployee(value)">remove</i>
+                                <i ng-if="!value.currentholder">
+                                    <br>
+                                </i>
+                            </li>
+                            <li ng-if="!selectedProject.slots" class="collection-item">
+                                <i class="graytext">
+                                    <br>
+                                </i>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,13 +106,17 @@
                     data-position="top" data-tooltip="Add project lead">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="selectedProject.projectlead.userkey === userlogged.userkey" ng-click="functions.showAddShiftModal()"
-                    class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top" data-tooltip="Add shift">
+                <a ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Add shift">
                     <i data-feather="clock" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="selectedProject.projectlead.userkey === userlogged.userkey" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
-                    data-position="top" data-tooltip="Add slot">
+                <a ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="Add slot">
                     <i data-feather="layers" class="center-feather-icon"></i>
+                </a>
+                <a ng-click="functions.endProject()" class="btn-floating btn-large danger-button z-depth-5 tooltipped" data-position="top"
+                    data-tooltip="End Project">
+                    <i data-feather="x" class="center-feather-icon"></i>
                 </a>
             </div>
         </div>

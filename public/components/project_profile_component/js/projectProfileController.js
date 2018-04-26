@@ -54,12 +54,40 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
                 localStorage.setItem("selectedEmployee", JSON.stringify(response.data));
                 window.location.href = "#!/employees/profile";
             });
+        },
+        getProjectReport: function () {
+            
         }
     }
 
     functions.onInit();
 
     $scope.functions = {
+        printMyProfile: function () {
+            $(document).ready(function () {
+                functions.getProjectReport();
+            });
+        },
+        removeEmployee: function (slot) {
+            $http({
+                url: $rootScope.baseURL + "secure-api/removeMember",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged),
+                    employee: slot.currentholder,
+                    slotkey: slot.slotkey,
+                    projectkey: $rootScope.selectedProject.projectkey
+                }
+            }).then(function (response) {
+                swal({
+                    type: response.data.success,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        },
         gotoEmployeeProfile: function (employee) {
             functions.getEmployee(employee);
         },
@@ -75,6 +103,12 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
         },
         showAddPLModal: function () {
             $rootScope.showAddPL = true;
+        },
+        showAddMemberModal: function () {
+            $rootScope.showAddMember = true;
+        },
+        endProject: function () {
+
         }
     }
 });

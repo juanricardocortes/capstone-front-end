@@ -1,11 +1,17 @@
 <div class="profile-container">
     <div class="applicant-picture-container z-depth-5">
-        <img class="applicant-picture-specs" src="common/images/sampleimage.jpeg">
+        <img class="applicant-picture-specs" src="{{selectedApplicant.image}}">
     </div>
     <div class="applicant-profile-space"></div>
     <div class="applicant-details-container z-depth-5 scroll">
         <div class="applicant-information">
-            <h4>Personal Information</h4>
+            <h4>
+                Profile
+                <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printMyProfile()" data-position="top"
+                    data-tooltip="Print profile?">
+                    <i data-feather="printer" class="button-center-icon"></i>
+                </a>
+            </h4>
             <div class="applicant-information-content">
                 <div class="applicant-content-titles">
                     <ul class="collection">
@@ -17,6 +23,7 @@
                         <li class="collection-item item-title">Status</li>
                         <li class="collection-item item-title">Position</li>
                         <li class="collection-item item-title">Contact Number</li>
+                        <li class="collection-item item-title">Exam Score</li>
                     </ul>
                 </div>
                 <div class="applicant-content-data">
@@ -24,12 +31,12 @@
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Email', selectedApplicant.email)">{{selectedApplicant.email}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('First Name', selectedApplicant.firstname)">{{selectedApplicant.firstname}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Last Name', selectedApplicant.lastname)">{{selectedApplicant.lastname}}</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', 'Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum, brute velit definitiones ei vel. Detracto voluptatibus id sed.')">Lorem ipsum dolor sit amet, vel omnis numquam fierent ex. Eum te cetero partiendo argumentum, brute
-                            velit definitiones ei vel. Detracto voluptatibus id sed.</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', selectedApplicant.address)">{{selectedApplicant.address}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Reference Number', selectedApplicant.referenceNumber)">{{selectedApplicant.referenceNumber}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Status', selectedApplicant.completion + '%')">{{selectedApplicant.completion}}%</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Position', 'selectedApplicant.position')">selectedApplicant.position</li>
-                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', 'selectedApplicant.contactNumber')">selectedApplicant.contactNumber</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Position', selectedApplicant.position)">{{selectedApplicant.position}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', selectedApplicant.contactNumber)">{{selectedApplicant.contactNumber}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Exam Score', selectedApplicant.exam)">{{selectedApplicant.exam}}</li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +51,8 @@
                 </div>
                 <div class="applicant-content-data">
                     <ul class="collection">
-                        <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" ng-click="functions.toggleRequirement(key, value)" class="collection-item item-clickable">{{value.status}}</li>
+                        <li ng-repeat="(key, value) in selectedApplicant.requirements track by $index" ng-click="functions.toggleRequirement(key, value)"
+                            class="collection-item item-clickable">{{value.status}}</li>
                     </ul>
                 </div>
             </div>

@@ -4,7 +4,33 @@
     </div>
     <div class="employee-profile-space"></div>
     <div class="employee-details-container z-depth-5 scroll">
-        <div class="employee-information">
+        <div class="employee-toggle">
+            <div class="profile-checkbox">
+                <p>
+                    <label>
+                        <input ng-model="showLeaves" type="checkbox" />
+                        <span>Leaves</span>
+                    </label>
+                </p>
+            </div>
+            <div class="profile-checkbox">
+                <p>
+                    <label>
+                        <input ng-model="showProjects" type="checkbox" />
+                        <span>Projects</span>
+                    </label>
+                </p>
+            </div>
+            <div class="profile-checkbox">
+                <p>
+                    <label>
+                        <input ng-model="showProfile" type="checkbox" />
+                        <span>Profile</span>
+                    </label>
+                </p>
+            </div>
+        </div>
+        <div ng-show="showProfile" class="employee-information">
             <h4>Personal Information</h4>
             <div class="employee-information-content">
                 <div class="employee-content-titles">
@@ -17,6 +43,7 @@
                         <li class="collection-item item-title">Contact Number</li>
                         <li class="collection-item item-title">Birth Date</li>
                         <li class="collection-item item-title">Date Hired</li>
+                        <li class="collection-item item-title">Password</li>
                     </ul>
                 </div>
                 <div class="employee-content-data">
@@ -29,18 +56,22 @@
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', userlogged.files.contact)">{{userlogged.files.contact}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Birth Date', userlogged.files.birthdate)">{{userlogged.files.birthdate}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Date Hired', userlogged.files.datehired)">{{userlogged.files.datehired}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.showChangePassModal()">
+                            <i class="blue-text">change password?</i>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="employee-projects">
+        <div ng-show="showProjects" class="employee-projects">
             <h4>Projects</h4>
             <div class="employee-information-content">
                 <ul class="collection">
                     <li ng-if="!userlogged.files.projects" class="collection-item">
                         <i class="graytext">No projects yet.</i>
                     </li>
-                    <li ng-if="userlogged.files.projects" ng-repeat="(key, value) in userlogged.files.projects" class="collection-item">
+                    <li ng-if="userlogged.files.projects" ng-repeat="(key, value) in userlogged.files.projects | toArray | orderBy:'value.dates.startDate':true"
+                        class="collection-item">
                         <b>{{value.projectName}}</b>
                         <i ng-if="value.isProjectLead">(Project Lead)</i>
                         <div class="employee-information-content">
@@ -77,7 +108,7 @@
                 </ul>
             </div>
         </div>
-        <div class="employee-projects">
+        <div ng-show="showLeaves" class="employee-projects">
             <h4>Leaves</h4>
             <div class="employee-information-content">
                 <ul class="collection">
@@ -102,7 +133,7 @@
                     </li>
                     <li class="collection-item">
                         <ul ng-if="userloggedHasLeaves" class="collection">
-                            <li class="collection-item" ng-repeat="leave in allLeaves" ng-if="leave.request.employee.userkey === userlogged.userkey">
+                            <li class="collection-item" ng-repeat="leave in allLeaves | orderBy:'request.request.startDate':true" ng-if="leave.request.employee.userkey === userlogged.userkey">
                                 <div class="one-fifth">
                                     <ul class="collection">
                                         <li class="collection-item item-title">Employee</li>
@@ -139,4 +170,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-show="showChangePass">
+    <ng-include src="'./components/profile_component/views/changepassmodal.html'">
+    </ng-include>
 </div>

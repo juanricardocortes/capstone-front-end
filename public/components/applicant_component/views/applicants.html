@@ -49,11 +49,12 @@
                             <th class="cursor-button" ng-click="functions.sortByEmail()">Email Address</th>
                             <th class="cursor-button" ng-click="functions.sortByRefNum()">Reference Number</th>
                             <th class="cursor-button" ng-click="functions.sortByStatus()">Status</th>
+                            <th class="cursor-button" ng-click="functions.sortByScore()">Score</th>
                             <th ng-show="!(showHired)">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="applicant in allApplicants | filter:tablefilter | orderBy:applicantTableSorter track by $index" ng-show="(applicant.isArchived === archiveApplicantToggle) && !showHired && !applicant.hired"
+                        <tr ng-repeat="applicant in allApplicants | filter:tablefilter | orderBy:'applicantTableSorter':isAscending" ng-show="(applicant.isArchived === archiveApplicantToggle) && !showHired && !applicant.hired"
                             class="applicant-table-row">
                             <td>
                                 <p class="table-checkbox">
@@ -67,14 +68,15 @@
                             <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.email}}</td>
                             <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.referenceNumber}}</td>
                             <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.completion}}%</td>
+                            <td ng-click="functions.gotoApplicantProfile(applicant)">{{applicant.exam}}</td>
                             <td ng-show="!applicant.isArchived">
-                                <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
-                                    data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
-                                    <i data-feather="user-check" class="button-center-icon "></i>
-                                </a>
                                 <a class="btn danger-button z-depth-3 tooltipped" ng-click="functions.archiveApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Archive {{applicant.lastname}}?">
                                     <i data-feather="archive" class="button-center-icon"></i>
+                                </a>
+                                <a ng-if="applicant.completion === 100" class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
+                                    data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
+                                    <i data-feather="user-check" class="button-center-icon "></i>
                                 </a>
                             </td>
                             <td ng-show="applicant.isArchived">

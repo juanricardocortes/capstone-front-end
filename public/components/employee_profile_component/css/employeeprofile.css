@@ -30,7 +30,8 @@
 .employee-information {
     height: 100%;
     width: 100%;
-    padding: 1.5%
+    padding: 1.5%;
+    margin-bottom: 5%;
 }
 
 .employee-information-content {
@@ -39,7 +40,6 @@
 }
 
 .employee-projects {
-    position: relative;
     height: auto;
     width: 100%;
     padding: 1.5%;
@@ -66,4 +66,20 @@
 .employee-profile-space {
     width: 100%;
     height: 10%;
+}
+
+.employee-toggle {
+    position: absolute;
+    float: right !important;
+    right: 0;
+    padding: 1.5%;  
+    width: 50%;
+    height: 100%;
+}
+
+.profile-checkbox {
+    position: relative;
+    float: right;
+    width: 20%;
+    height: auto;
 }

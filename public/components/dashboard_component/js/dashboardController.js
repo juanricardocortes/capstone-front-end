@@ -23,7 +23,6 @@ angular.module("app").controller("dashboardCtrl", function ($scope, $rootScope, 
         onCreate: function () {
             functions.getInitialValues();
             functions.getActiveSideBarLink();
-            functions.startChart();
         },
         getActiveSideBarLink: function () {
             $rootScope.dashboardactive = true;
@@ -33,51 +32,123 @@ angular.module("app").controller("dashboardCtrl", function ($scope, $rootScope, 
             $rootScope.leavesactive = false;
             $rootScope.profileactive = false;
         },
-        getInitialValues: function () {
-
-        },
-        startChart: function () {
-            console.log("STARTING CHART");
-            $scope.data = {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [{
-                        fillColor: 'rgba(220,220,220,0.5)',
-                        strokeColor: 'rgba(220,220,220,1)',
-                        data: [65, 59, 90, 81, 56, 55, 40]
-                    },
-                    {
-                        fillColor: 'rgba(151,187,205,0.5)',
-                        strokeColor: 'rgba(151,187,205,1)',
-                        data: [28, 48, 40, 19, 96, 27, 100]
-                    }
-                ]
-            };
-            $scope.options = {
-                // scales: {
-                //     xAxes: [{
-                //         stacked: true
-                //     }],
-                //     yAxes: [{
-                //         stacked: true
-                //     }]
-                // }
-            };
-
-            functions.refresh();
-        },
+        getInitialValues: function () {},
         refresh: function () {
             setTimeout(function () {
                 $scope.$apply();
             });
         }
-
     }
-    $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-    $scope.series = ['Series A', 'Series B'];
+    functions.onInit();
 
-    $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ];
-        functions.onInit();
+    $scope.functions = {
+        printEmployeeChart: function () {
+            
+        },
+        checkAvailableApplicants: function () {
+            var availableApplicants = 0;
+            for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+                if ($rootScope.allApplicants[index].completion === 100) {
+                    availableApplicants++;
+                }
+            }
+
+            if (availableApplicants === 0) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        checkIfAllHasProjects: function () {
+            var employeesWhoHaveProjects = 0;
+            for (var index = 0; index < $rootScope.allEmployees; index++) {
+                if ($rootScope.allEmployees[index].files.assigned.isAssigned) {
+                    employeesWhoHaveProjects++;
+                }
+            }
+            if (employeesWhoHaveProjects === $rootScope.allEmployees.length) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        checkIfLeaveNotif: function (notif) {
+            if ((notif.message).indexOf("to HR") !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        checkIfAddRoleNotif: function (notif) {
+            if ((notif.message).indexOf("role in") !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        startEmployeeBarGraph: function () {
+            $scope.emplabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $scope.empseries = ['Hired employees'];
+            $scope.empdata = [$rootScope.janCountEmp, $rootScope.febCountEmp, $rootScope.marCountEmp,
+                $rootScope.aprCountEmp, $rootScope.mayCountEmp, $rootScope.junCountEmp,
+                $rootScope.julCountEmp, $rootScope.augCountEmp, $rootScope.sepCountEmp,
+                $rootScope.octCountEmp, $rootScope.novCountEmp, $rootScope.decCountEmp
+            ];
+            $scope.empoptions = {
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: true
+                        },
+                        ticks: {
+                            min: 0,
+                            callback: function (value, index, values) {
+                                if (Math.floor(value) === value) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+        },
+        startApplicantBarGraph: function () {
+            $scope.applabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $scope.appseries = ['Hired applicants'];
+            $scope.appdata = [$rootScope.janCountApp, $rootScope.febCountApp, $rootScope.marCountApp,
+                $rootScope.aprCountApp, $rootScope.mayCountApp, $rootScope.junCountApp,
+                $rootScope.julCountApp, $rootScope.augCountApp, $rootScope.sepCountApp,
+                $rootScope.octCountApp, $rootScope.novCountApp, $rootScope.decCountApp
+            ];
+            $scope.appoptions = {
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: true
+                        },
+                        ticks: {
+                            min: 0,
+                            callback: function (value, index, values) {
+                                if (Math.floor(value) === value) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+        }
+    }
 });

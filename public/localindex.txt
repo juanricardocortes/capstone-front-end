@@ -7,13 +7,11 @@
     <!-- <base href="/"> -->
 
     <link type="text/css" rel="stylesheet" href="node_modules/materialize-css/dist/css/materialize.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-    />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
 
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" />
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.css"
-    />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.css" />
     <link type="text/css" rel="stylesheet" href="common/css/material_overwrite.css" />
     <link type="text/css" rel="stylesheet" href="common/css/main_style.css" />
 
@@ -34,43 +32,27 @@
 
     <link type="text/css" rel="stylesheet" href="components/project_profile_component/css/projectprofile.css" />
 
-    <link type="text/css" rel="stylesheet" href="components/profile_component/css/changepass.css" />
-
     <link type="text/css" rel="stylesheet" href="components/leaves_component/css/leaves.css" />
     <link type="text/css" rel="stylesheet" href="common/css/loader.css" />
 
     <link type="text/css" rel="stylesheet" href="components/dashboard_component/css/dashboard.css">
 
-    <link type="text/css" rel="stylesheet" href="components/exam_component/css/exammain.css">
-
     <link type="text/css" rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.css" />
     <link type="text/css" rel="stylesheet" href="node_modules/fullcalendar-scheduler/dist/scheduler.css" />
     <link type="text/css" rel="stylesheet" href="common/css/full_calendar_overwrite.css" />
-
+    
 </head>
 
 <body ng-app="app" ng-controller="mainCtrl">
 
-    <div ng-show="!isLogged && !logExam && !inExamMain">
+    <div ng-show="!isLogged">
         <ng-include src="'./components/login_component/views/login.html'">
 
         </ng-include>
     </div>
 
-    <div ng-show="isLogged && !logExam && !inExamMain">
+    <div ng-show="isLogged">
         <ng-include src="'./components/main_component/views/mainpage.html'">
-
-        </ng-include>
-    </div>
-
-    <div ng-show="logExam && !inExamMain && !isLogged">
-        <ng-include src="'./components/exam_component/views/exam.html'">
-
-        </ng-include>
-    </div>
-
-    <div ng-show="(inExamMain && !logExam && !isLogged)">
-        <ng-include src="'./components/exam_component/views/exammain.html'">
 
         </ng-include>
     </div>
@@ -84,7 +66,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <!-- <script type="text/javascript" src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script> -->
     <script type="text/javascript" src="common/js/google/material.min.js"></script>
-
+    
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-block-ui/0.2.2/angular-block-ui.min.js"></script>
@@ -104,12 +86,6 @@
     <script type="text/javascript" src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script> -->
-    <script type="text/javascript" src="common/js/pdfmake/pdfmake.js"></script>
-    <script type="text/javascript" src="common/js/pdfmake/font.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-    
     <script type="text/javascript" src="common/js/app.js"></script>
 
     <script type="text/javascript" src="components/applicant_component/js/applicantsController.js"></script>
@@ -138,7 +114,6 @@
     <script type="text/javascript" src="components/leaves_component/js/addRequestModalController.js"></script>
 
     <script type="text/javascript" src="components/profile_component/js/profileController.js"></script>
-    <script type="text/javascript" src="components/profile_component//js/changePassController.js"></script>
 
     <script type="text/javascript" src="components/projects_component/js/projectsController.js"></script>
     <script type="text/javascript" src="components/projects_component/js/addProjectModalController.js"></script>
@@ -147,10 +122,6 @@
     <script type="text/javascript" src="components/project_profile_component/js/addSlotModalController.js"></script>
     <script type="text/javascript" src="components/project_profile_component/js/addShiftModalController.js"></script>
     <script type="text/javascript" src="components/project_profile_component/js/addPLModalController.js"></script>
-    <script type="text/javascript" src="components/project_profile_component/js/addEmployeeModalController.js"></script>
-
-    <script type="text/javascript" src="components/exam_component/js/examController.js"></script>
-    <script type="text/javascript" src="components/exam_component/js/examMainController.js"></script>
 </body>
 
 </html>

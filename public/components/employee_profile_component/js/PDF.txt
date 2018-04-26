@@ -1,0 +1,24 @@
+$(document).ready(function () {
+    //var testdiv = document.getElementById("testdiv");
+    html2canvas($("#myProfile"), {
+        onrendered: function (canvas) {
+
+            var data = canvas.toDataURL("image/png");
+            var docDefinition = {
+                content: [{
+                    image: data,
+                    width: 500,
+                }]
+            };
+            pdfMake.createPdf(docDefinition).download($rootScope.selectedEmployee.email + "_profile.pdf");
+
+            var myImage = canvas.toDataURL("image/png");
+            console.log(myImage);
+            var doc = new jsPDF("p", "mm", "a4");
+
+            doc.addImage(myImage, 'PNG', 5, 5, 200, 160);
+            doc.append(5, 5, "HELLO")
+            doc.save($rootScope.selectedEmployee.email + "_profile.pdf");
+        }
+    });
+});

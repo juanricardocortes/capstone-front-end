@@ -82,7 +82,7 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
                         type: 'success',
                         title: project.name + message,
                         showConfirmButton: false,
-                        timer: 1000
+                        timer: 1500
                     });
                 }
             });

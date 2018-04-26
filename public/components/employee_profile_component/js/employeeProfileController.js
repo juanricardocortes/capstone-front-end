@@ -29,6 +29,9 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
             console.log("Employee profile controller");
         },
         getInitialValues: function () {
+            $scope.showProfile = true;
+            $scope.showLeaves = true;
+            $scope.showProjects = true;
             $rootScope.selectedEmployee = JSON.parse(localStorage.getItem("selectedEmployee"));
         },
         getActiveSideBarLink: function () {
@@ -50,12 +53,119 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
             setTimeout(function () {
                 $scope.$apply();
             });
+        },
+        getProfileReport: function () {
+            var docDefinition = {
+                // content: [{
+                //     image: data,
+                //     width: 500,
+                // }],
+
+                content: [{
+                        text: "Weltanchaung Corporation",
+                        style: "header"
+                    },
+                    {
+                        text: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+                        style: "subtitle"
+                    },
+                    {
+                        text: "Profile",
+                        style: "subheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ['*', '*'],
+                            body: [
+                                ['Employee ID', $rootScope.selectedEmployee.files.employeeid],
+                                ['Email', $rootScope.selectedEmployee.email],
+                                ['First name', $rootScope.selectedEmployee.files.firstname],
+                                ['Last name', $rootScope.selectedEmployee.files.lastname],
+                                ['Address', $rootScope.selectedEmployee.files.address],
+                                ['Contact number', $rootScope.selectedEmployee.files.contact],
+                                ['Birth date', $rootScope.selectedEmployee.files.birthdate],
+                                ['Date hired', $rootScope.selectedEmployee.files.datehired]
+                            ]
+                        }
+                    },
+                    {
+                        text: "Projects",
+                        style: "subheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ["*", "*", "*", "*"],
+                            body: functions.getProjects()
+                        }
+                    },
+                    {
+                        text: "Leaves",
+                        style: "subheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ["*", "*", "*", "*", "*", "*"],
+                            body: functions.getLeaves()
+                        }
+                    }
+                ],
+                styles: $rootScope.reportStyles
+
+            };
+            pdfMake.createPdf(docDefinition).download("employee_" + $rootScope.selectedEmployee.email + "_profile.pdf");
+        },
+        getProjects: function () {
+            var hasProjects = false;
+            var projects = [];
+            projects.push(["Project name", "Position", "Start date", "Shift"]);
+            for (project in $rootScope.selectedEmployee.files.projects) {
+                hasProjects = true;
+                projects.push([$rootScope.selectedEmployee.files.projects[project].projectName,
+                    $rootScope.selectedEmployee.files.projects[project].role,
+                    $rootScope.selectedEmployee.files.projects[project].dates.startDate,
+                    $rootScope.selectedEmployee.files.projects[project].shiftdetails.time
+                ])
+            }
+            if(!hasProjects) {
+                projects.push(["No data found","No data found","No data found","No data found"]); 
+            }
+            return projects;
+        },
+        getLeaves: function () {
+            var hasLeaves = false;
+            var leaves = [];
+            leaves.push(["Project name", "Type", "Status", "Time", "Start date", "End date"]);
+            for (leave in $rootScope.allLeaves) {
+                if ($rootScope.allLeaves[leave].request.employee.userkey === $rootScope.selectedEmployee.userkey) {
+                    hasLeaves = true;
+                    leaves.push([
+                        $rootScope.allLeaves[leave].projectname,
+                        $rootScope.allLeaves[leave].request.request.type,
+                        $rootScope.allLeaves[leave].request.status,
+                        $rootScope.allLeaves[leave].request.time,
+                        $rootScope.allLeaves[leave].request.request.startDate,
+                        $rootScope.allLeaves[leave].request.request.endDate
+                    ])
+                }
+            }
+            if(!hasLeaves) {
+                leaves.push(["No data found","No data found","No data found","No data found","No data found","No data found"]);
+            }
+            return leaves;
         }
     }
 
     functions.onInit();
 
     $scope.functions = {
+        printMyProfile: function () {
+            $(document).ready(function () {
+                functions.getProfileReport();
+            });
+        },
         displayInformation: function (title, message) {
             swal(title, message);
         },
@@ -63,9 +173,9 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
             console.log($rootScope.leavesDataPopulated);
             $rootScope.selectedHasLeaves = false;
             for (var index = 0; index < $rootScope.allLeaves.length; index++) {
-                if($rootScope.allLeaves[index].request.employee.userkey === $rootScope.selectedEmployee.userkey) {
+                if ($rootScope.allLeaves[index].request.employee.userkey === $rootScope.selectedEmployee.userkey) {
                     $rootScope.selectedHasLeaves = true;
-                    break;   
+                    break;
                 }
             }
             functions.refresh();

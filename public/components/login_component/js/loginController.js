@@ -39,6 +39,9 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
     functions.initialize();
 
     $scope.functions = {
+        logExam: function () {
+            $rootScope.logExam = true;
+        },
         login: function () {
             $http({
                 url: $rootScope.baseURL + "api/authOne",

@@ -1,7 +1,138 @@
-<!-- <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels"> chart-series="series"
-    </canvas> -->
 <div ng-show="startJS()">
-    <div class="whole-page">
-        
+    <div id="_employeespermonth" class="whole-page">
+        <div class="scrollable-content scroll">
+            <div class="dashboard-totals z-depth-3">
+                <p class="center-align total-icon">
+                    <i data-feather="users"></i>
+                </p>
+                <h3 class="center-align total-title">{{employeeCount}}</h3>
+                <p class="center-align total-sub">Total number of employees</p>
+            </div>
+            <div class="dashboard-totals z-depth-3">
+                <p class="center-align total-icon">
+                    <i data-feather="file-text"></i>
+                </p>
+                <h3 class="center-align total-title">{{applicantCount}}</h3>
+                <p class="center-align total-sub">Total number of applicants</p>
+            </div>
+            <div class="dashboard-totals z-depth-3">
+                <p class="center-align total-icon">
+                    <i data-feather="package"></i>
+                </p>
+                <h3 class="center-align total-title">{{projectCount}}</h3>
+                <p class="center-align total-sub">Total number of projects</p>
+            </div>
+            <div class="hire-rate-chart z-depth-3">
+                <div class="chart-title">
+                    <h5>Hired employees per month
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div ng-if="employeeDataPopulated" ng-init="functions.startEmployeeBarGraph()">
+                        <canvas id="bar" class="chart chart-bar" chart-options="empoptions" chart-data="empdata" chart-labels="emplabels" chart-series="empseries">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="hire-rate-chart z-depth-3">
+                <div class="chart-title">
+                    <h5>Applicants per month
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div ng-if="applicantDataPopulated" ng-init="functions.startApplicantBarGraph()">
+                        <canvas id="bar" class="chart chart-bar" chart-options="appoptions" chart-data="appdata" chart-labels="applabels" chart-series="appseries">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="db-two-thirds z-depth-3">
+                <div class="chart-title">
+                    <h5>Project slots
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in projectNotifications | orderBy:'time':true" ng-if="functions.checkIfAddRoleNotif(notif)">
+                                    <i class="material-icons circle">{{notif.icon}}</i>
+                                    <p>{{notif.message}}
+                                        <br>
+                                        <i class="graytext">{{notif.time}}</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-third z-depth-3">
+                <div class="chart-title">
+                    <h5>Employees without projects</h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul ng-if="!functions.checkIfAllHasProjects()" class="collection">
+                                <li class="collection-item" ng-repeat="employee in allEmployees | orderBy:'email':false" ng-if="!employee.files.assigned.isAssigned">{{employee.email}}</li>
+                            </ul>
+                            <ul ng-if="functions.checkIfAllHasProjects()" class="collection">
+                                <li class="collection-item">
+                                    <i class="graytext">All employees currently deployed</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-third z-depth-3">
+                <div class="chart-title">
+                    <h5>Applicants ready for hire</h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul ng-if="functions.checkAvailableApplicants()" class="collection">
+                                <li class="collection-item" ng-repeat="applicant in allApplicants | orderBy:'email':false" ng-if="applicant.completion === 100">{{applicant.email}}</li>
+                            </ul>
+                            <ul ng-if="!functions.checkAvailableApplicants()" class="collection">
+                                <li class="collection-item">
+                                    <i class="graytext">No applicants ready for hire</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-two-thirds z-depth-3">
+                <div class="chart-title">
+                    <h5>Leave requests</h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in leaveNotifications | orderBy:'time':true" ng-if="functions.checkIfLeaveNotif(notif)">
+                                    <i class="material-icons circle">{{notif.icon}}</i>
+                                    <p>{{notif.message}}
+                                        <br>
+                                        <i class="graytext">{{notif.time}}</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
