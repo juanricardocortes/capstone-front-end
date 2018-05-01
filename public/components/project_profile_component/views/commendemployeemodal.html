@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="message-circle" class="prefix input-icon"></i>
-                            <input id="commend_text" ng-model="commend_text" type="text" class="validate">
+                            <input id="commend_text" ng-model="commend_text" type="text" class="validate" onkeypress="return validate(event)">
                             <label for="commend_text">Comment</label>
                         </div>
                     </div>

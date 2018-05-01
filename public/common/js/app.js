@@ -389,9 +389,9 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 firebase.database().ref("HRMS_Storage/Leaves/").on("child_added", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allLeaves.push(decrypted);
-                        if ((decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) && 
+                        if ((decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) &&
                             (decrypted.projectlead === $rootScope.userlogged.userkey || decrypted.request.employee.userkey === $rootScope.userlogged.userkey ||
-                            $rootScope.userlogged.isAdmin)) {
+                                $rootScope.userlogged.isAdmin)) {
                             var event = {
                                 title: decrypted.request.request.type + ": " + decrypted.request.employee.files.lastname,
                                 start: decrypted.request.request.startDate,
@@ -735,6 +735,11 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
         }
 
         $rootScope.rootfunctions = {
+            validate: function (e) {
+                var k;
+                document.all ? k = e.keyCode : k = e.which;
+                return ((k >= 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+            },
             isEmpty: function (object) {
                 console.log(JSON.stringify(object));
                 return true;

@@ -38,7 +38,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="package" class="prefix input-icon"></i>
-                            <input id="addRequest_reason" ng-model="addRequest_reason" type="text" class="validate">
+                            <input id="addRequest_reason" ng-model="addRequest_reason" type="text" class="validate" onkeypress="return validate(event)">
                             <label for="addRequest_reason">Reason</label>
                         </div>
                     </div>

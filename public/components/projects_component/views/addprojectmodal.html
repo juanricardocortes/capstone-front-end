@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="package" class="prefix input-icon"></i>
-                            <input id="addProject_name" ng-model="addProject_name" type="text" class="validate">
+                            <input id="addProject_name" ng-model="addProject_name" type="text" class="validate" onkeypress="return validate(event)">
                             <label for="addProject_name">Project name</label>
                         </div>
                     </div>

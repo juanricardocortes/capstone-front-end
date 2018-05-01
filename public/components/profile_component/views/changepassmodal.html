@@ -11,21 +11,21 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="lock" class="prefix input-icon"></i>
-                            <input id="oldPassword" ng-model="oldPassword" type="password" class="validate">
+                            <input id="oldPassword" ng-model="oldPassword" type="password" class="validate" onkeypress="return validate(event)">
                             <label for="oldPassword">Old password</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="lock" class="prefix input-icon"></i>
-                            <input id="newPassword" ng-model="newPassword" type="password" class="validate">
+                            <input id="newPassword" ng-model="newPassword" type="password" class="validate" onkeypress="return validate(event)">
                             <label for="newPassword">New password</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i data-feather="lock" class="prefix input-icon"></i>
-                            <input id="cnewPassword" ng-model="cnewPassword" type="password" class="validate">
+                            <input id="cnewPassword" ng-model="cnewPassword" type="password" class="validate" onkeypress="return validate(event)">
                             <label for="cnewPassword">Confirm new password</label>
                         </div>
                     </div>

@@ -20,17 +20,17 @@
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <i data-feather="at-sign" class="prefix input-icon"></i>
-                                            <input id="email" ng-model="email" type="email" class="validate" ng-disabled="auth">
+                                            <input id="email" ng-model="email" type="email" class="validate" ng-disabled="auth" onkeypress="return validate(event)">
                                             <label for="email">Email</label>
                                         </div>
                                         <div class="input-field col s12" ng-show="!auth">
                                             <i data-feather="lock" class="prefix input-icon"></i>
-                                            <input id="password" ng-model="password" type="password" class="validate">
+                                            <input id="password" ng-model="password" type="password" class="validate" onkeypress="return validate(event)">
                                             <label for="password">Password</label>
                                         </div>
                                         <div class="input-field col s12" ng-show="auth">
                                             <i data-feather="lock" class="prefix"></i>
-                                            <input id="pin" ng-model="pin" type="text" class="validate">
+                                            <input id="pin" ng-model="pin" type="text" class="validate" onkeypress="return validate(event)">
                                             <label for="pin">Confirmation Pin</label>
                                         </div>
                                     </div>
