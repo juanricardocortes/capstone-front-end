@@ -58,7 +58,7 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
             } else {
                 M.toast({
                     html: "<i data-feather='alert-triangle'></i>&nbsp;&nbsp;Please fill out the form.",
-                    displayLength: 2500
+                    displayLength: 1500
                 });
             }
         }

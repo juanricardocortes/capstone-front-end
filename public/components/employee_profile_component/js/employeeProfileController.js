@@ -94,7 +94,7 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
                     {
                         style: "tableExample",
                         table: {
-                            widths: ["*", "*", "*", "*"],
+                            widths: ["*", "*", "*", "*", "*"],
                             body: functions.getProjects()
                         }
                     },
@@ -118,13 +118,14 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
         getProjects: function () {
             var hasProjects = false;
             var projects = [];
-            projects.push(["Project name", "Position", "Start date", "Shift"]);
+            projects.push(["Project name", "Position", "Start date", "Shift", "Remarks"]);
             for (project in $rootScope.selectedEmployee.files.projects) {
                 hasProjects = true;
                 projects.push([$rootScope.selectedEmployee.files.projects[project].projectName,
                     $rootScope.selectedEmployee.files.projects[project].role,
                     $rootScope.selectedEmployee.files.projects[project].dates.startDate,
-                    $rootScope.selectedEmployee.files.projects[project].shiftdetails.time
+                    $rootScope.selectedEmployee.files.projects[project].shiftdetails.time,
+                    $rootScope.selectedEmployee.files.projects[project].remarks
                 ])
             }
             if(!hasProjects) {

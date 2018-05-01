@@ -85,6 +85,7 @@
                                 <b>Actions</b>
                             </li>
                             <li ng-if="selectedProject.slots" ng-repeat="(key, value) in selectedProject.slots" class="collection-item">
+                                <i ng-if="value.currentholder && (userlogged.userkey === selectedProject.projectlead.userkey)" class="cursor-button blue-text" ng-click="functions.showCommendEmployeeModal(value)">commend</i>
                                 <i ng-if="value.currentholder" class="cursor-button red-text" ng-click="functions.removeEmployee(value)">remove</i>
                                 <i ng-if="!value.currentholder">
                                     <br>
@@ -106,16 +107,16 @@
                     data-position="top" data-tooltip="Add project lead">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="Add shift">
+                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Add shift">
                     <i data-feather="clock" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="Add slot">
+                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Add slot">
                     <i data-feather="layers" class="center-feather-icon"></i>
                 </a>
-                <a ng-show="userlogged.isAdmin" ng-click="functions.endProject()" class="btn-floating btn-large danger-button z-depth-5 tooltipped" data-position="top"
-                    data-tooltip="End Project">
+                <a ng-show="userlogged.isAdmin" ng-click="functions.endProject()" class="btn-floating btn-large danger-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="End Project">
                     <i data-feather="x" class="center-feather-icon"></i>
                 </a>
             </div>
@@ -137,5 +138,9 @@
 </div>
 <div class="row" ng-if="showAddEmployee">
     <ng-include src="'./components/project_profile_component/views/addemployeemodal.html'">
+    </ng-include>
+</div>
+<div class="row" ng-if="showCommendEmployee">
+    <ng-include src="'./components/project_profile_component/views/commendemployeemodal.html'">
     </ng-include>
 </div>

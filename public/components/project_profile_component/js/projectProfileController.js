@@ -157,6 +157,10 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
     functions.onInit();
 
     $scope.functions = {
+        showCommendEmployeeModal: function (slot) {
+            $rootScope.showCommendEmployee = true;
+            $rootScope.slotToCommend = slot;
+        },
         printProject: function () {
             $(document).ready(function () {
                 functions.getProjectReport();

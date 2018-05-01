@@ -86,6 +86,7 @@
                                     <li class="collection-item item-title">Start Date</li>
                                     <li class="collection-item item-title">End Date</li>
                                     <li class="collection-item item-title">Shift</li>
+                                    <li class="collection-item item-title">Remarks</li>
                                 </ul>
                             </div>
                             <div class="employee-content-data">
@@ -104,6 +105,10 @@
                                     </li>
                                     <li ng-if="value.shiftdetails.time" class="collection-item">{{value.shiftdetails.time}}</li>
                                     <li ng-if="!value.shiftdetails.time" class="collection-item">
+                                        <i class="graytext">None</i>
+                                    </li>
+                                    <li ng-if="value.remarks" class="collection-item">{{value.remarks}}</li>
+                                    <li ng-if="!value.remarks" class="collection-item">
                                         <i class="graytext">None</i>
                                     </li>
                                 </ul>
