@@ -1,5 +1,5 @@
 <div ng-show="startJS()">
-    <div id="_employeespermonth" class="whole-page">
+    <div class="whole-page">
         <div class="scrollable-content scroll">
             <div class="dashboard-totals z-depth-3">
                 <p class="center-align total-icon">
@@ -22,10 +22,11 @@
                 <h3 class="center-align total-title">{{projectCount}}</h3>
                 <p class="center-align total-sub">Total number of projects</p>
             </div>
-            <div class="hire-rate-chart z-depth-3">
+            <div id="hiredemployeespermonth" class="hire-rate-chart z-depth-3">
                 <div class="chart-title">
                     <h5>Hired employees per month
-                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                        <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()"
+                            data-position="top" data-tooltip="Print chart">
                             <i data-feather="printer" class="button-center-icon"></i>
                         </a>
                     </h5>
@@ -37,10 +38,11 @@
                     </div>
                 </div>
             </div>
-            <div class="hire-rate-chart z-depth-3">
+            <div id="applicantspermonth" class="hire-rate-chart z-depth-3">
                 <div class="chart-title">
                     <h5>Applicants per month
-                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                        <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printApplicantChart()"
+                            data-position="top" data-tooltip="Print chart">
                             <i data-feather="printer" class="button-center-icon"></i>
                         </a>
                     </h5>
@@ -55,7 +57,10 @@
             <div class="db-two-thirds z-depth-3">
                 <div class="chart-title">
                     <h5>Project slots
-                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printEmployeeChart()" data-position="top" data-tooltip="Print profile?">
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('projectslots')" data-position="top" data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('projectslots')" data-position="top" data-tooltip="Print all">
                             <i data-feather="printer" class="button-center-icon"></i>
                         </a>
                     </h5>
@@ -65,10 +70,13 @@
                         <div class="scrollable-content scroll">
                             <ul class="collection">
                                 <li class="collection-item avatar" ng-repeat="notif in projectNotifications | orderBy:'time':true" ng-if="functions.checkIfAddRoleNotif(notif)">
-                                    <i class="material-icons circle">{{notif.icon}}</i>
-                                    <p>{{notif.message}}
-                                        <br>
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
                                         <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
                                     </p>
                                 </li>
                             </ul>
@@ -116,17 +124,149 @@
             </div>
             <div class="db-two-thirds z-depth-3">
                 <div class="chart-title">
-                    <h5>Leave requests</h5>
+                    <h5>Leave requests
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('leaverequests')" data-position="top"
+                            data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('leaverequests')" data-position="top" data-tooltip="Print all">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
                 </div>
                 <div class="chart-graph">
                     <div class="scroll-page">
                         <div class="scrollable-content scroll">
                             <ul class="collection">
                                 <li class="collection-item avatar" ng-repeat="notif in leaveNotifications | orderBy:'time':true" ng-if="functions.checkIfLeaveNotif(notif)">
-                                    <i class="material-icons circle">{{notif.icon}}</i>
-                                    <p>{{notif.message}}
-                                        <br>
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
                                         <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-half z-depth-3">
+                <div class="chart-title">
+                    <h5>Employee logs
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('employeelogs')" data-position="top" data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('employeelogs')" data-position="top" data-tooltip="Print all">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in employeeNotifications | orderBy:'time':true">
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
+                                        <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-half z-depth-3">
+                <div class="chart-title">
+                    <h5>Applicant logs
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('applicantlogs')" data-position="top"
+                            data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('applicantlogs')" data-position="top" data-tooltip="Print all">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in applicantNotifications | orderBy:'time':true">
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
+                                        <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-half z-depth-3">
+                <div class="chart-title">
+                    <h5>Project logs
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('projectlogs')" data-position="top" data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('projectlogs')" data-position="top" data-tooltip="Print all">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in projectNotifications | orderBy:'time':true">
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
+                                        <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-one-half z-depth-3">
+                <div class="chart-title">
+                    <h5>Leave logs
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.openPrintModal('leavelogs')" data-position="top" data-tooltip="Select date">
+                            <i data-feather="calendar" class="button-center-icon"></i>
+                        </a>
+                        <a class="btn info-button z-depth-3 tooltipped" ng-click="functions.printAllLogs('leavelogs')" data-position="top" data-tooltip="Print all">
+                            <i data-feather="printer" class="button-center-icon"></i>
+                        </a>
+                    </h5>
+                </div>
+                <div class="chart-graph">
+                    <div class="scroll-page">
+                        <div class="scrollable-content scroll">
+                            <ul class="collection">
+                                <li class="collection-item avatar" ng-repeat="notif in leaveNotifications | orderBy:'time':true">
+                                    <i ng-if="notif.seen" class="material-icons circle">{{notif.icon}}</i>
+                                    <i ng-if="!notif.seen" class="material-icons circle blue-fill">{{notif.icon}}</i>
+                                    <span class="title">{{notif.message}}</span>
+                                    <p>
+                                        <i class="graytext">{{notif.time}}</i>
+                                        <br>
+                                        <i ng-if="notif.seen" class="graytext">seen</i>
                                     </p>
                                 </li>
                             </ul>
@@ -136,3 +276,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-if="showPrintModal">
+    <ng-include src="'./components/dashboard_component/views/printmodal.html'">
+    </ng-include>
+</div>

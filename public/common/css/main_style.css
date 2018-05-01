@@ -180,7 +180,7 @@ td {
 
 .middle-section {
     position: relative;
-    height: 70%;
+    height: 75%;
     width: 100%;
     margin-top: 2%;
     margin-bottom: 4%;
@@ -201,7 +201,7 @@ td {
 .whole-page {
     position: relative;
     float: left;
-    height: 87% !important;
+    height: 95% !important;
     width: 100%;
 }
 
@@ -322,4 +322,8 @@ td {
     position: relative;
     height: 100%;
     width: 100%;
+}
+
+.blue-fill {
+    background-color: #4fc3f7 !important;
 }

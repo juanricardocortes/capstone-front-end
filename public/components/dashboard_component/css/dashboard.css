@@ -60,3 +60,12 @@
     width: 33%;
     height: 60%;
 }
+
+.db-one-half {
+    float: left;
+    position: relative;
+    padding: 1%;
+    margin: 1.66%;
+    width: 46.5%;
+    height: 60%;
+}

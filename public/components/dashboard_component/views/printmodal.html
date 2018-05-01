@@ -1,0 +1,35 @@
+<div ng-show="startJS() && functions.startLocalJS()" ng-controller="printModalCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Export to PDF
+                        <i ng-click="functions.hidePrintModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="printmodal_startDate" ng-model="printmodal_startDate" type="date" class="datepicker">
+                            <label for="printmodal_startDate">Start date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="printmodal_endDate" ng-model="printmodal_endDate" type="date" class="datepicker">
+                            <label for="printmodal_endDate">End date</label>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large info-button" ng-click="functions.printReport()">
+                            <i data-feather="printer" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

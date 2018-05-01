@@ -33,6 +33,24 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
         getInitialValues: function () {
             $scope.auth = false;
             $rootScope.showForgotPassword = false;
+        },
+        initFirebase: function (token, user) {
+            $http({
+                url: $rootScope.baseURL + "secure-api/initFirebase",
+                method: "POST",
+                data: {
+                    signature: JSON.stringify(user),
+                    token: token
+                }
+            }).then(function (response) {
+                $(document).ready(function () {
+                    console.log(response.data.config);
+                    localStorage.setItem("firebaseconfig", JSON.stringify(response.data.config));
+                    firebase.initializeApp(response.data.config);
+                    $rootScope.isAuthenticated = true;
+                    functions.authenticate();
+                });
+            });
         }
     }
 
@@ -88,7 +106,7 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             }).then(function (response) {
                 // console.log(response.data);
                 if (response.data.valid) {
-                    functions.authenticate();
+                    functions.initFirebase(response.data.token, response.data.user);
                     $scope.auth = false;
                     functions.resetForm();
                     $rootScope.token = response.data.token;

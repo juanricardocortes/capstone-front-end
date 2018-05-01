@@ -1,6 +1,6 @@
 angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'])
 
-    .config(function ($routeProvider, blockUIConfig ) {
+    .config(function ($routeProvider, blockUIConfig) {
         blockUIConfig.templateUrl = "common/views/blockui_spinner.html";
         $routeProvider
             .when("/", {
@@ -50,10 +50,20 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
         var functions = {
             initialize: function () {
                 console.log("Main controller");
-                functions.getInitalValues();
+                functions.getInitialValues();
                 functions.getUserLogged();
                 functions.startReportFormats();
-                functions.onListeners();
+                functions.testInitFirebase();
+            },
+            testInitFirebase: function () {
+                var config = JSON.parse(localStorage.getItem("firebaseconfig"));
+                console.log(config);
+                if (config != null || config != undefined) {
+                    $(document).ready(function () {
+                        firebase.initializeApp(config);
+                        $rootScope.isAuthenticated = true;
+                    });
+                }
             },
             startReportFormats: function () {
                 $rootScope.reportStyles = {
@@ -68,8 +78,17 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                         color: 'gray',
                         margin: [0, 0, 0, 10]
                     },
+                    graycolor: {
+                        italics: true,
+                        color: 'gray'
+                    },
                     subheader: {
                         fontSize: 16,
+                        bold: true,
+                        margin: [0, 10, 0, 5]
+                    },
+                    subsubheader: {
+                        fontSize: 14,
                         bold: true,
                         margin: [0, 10, 0, 5]
                     },
@@ -83,7 +102,7 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     }
                 }
             },
-            getInitalValues: function () {
+            getInitialValues: function () {
                 $rootScope.baseURL = "http://127.0.0.1:9001/";
                 // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
                 $rootScope.currentPage = "Weltanchaung";
@@ -94,22 +113,28 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.applicantsactive = false;
                 $rootScope.leavesactive = false;
                 $rootScope.profileactive = false;
+                $rootScope.isAuthenticated = false;
                 $rootScope.unseenNotifications = {};
                 $rootScope.dateToday = moment();
                 $rootScope.logExam = false;
                 $rootScope.inExamMain = (false || localStorage.getItem("inExamMain"));
+                $rootScope.userlogged = JSON.parse(localStorage.getItem("userlogged"));
             },
             onListeners: function () {
+                console.log("TURNING ON LISTENERS");
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
                         console.log(user);
                         $rootScope.firebaseuser = user;
-                        functions.projectListeners();
-                        functions.applicantListeners();
                         functions.employeeListeners();
                         functions.leavesListeners();
+                        functions.projectListeners();
+                        functions.applicantListeners();
+                        // if($rootScope.userlogged.isAdmin) {
+                        //     if(functions.checkIfProjectLead()){
+                        //     }
+                        // } 
                     } else {
-                        // No user is signed in.
                         console.log("NO USER SIGNED IN");
                     }
                 });
@@ -160,15 +185,17 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     $rootScope.julCountApp = $rootScope.augCountApp =
                     $rootScope.sepCountApp = $rootScope.octCountApp =
                     $rootScope.novCountApp = $rootScope.decCountApp = 0;
-
+                $rootScope.applicantsLoaded = false;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Applicants/").on("child_added", function (snapshot) {
-                    if (!(snapshot.val().seen)) {
-                        $rootScope.appNotifCounter++;
-                    }
-                    $rootScope.unseenNotifications["applicants"] = $rootScope.appNotifCounter;
-                    $rootScope.applicantNotifications.push(snapshot.val());
-                    functions.refresh();
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        if (!(decrypted.seen)) {
+                            $rootScope.appNotifCounter++;
+                        }
+                        $rootScope.unseenNotifications["applicants"] = $rootScope.appNotifCounter;
+                        $rootScope.applicantNotifications.push(decrypted);
+                        functions.refresh();
+                    });
                 });
                 firebase.database().ref("HRMS_Storage/Applicants/").orderByKey().limitToLast(1).once('value').then(function (snapshot) {
                     try {
@@ -188,12 +215,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                                 console.log("ALL APPLICANTS");
                                 console.log($rootScope.allApplicants);
                                 $rootScope.applicantDataPopulated = true;
+                                $rootScope.applicantsLoaded = true;
                                 functions.applicantUpdateListeners();
                             }
                         } catch (err) {
                             console.log(err.message);
                             console.log("NO LAST APPLICANT");
                             $rootScope.applicantDataPopulated = true;
+                            $rootScope.applicantsLoaded = true;
                             functions.applicantUpdateListeners()
                         }
                     });
@@ -240,9 +269,10 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.lastProject;
                 $rootScope.isProjectLead = false;
                 $rootScope.projectCount = 0;
+                $rootScope.projectsLoaded = false;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Projects/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function(decrypted){
+                    functions.decrypt(snapshot.val(), function (decrypted) {
                         if (!(decrypted.seen)) {
                             $rootScope.projectNotifCounter++;
                         }
@@ -274,9 +304,11 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                             if (snapshot.val().projectkey === $rootScope.lastProject.projectkey) {
                                 console.log("ALL PROJECTS");
                                 console.log($rootScope.allProjects);
+                                $rootScope.projectsLoaded = true;
                                 functions.projectUpdateListeners();
                             }
                         } catch (err) {
+                            $rootScope.projectsLoaded = true;
                             console.log(err.message);
                             console.log("NO LAST PROJECT");
                             functions.projectUpdateListeners();
@@ -335,9 +367,10 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.toggleAllLeaveEvents = false;
                 $rootScope.userloggedHasLeaves = false;
                 $rootScope.leavesDataPopulated = false;
+                $rootScope.leavesLoaded = false;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Leaves/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function(decrypted){
+                    functions.decrypt(snapshot.val(), function (decrypted) {
                         if (!(decrypted.seen)) {
                             $rootScope.leaveNotifCounter++;
                         }
@@ -356,7 +389,9 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 firebase.database().ref("HRMS_Storage/Leaves/").on("child_added", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allLeaves.push(decrypted);
-                        if (decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) {
+                        if ((decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) && 
+                            (decrypted.projectlead === $rootScope.userlogged.userkey || decrypted.request.employee.userkey === $rootScope.userlogged.userkey ||
+                            $rootScope.userlogged.isAdmin)) {
                             var event = {
                                 title: decrypted.request.request.type + ": " + decrypted.request.employee.files.lastname,
                                 start: decrypted.request.request.startDate,
@@ -371,12 +406,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                             if (snapshot.val().request.leavekey === $rootScope.lastLeave.request.leavekey) {
                                 $rootScope.toggleAllLeaveEvents = true;
                                 $rootScope.leavesDataPopulated = true;
+                                $rootScope.leavesLoaded = true;
                                 functions.refresh();
                                 functions.leavesUpdateListener();
                             }
                         } catch (err) {
                             $rootScope.toggleAllLeaveEvents = true;
                             $rootScope.leavesDataPopulated = true;
+                            $rootScope.leavesLoaded = true;
                             functions.refresh();
                             functions.leavesUpdateListener();
                         }
@@ -439,14 +476,17 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     $rootScope.julCountEmp = $rootScope.augCountEmp =
                     $rootScope.sepCountEmp = $rootScope.octCountEmp =
                     $rootScope.novCountEmp = $rootScope.decCountEmp = 0;
+                $rootScope.employeesLoaded = false;
 
                 firebase.database().ref("HRMS_Storage/Notifications/Employees/").on("child_added", function (snapshot) {
-                    if (!(snapshot.val().seen)) {
-                        $rootScope.empNotifCounter++;
-                    }
-                    $rootScope.unseenNotifications["employees"] = $rootScope.empNotifCounter;
-                    $rootScope.employeeNotifications.push(snapshot.val());
-                    functions.refresh();
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        if (!(decrypted.seen)) {
+                            $rootScope.empNotifCounter++;
+                        }
+                        $rootScope.unseenNotifications["employees"] = $rootScope.empNotifCounter;
+                        $rootScope.employeeNotifications.push(decrypted);
+                        functions.refresh();
+                    })
                 });
                 firebase.database().ref("HRMS_Storage/Employees/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
                     try {
@@ -466,12 +506,14 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                                 console.log("ALL EMPLOYEES");
                                 console.log($rootScope.allEmployees);
                                 $rootScope.employeeDataPopulated = true;
+                                $rootScope.employeesLoaded = true;
                                 functions.employeeUpdateListeners();
                             }
                         } catch (err) {
                             console.log(err.message);
                             console.log("NO LAST EMPLOYEE");
                             $rootScope.employeeDataPopulated = true;
+                            $rootScope.employeesLoaded = true;
                             functions.employeeUpdateListeners();
                         }
                     });
@@ -651,17 +693,39 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 }
                 console.log("NO SUCH EVENT YET");
                 return false;
+            },
+            checkIfProjectLead: function () {
+                var isPL = 0;
+                var userlogged = $rootScope.userlogged;
+                try {
+                    for (project in userlogged.files.projects) {
+                        if (userlogged.files.projects[project].isProjectLead) {
+                            isPL++;
+                        }
+                    }
+                } catch (err) {}
+                if (isPL) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
 
         functions.initialize();
 
+        $scope.functions = {
+            onListeners: function () {
+                functions.onListeners();
+            }
+        }
+
         $rootScope.startJS = function () {
             feather.replace();
-            $(function () {
+            $(document).ready(function () {
+                // $(function () {
                 $('.tooltipped').tooltip();
                 $('.collapsible').collapsible();
-                $('.timepicker').timepicker();
                 $('.select').formSelect();
                 $('.fixed-action-btn').floatingActionButton({
                     direction: 'left'
@@ -669,10 +733,34 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
             });
             return true;
         }
+
         $rootScope.rootfunctions = {
             isEmpty: function (object) {
                 console.log(JSON.stringify(object));
                 return true;
+            },
+            fitImageOn: function (canvas, imageObj, context) {
+                var imageAspectRatio = imageObj.width / imageObj.height;
+                var canvasAspectRatio = canvas.width / canvas.height;
+                var renderableHeight, renderableWidth, xStart, yStart;
+
+                if (imageAspectRatio < canvasAspectRatio) {
+                    renderableHeight = canvas.height;
+                    renderableWidth = imageObj.width * (renderableHeight / imageObj.height);
+                    xStart = (canvas.width - renderableWidth) / 2;
+                    yStart = 0;
+                } else if (imageAspectRatio > canvasAspectRatio) {
+                    renderableWidth = canvas.width
+                    renderableHeight = imageObj.height * (renderableWidth / imageObj.width);
+                    xStart = 0;
+                    yStart = (canvas.height - renderableHeight) / 2;
+                } else {
+                    renderableHeight = canvas.height;
+                    renderableWidth = canvas.width;
+                    xStart = 0;
+                    yStart = 0;
+                }
+                context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
             }
         }
     });

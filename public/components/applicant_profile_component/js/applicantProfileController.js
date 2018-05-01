@@ -102,13 +102,8 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                 $scope.$apply();
             });
         },
-        getProfileReport: function () {
+        getProfileReport: function (data) {
             var docDefinition = {
-                // content: [{
-                //     image: data,
-                //     width: 500,
-                // }],
-
                 content: [{
                         text: "Weltanchaung Corporation",
                         style: "header"
@@ -116,6 +111,9 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                     {
                         text: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
                         style: "subtitle"
+                    },
+                    {
+                        image: data
                     },
                     {
                         text: "Profile",
@@ -157,11 +155,12 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
         getRequirementsStatus: function () {
             var requirements = [];
             requirements.push(["Requirement", "Status"]);
-            for(req in $rootScope.selectedApplicant.requirements) {
+            for (req in $rootScope.selectedApplicant.requirements) {
                 requirements.push([$rootScope.selectedApplicant.requirements[req].name, $rootScope.selectedApplicant.requirements[req].status]);
             }
             return requirements;
         }
+
     }
 
     functions.onInit();
@@ -184,7 +183,12 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
         },
         printMyProfile: function () {
             $(document).ready(function () {
-                functions.getProfileReport();
+                var canvas = document.getElementById("applicantCanvas");
+                var ctx = canvas.getContext("2d");
+                var img = document.getElementById("applicantImage");
+                $rootScope.rootfunctions.fitImageOn(canvas, img, ctx);
+                console.log(canvas.toDataURL());
+                functions.getProfileReport(canvas.toDataURL());
             });
         }
     }

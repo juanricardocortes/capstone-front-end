@@ -55,15 +55,109 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
                 window.location.href = "#!/employees/profile";
             });
         },
+        getProjectMembers: function () {
+            var members = [];
+            members.push(["Position", "Employee", "Schedule"]);
+            for (key in $rootScope.selectedProject.slots) {
+                if ($rootScope.selectedProject.slots[key].currentholder) {
+                    members.push([$rootScope.selectedProject.slots[key].role,
+                        $rootScope.selectedProject.slots[key].currentholder.email,
+                        $rootScope.selectedProject.slots[key].shiftdetails.time
+                    ]);
+                } else {
+                    members.push([$rootScope.selectedProject.slots[key].role,
+                        {
+                            text: "No employee assigned",
+                            style: "graycolor"
+                        },
+                        $rootScope.selectedProject.slots[key].shiftdetails.time
+                    ]);
+                }
+            }
+            return members;
+        },
+        getProjectSchedules: function () {
+            var schedules = [];
+            schedules.push(["Schedule"]);
+            for (key in $rootScope.selectedProject.schedule.shifts) {
+                schedules.push([$rootScope.selectedProject.schedule.shifts[key].time]);
+            }
+            return schedules;
+        },
         getProjectReport: function () {
-            
+            var docDefinition = {
+                content: [{
+                        text: "Weltanchaung Corporation",
+                        style: "header"
+                    },
+                    {
+                        text: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+                        style: "subtitle"
+                    },
+                    {
+                        text: $rootScope.selectedProject.name,
+                        style: "subheader"
+                    },
+                    {
+                        text: "Project leader: " + $rootScope.selectedProject.projectlead.email,
+                        style: "subtitle"
+                    },
+                    {
+                        text: "Start date: " + $rootScope.selectedProject.schedule.dates.startDate,
+                        style: "subtitle"
+                    },
+                    {
+                        text: "Schedules",
+                        style: "subsubheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ["*"],
+                            body: functions.getProjectSchedules()
+                        }
+                    },
+                    {
+                        text: "Members",
+                        style: "subsubheader"
+                    },
+                    {
+                        style: "tableExample",
+                        table: {
+                            widths: ["*", "*", "*"],
+                            body: functions.getProjectMembers()
+                        }
+                    }
+                ],
+                styles: $rootScope.reportStyles
+
+            };
+            pdfMake.createPdf(docDefinition).download("project_" + $rootScope.selectedProject.name + ".pdf");
+        },
+        confirmEndProject: function () {
+            $http({
+                url: $rootScope.baseURL + "secure-api/endProject",
+                method: "POST",
+                data: {
+                    token: localStorage.getItem("token"),
+                    signature: JSON.stringify($rootScope.userlogged),
+                    project: $rootScope.selectedProject,
+                }
+            }).then(function (response) {
+                swal({
+                    type: response.data.success,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
         }
     }
 
     functions.onInit();
 
     $scope.functions = {
-        printMyProfile: function () {
+        printProject: function () {
             $(document).ready(function () {
                 functions.getProjectReport();
             });
@@ -77,7 +171,8 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
                     signature: JSON.stringify($rootScope.userlogged),
                     employee: slot.currentholder,
                     slotkey: slot.slotkey,
-                    projectkey: $rootScope.selectedProject.projectkey
+                    projectkey: $rootScope.selectedProject.projectkey,
+                    projectname: $rootScope.selectedProject.name
                 }
             }).then(function (response) {
                 swal({
@@ -108,7 +203,30 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
             $rootScope.showAddMember = true;
         },
         endProject: function () {
-
+            swal({
+                title: "Are you sure?",
+                text: "End project " + $rootScope.selectedProject.name + "?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4ff783',
+                cancelButtonColor: '#f74f6f',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    functions.confirmEndProject();
+                } else if (
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swal({
+                        title: "Cancelled",
+                        text: "Action cancelled",
+                        type: "error",
+                        confirmButtonColor: "#4fc3f7"
+                    })
+                }
+            })
         }
     }
 });

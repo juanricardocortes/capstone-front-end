@@ -46,9 +46,9 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                 selectYears: 15,
                 format: 'yyyy-mm-dd',
                 min: moment(),
-                closeOnSelect: true
+                closeOnSelect: 
+                true
             });
-            
             return true;
         },
         hideAddProjectModal: function () {

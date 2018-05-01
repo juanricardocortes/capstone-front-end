@@ -11,10 +11,29 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
                     signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
-                if (response.data.valid) {
-                    functions.onCreate();
+                if ($rootScope.userlogged != null || $rootScope.userlogged != undefined) {
+                    if (!$rootScope.userlogged.isAdmin) {
+                        if (functions.checkIfProjectLead()) {
+                            if (response.data.valid) {
+                                functions.onCreate();
+                            } else {
+                                console.log("BREACH");
+                                window.location.href = "#!/login";
+                                $rootScope.isLogged = false;
+                            }
+                        } else {
+                            window.location.href = "#!/error";
+                        }
+                    } else {
+                        if (response.data.valid) {
+                            functions.onCreate();
+                        } else {
+                            console.log("BREACH");
+                            window.location.href = "#!/login";
+                            $rootScope.isLogged = false;
+                        }
+                    }
                 } else {
-                    console.log("BREACH");
                     window.location.href = "#!/login";
                     $rootScope.isLogged = false;
                 }
@@ -41,6 +60,18 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
             $rootScope.applicantsactive = false;
             $rootScope.leavesactive = false;
             $rootScope.profileactive = false;
+        },
+        checkIfProjectLead: function () {
+            var isPL = false;
+            var userlogged = $rootScope.userlogged;
+            try {
+                for (project in userlogged.files.projects) {
+                    if (userlogged.files.projects[project].isProjectLead) {
+                        isPL = true;
+                    }
+                }
+            } catch (err) {}
+            return isPL;
         }
     }
 

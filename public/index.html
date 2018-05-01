@@ -50,7 +50,7 @@
 </head>
 
 <body ng-app="app" ng-controller="mainCtrl">
-
+    <div ng-if="isAuthenticated" ng-init="functions.onListeners()"></div>
     <div ng-show="!isLogged && !logExam && !inExamMain">
         <ng-include src="'./components/login_component/views/login.html'">
 
@@ -77,7 +77,7 @@
 
     <!-- <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script> -->
     <script type="text/javascript" src="common/js/firebaseInit/firebase.js"></script>
-    <script type="text/javascript" src="common/js/firebaseInit/firebaseInit.js"></script>
+    <!-- <script type="text/javascript" src="common/js/firebaseInit/firebaseInit.js"></script> -->
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 
     <script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
@@ -132,7 +132,7 @@
     <script type="text/javascript" src="components/main_component/js/mainpageController.js"></script>
 
     <script type="text/javascript" src="components/dashboard_component/js/dashboardController.js"></script>
-
+    <script type="text/javascript" src="components/dashboard_component/js/printModalController.js"></script>
 
     <script type="text/javascript" src="components/leaves_component/js/leavesController.js"></script>
     <script type="text/javascript" src="components/leaves_component/js/addRequestModalController.js"></script>

@@ -1,7 +1,8 @@
 <div class="profile-container">
     <div class="applicant-picture-container z-depth-5">
-        <img class="applicant-picture-specs" src="{{selectedApplicant.image}}">
+        <img id="applicantImage" crossorigin="anonymous" class="applicant-picture-specs" ng-src="{{selectedApplicant.image}}">
     </div>
+    <canvas ng-show="false" id="applicantCanvas" width="150" height="150"></canvas>
     <div class="applicant-profile-space"></div>
     <div class="applicant-details-container z-depth-5 scroll">
         <div class="applicant-information">

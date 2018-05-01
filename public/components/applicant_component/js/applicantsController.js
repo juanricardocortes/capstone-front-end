@@ -10,10 +10,19 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                     signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
-                if (response.data.valid) {
-                    functions.onCreate();
+                if ($rootScope.userlogged != null || $rootScope.userlogged != undefined) {
+                    if (!$rootScope.userlogged.isAdmin) {
+                        window.location.href = "#!/error";
+                    } else {
+                        if (response.data.valid) {
+                            functions.onCreate();
+                        } else {
+                            console.log("BREACH");
+                            window.location.href = "#!/login";
+                            $rootScope.isLogged = false;
+                        }
+                    }
                 } else {
-                    console.log("BREACH");
                     window.location.href = "#!/login";
                     $rootScope.isLogged = false;
                 }
@@ -146,7 +155,12 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
                     hireFrom: "applicants"
                 }
             }).then(function (response) {
-                alert(response.data.message);
+                swal({
+                    type: response.data.type,
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             });
             event.stopPropagation();
         },

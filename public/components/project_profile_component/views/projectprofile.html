@@ -4,7 +4,7 @@
             <div class="scrollable-content scroll">
                 <div class="project-information">
                     <h2>{{selectedProject.name}}
-                        <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printMyProfile()" data-position="top"
+                        <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printProject()" data-position="top"
                             data-tooltip="Print profile?">
                             <i data-feather="printer" class="button-center-icon"></i>
                         </a>
@@ -106,15 +106,15 @@
                     data-position="top" data-tooltip="Add project lead">
                     <i data-feather="user-plus" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
+                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddShiftModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
                     data-tooltip="Add shift">
                     <i data-feather="clock" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
+                <a ng-show="selectedProject.projectlead" ng-click="functions.showAddSlotModal()" class="btn-floating btn-large success-button z-depth-5 tooltipped" data-position="top"
                     data-tooltip="Add slot">
                     <i data-feather="layers" class="center-feather-icon"></i>
                 </a>
-                <a ng-click="functions.endProject()" class="btn-floating btn-large danger-button z-depth-5 tooltipped" data-position="top"
+                <a ng-show="userlogged.isAdmin" ng-click="functions.endProject()" class="btn-floating btn-large danger-button z-depth-5 tooltipped" data-position="top"
                     data-tooltip="End Project">
                     <i data-feather="x" class="center-feather-icon"></i>
                 </a>
@@ -123,19 +123,19 @@
     </div>
 </div>
 
-<div class="row" ng-show="showAddShift">
+<div class="row" ng-if="showAddShift">
     <ng-include src="'./components/project_profile_component/views/addshiftmodal.html'">
     </ng-include>
 </div>
-<div class="row" ng-show="showAddSlot">
+<div class="row" ng-if="showAddSlot">
     <ng-include src="'./components/project_profile_component/views/addslotmodal.html'">
     </ng-include>
 </div>
-<div class="row" ng-show="showAddPL">
+<div class="row" ng-if="showAddPL">
     <ng-include src="'./components/project_profile_component/views/addplmodal.html'">
     </ng-include>
 </div>
-<div class="row" ng-show="showAddEmployee">
+<div class="row" ng-if="showAddEmployee">
     <ng-include src="'./components/project_profile_component/views/addemployeemodal.html'">
     </ng-include>
 </div>

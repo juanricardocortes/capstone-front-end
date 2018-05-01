@@ -3,7 +3,7 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
     var functions = {
         initialize: function () {
             console.log("Add shift modal controller");
-            
+
         },
         checkEmail: function (obj, list) {
             var i;
@@ -15,8 +15,8 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
             return false;
         },
         resetForm: function () {
-            $("#addShift_endTime").val(undefined);
-            $("#addShift_endTime").blur();
+            // $("#addShift_endTime").val(undefined);
+            // $("#addShift_endTime").blur();
             $("#addShift_startTime").val(undefined);
             $("#addShift_startTime").blur();
         },
@@ -30,16 +30,25 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
     functions.initialize();
 
     $scope.functions = {
+        startLocalJS: function () {
+            console.log("STARTING");
+            $(document).ready(function () {
+                $('.timepicker').pickatime();
+            });
+        },
         hideAddShiftModal: function () {
             $rootScope.showAddShift = false;
         },
         addShift: function () {
             var errors = 0;
-            if ($scope.addShift_startTime === undefined ||
-                $scope.addShift_endTime === undefined) {
+            if ($scope.addShift_startTime === undefined) {
                 errors = 1;
             }
             if (errors === 0) {
+                var startTime = moment($scope.addShift_startTime, "h:mm a");
+                var endTime = moment(startTime).add(9, 'hours');
+                var startMoment = moment(startTime).format("h:mm a");
+                var endMoment = moment(endTime).format("h:mm a");
                 $http({
                     url: $rootScope.baseURL + "secure-api/addShift",
                     method: "POST",
@@ -48,7 +57,7 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
                         token: localStorage.getItem("token"),
                         project: $rootScope.selectedProject,
                         employee: $rootScope.userlogged,
-                        time: $scope.addShift_startTime + " - " + $scope.addShift_endTime
+                        time: startMoment + " - " + endMoment
                     }
                 }).then(function (response) {
                     $rootScope.showAddShift = false;

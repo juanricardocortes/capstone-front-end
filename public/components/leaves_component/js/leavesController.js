@@ -79,6 +79,22 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             setTimeout(function () {
                 $scope.$apply();
             });
+        },
+        checkIfProjectLead: function () {
+            var isPL = 0;
+            var userlogged = $rootScope.userlogged;
+            try {
+                for (project in userlogged.files.projects) {
+                    if (userlogged.files.projects[project].isProjectLead) {
+                        isPL++;
+                    }
+                }
+            } catch (err) {}
+            if (isPL) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     functions.onInit();
@@ -212,13 +228,13 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             var hasFLeaves = false;
             var index;
             for (index = 0; index < $rootScope.allLeaves.length; index++) {
-                if($rootScope.allLeaves[index].request.isAcknowledgedByPL && !$rootScope.allLeaves[index].request.isAcknowledgedByHR) {
+                if ($rootScope.allLeaves[index].request.isAcknowledgedByPL && !$rootScope.allLeaves[index].request.isAcknowledgedByHR) {
                     hasFLeaves = !hasFLeaves;
                     break;
                 }
             }
             index++;
-            if(index === $rootScope.allLeaves.length){
+            if (index === $rootScope.allLeaves.length) {
                 hasFLeaves = true;
             }
             return hasFLeaves;

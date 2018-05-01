@@ -11,10 +11,19 @@ angular.module("app").controller("employeeCtrl", function ($scope, $rootScope, $
                     signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
-                if (response.data.valid) {
-                    functions.onCreate();
+                if ($rootScope.userlogged != null || $rootScope.userlogged != undefined) {
+                    if (!$rootScope.userlogged.isAdmin) {
+                        window.location.href = "#!/error";
+                    } else {
+                        if (response.data.valid) {
+                            functions.onCreate();
+                        } else {
+                            console.log("BREACH");
+                            window.location.href = "#!/login";
+                            $rootScope.isLogged = false;
+                        }
+                    }
                 } else {
-                    console.log("BREACH");
                     window.location.href = "#!/login";
                     $rootScope.isLogged = false;
                 }

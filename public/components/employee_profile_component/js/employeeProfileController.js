@@ -54,13 +54,8 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
                 $scope.$apply();
             });
         },
-        getProfileReport: function () {
+        getProfileReport: function (data) {
             var docDefinition = {
-                // content: [{
-                //     image: data,
-                //     width: 500,
-                // }],
-
                 content: [{
                         text: "Weltanchaung Corporation",
                         style: "header"
@@ -68,6 +63,9 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
                     {
                         text: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
                         style: "subtitle"
+                    },
+                    {
+                        image: data
                     },
                     {
                         text: "Profile",
@@ -163,7 +161,12 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
     $scope.functions = {
         printMyProfile: function () {
             $(document).ready(function () {
-                functions.getProfileReport();
+                var canvas = document.getElementById("employeeCanvas");
+                var ctx = canvas.getContext("2d");
+                var img = document.getElementById("employeeImage");
+                $rootScope.rootfunctions.fitImageOn(canvas, img, ctx);
+                console.log(canvas.toDataURL());
+                functions.getProfileReport(canvas.toDataURL());
             });
         },
         displayInformation: function (title, message) {

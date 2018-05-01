@@ -3,6 +3,36 @@ angular.module("app").controller("mainpageCtrl", function ($scope, $rootScope, $
     var functions = {
         initialize: function () {
             console.log("Main page controller");
+        },
+        emptyRootscope: function () {
+            console.log("CLEARING ROOTSCOPE");
+            for (var prop in $rootScope) {
+                if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {
+                    delete $rootScope[prop];
+                }
+            }
+        },
+        emptyLocalStorage: function () {
+            console.log("CLEARING LOCAL STORAGE");
+            localStorage.clear();
+        },
+        restartInitValues: function () {
+            $rootScope.baseURL = "http://127.0.0.1:9001/";
+            // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
+            $rootScope.currentPage = "Weltanchaung";
+            $rootScope.dashboardactive = true;
+            $rootScope.employeeactive = false;
+            $rootScope.projectsactive = false;
+            $rootScope.applicantsactive = false;
+            $rootScope.applicantsactive = false;
+            $rootScope.leavesactive = false;
+            $rootScope.profileactive = false;
+            $rootScope.isAuthenticated = false;
+            $rootScope.unseenNotifications = {};
+            $rootScope.dateToday = moment();
+            $rootScope.logExam = false;
+            $rootScope.inExamMain = (false || localStorage.getItem("inExamMain"));
+            $rootScope.userlogged = JSON.parse(localStorage.getItem("userlogged"));
         }
     }
 
@@ -85,7 +115,10 @@ angular.module("app").controller("mainpageCtrl", function ($scope, $rootScope, $
             $rootScope.isLogged = false;
             localStorage.removeItem("token");
             firebase.auth().signOut().then(function () {
-                // invalidate token
+                functions.emptyRootscope();
+                functions.emptyLocalStorage();
+                functions.restartInitValues();
+                firebase.app().delete()
             }).catch(function (error) {});
         }
     }

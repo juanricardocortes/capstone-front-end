@@ -3,7 +3,6 @@
         <div class="sidebar-logo">
             <div class="sidebar-logo-text">
                 <div class="sidebar-logo-picture">
-                    <!-- <img class="fit-picture z-depth-5" src="common/images/sampleimage.jpeg"> -->
                     <img class="fit-picture z-depth-5" ng-src="{{userlogged.files.image}}">
                 </div>
             </div>
@@ -174,7 +173,7 @@
             </div>
 
             <div class="sidebar-space"></div>
-            
+
             <div class="sidebar-link sign-out-link" ng-click="functions.logout()">
                 <div class="sidebar-link-hover">
                     <span>
@@ -188,19 +187,12 @@
                 </div>
             </div>
         </div>
+        <div class="sidebar-footer">
+            <i class="graytext">Weltanchaung Corporation</i><br>
+            <i class="graytext">2018, QWERTY, UST IT</i>
+        </div>
     </div>
     <div class="content">
-        <nav class="z-depth-5">
-            <div class="nav-wrapper">
-                <ul id="nav-mobile" class="right">
-                    <!-- <li>
-                            <a ng-click="logout()">
-                                <i class="material-icons left">input</i>Logout
-                            </a>
-                        </li> -->
-                </ul>
-            </div>
-        </nav>
         <div class="currentpage">
             <div class="col s12 m12 l12">
                 <ng-view>
