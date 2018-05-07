@@ -7,6 +7,9 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 templateUrl: "components/profile_component/views/profile.html",
                 controller: "profileCtrl"
             })
+            .when("/error", {
+                templateUrl: "components/error_component/views/error.html"
+            })
             .when("/dashboard", {
                 templateUrl: "components/dashboard_component/views/dashboard.html",
                 controller: "dashboardCtrl"
@@ -103,8 +106,8 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 }
             },
             getInitialValues: function () {
-                $rootScope.baseURL = "http://127.0.0.1:9001/";
-                // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
+                // $rootScope.baseURL = "http://127.0.0.1:9001/";
+                $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
                 $rootScope.currentPage = "Weltanchaung";
                 $rootScope.dashboardactive = true;
                 $rootScope.employeeactive = false;
