@@ -30,6 +30,8 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
         },
         getInitialValues: function () {
             $rootScope.selectedApplicant = JSON.parse(localStorage.getItem("selectedApplicant"));
+            $scope.age = moment(moment()).diff($rootScope.selectedApplicant.birthdate, 'years');
+            functions.getScorePercent();
         },
         getActiveSideBarLink: function () {
             $rootScope.dashboardactive = false;
@@ -159,8 +161,15 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                 requirements.push([$rootScope.selectedApplicant.requirements[req].name, $rootScope.selectedApplicant.requirements[req].status]);
             }
             return requirements;
+        },
+        getScorePercent: function () {
+            $scope.score = ($rootScope.selectedApplicant.exam / 16) * 100;
+            if($scope.score) {
+                $scope.score += "%";
+            } else {
+                $scope.score = "-";
+            }          
         }
-
     }
 
     functions.onInit();

@@ -32,7 +32,9 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
             $scope.showProfile = true;
             $scope.showLeaves = true;
             $scope.showProjects = true;
+            $rootScope.showUpdateEmployeeModal = false;
             $rootScope.selectedEmployee = JSON.parse(localStorage.getItem("selectedEmployee"));
+            $scope.age = moment(moment()).diff($rootScope.selectedEmployee.files.birthdate, 'years')
         },
         getActiveSideBarLink: function () {
             $rootScope.dashboardactive = false;
@@ -160,6 +162,9 @@ angular.module("app").controller("employeeProfileCtrl", function ($scope, $rootS
     functions.onInit();
 
     $scope.functions = {
+        editProfile: function () {
+            $rootScope.showUpdateEmployeeModal = true;
+        },
         printMyProfile: function () {
             $(document).ready(function () {
                 var canvas = document.getElementById("employeeCanvas");

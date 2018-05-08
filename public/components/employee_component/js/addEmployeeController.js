@@ -71,6 +71,7 @@ angular.module("app").controller("addEmployeeCtrl", function ($scope, $rootScope
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 99,
                 max: moment().year(moment().year() - 18).toDate(),
+                min: moment().year(moment().year() - 50).toDate(),
                 closeOnSelect: true
             });
             return true;

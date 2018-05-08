@@ -106,8 +106,8 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 }
             },
             getInitialValues: function () {
-                // $rootScope.baseURL = "http://127.0.0.1:9001/";
-                $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
+                $rootScope.baseURL = "http://127.0.0.1:9001/";
+                // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
                 $rootScope.currentPage = "Weltanchaung";
                 $rootScope.dashboardactive = true;
                 $rootScope.employeeactive = false;

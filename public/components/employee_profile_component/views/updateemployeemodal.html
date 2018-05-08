@@ -1,0 +1,63 @@
+<div ng-show="startJS()" ng-controller="updateEmployeeCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Update employee
+                        <i ng-click="functions.hideUpdateEmployeeModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="mail" class="prefix input-icon"></i>
+                            <input id="updateEmployee_email" ng-model="selectedEmployee.email" type="email" class="validate" onkeypress="return validate(event)">
+                            <label for="updateEmployee_email" class="active">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="user" class="prefix input-icon"></i>
+                            <input id="updateEmployee_lastname" ng-model="selectedEmployee.files.lastname" type="text" class="validate" onkeypress="return validate(event)">
+                            <label for="updateEmployee_lastname" class="active">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="user" class="prefix input-icon"></i>
+                            <input id="updateEmployee_firstname" ng-model="selectedEmployee.files.firstname" type="text" class="validate" onkeypress="return validate(event)" disabled>
+                            <label for="updateEmployee_firstname" class="active">First Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="map-pin" class="prefix input-icon"></i>
+                            <input id="updateEmployee_address" ng-model="selectedEmployee.files.address" type="text" class="validate" onkeypress="return validate(event)">
+                            <label for="updateEmployee_address" class="active">Address</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="calendar" class="prefix input-icon"></i>
+                            <input id="updateEmployee_birthdate" ng-model="selectedEmployee.files.birthdate" type="text" disabled>
+                            <label for="updateEmployee_birthdate" class="active">Birth date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i data-feather="phone" class="prefix input-icon"></i>
+                            <input id="updateEmployee_contact" ng-model="selectedEmployee.files.contact" type="text" class="validate" onkeypress="return validate(event)">
+                            <label for="updateEmployee_contact" class="active">Contact Number</label>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large warning-button" ng-click="functions.updateEmployee()">
+                            <i data-feather="edit-2" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

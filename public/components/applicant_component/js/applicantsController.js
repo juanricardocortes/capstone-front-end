@@ -51,7 +51,8 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             $rootScope.applicantTableSwitch = "Active applicants"
             $rootScope.archiveApplicantText = "Archive"
             $rootScope.showhide = "Show";
-            $rootScope.archiveApplicantModalText = "Archive applicants?"
+            $rootScope.archiveApplicantModalText = "Archive applicants?";
+            $rootScope.passingmark = $rootScope.passingMark || 60;
         },
         refresh: function () {
             setTimeout(function () {
@@ -71,6 +72,9 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
     }
     functions.onInit();
     $scope.functions = {
+        showSetPassingMark: function () {
+            $rootScope.showSetPassingMarkModal = true;
+        },
         toggleArchiveApplicants: function () {
             if ($rootScope.archiveApplicantToggle) {
                 $rootScope.applicantTableSwitch = "Archived applicants"

@@ -42,6 +42,7 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
 
     functions.initialize();
 
+    console.log(moment(moment().add(3, 'days')))
     $scope.functions = {
         getMinimumStart: function () {
             return moment();
@@ -51,13 +52,14 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
                 selectMonths: true, // Creates a dropdown to control month
                 format: 'yyyy-mm-dd',
                 selectYears: 15,
-                min: moment(),
-                closeOnSelect: true
+                min: moment(moment().add(3, 'days')).toDate(),
+                closeOnSelect: true,
+                disable: [1,7]
             });
             $('.datepicker').on('change', function () {
                 if ($(this).attr('id') === 'addRequest_startDate') {
                     if($(this).val()===""){
-                        $('#addRequest_endDate').pickadate('picker').set('min', moment());
+                        $('#addRequest_endDate').pickadate('picker').set('min', moment(moment().add(3, 'days')));
                     } else {
                         $('#addRequest_endDate').pickadate('picker').set('min', $(this).val());
                     }

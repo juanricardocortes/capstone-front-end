@@ -75,7 +75,7 @@
                                     data-position="top" data-tooltip="Archive {{applicant.lastname}}?">
                                     <i data-feather="archive" class="button-center-icon"></i>
                                 </a>
-                                <a ng-if="applicant.completion === 100" class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
+                                <a ng-if="applicant.completion === 100 && applicant.tookExam && ((applicant.exam/16*100) > passingmark)" class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                     <i data-feather="user-check" class="button-center-icon "></i>
                                 </a>
@@ -85,7 +85,7 @@
                                     data-position="top" data-tooltip="Unarchive {{applicant.lastname}}?">
                                     <i data-feather="rotate-ccw" class="button-center-icon"></i>
                                 </a>
-                                <a ng-if="applicant.completion === 100" class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
+                                <a ng-if="applicant.completion === 100 && applicant.tookExam && ((applicant.exam/16*100) > passingmark)" class="btn info-button z-depth-3 tooltipped" ng-click="functions.hireApplicant(applicant,$event)"
                                     data-position="top" data-tooltip="Hire {{applicant.lastname}}?">
                                     <i data-feather="user-check" class="button-center-icon"></i>
                                 </a>
@@ -117,6 +117,10 @@
                         <i data-feather="rotate-ccw"></i>
                     </div>
                 </a>
+                <a ng-click="functions.showSetPassingMark()" ng-show="!(showHired)" class="btn-floating btn-large info-button z-depth-5 tooltipped"
+                    data-position="top" data-tooltip="Set passing mark">
+                    <i data-feather="percent" class="center-feather-icon"></i>
+                </a>
                 <a ng-click="functions.showHiredApplicants()" class="btn-floating btn-large warning-button z-depth-5 tooltipped"
                     data-position="top" data-tooltip="{{showhide}} hired applicants">
                     <div ng-show="!(showHired)" class="center-feather-icon">
@@ -143,5 +147,11 @@
 
 <div class="row" ng-show="showMultipleArchiveApplicantModal">
     <ng-include src="'./components/applicant_component/views/multiplearchiveapplicantmodal.html'">
+    </ng-include>
+</div>
+
+
+<div class="row" ng-show="showSetPassingMarkModal">
+    <ng-include src="'./components/applicant_component/views/setpassingmarkmodal.html'">
     </ng-include>
 </div>

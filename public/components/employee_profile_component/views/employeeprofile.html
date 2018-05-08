@@ -34,6 +34,10 @@
         <div ng-show="showProfile" class="employee-information">
             <h4>
                 Profile
+                <a data-html2canvas-ignore="true" class="btn warning-button z-depth-3 tooltipped" ng-click="functions.editProfile()" data-position="top"
+                    data-tooltip="Edit profile?">
+                    <i data-feather="edit-2" class="button-center-icon"></i>
+                </a>
                 <a data-html2canvas-ignore="true" class="btn info-button z-depth-3 tooltipped" ng-click="functions.printMyProfile()" data-position="top"
                     data-tooltip="Print profile?">
                     <i data-feather="printer" class="button-center-icon"></i>
@@ -49,6 +53,7 @@
                         <li class="collection-item item-title">Address</li>
                         <li class="collection-item item-title">Contact Number</li>
                         <li class="collection-item item-title">Birth Date</li>
+                        <li class="collection-item item-title">Age</li>
                         <li class="collection-item item-title">Date Hired</li>
                     </ul>
                 </div>
@@ -61,6 +66,7 @@
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Address', selectedEmployee.files.address)">{{selectedEmployee.files.address}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Contact Number', selectedEmployee.files.contact)">{{selectedEmployee.files.contact}}</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Birth Date', selectedEmployee.files.birthdate)">{{selectedEmployee.files.birthdate}}</li>
+                        <li class="collection-item item-clickable" ng-click="functions.displayInformation('Age', age)">{{age}} years old</li>
                         <li class="collection-item item-clickable" ng-click="functions.displayInformation('Date Hired', selectedEmployee.files.datehired)">{{selectedEmployee.files.datehired}}</li>
                     </ul>
                 </div>
@@ -162,4 +168,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-show="showUpdateEmployeeModal">
+    <ng-include src="'./components/employee_profile_component/views/updateemployeemodal.html'">
+    </ng-include>
 </div>

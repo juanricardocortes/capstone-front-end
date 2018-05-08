@@ -1,0 +1,33 @@
+<div ng-show="startJS()" ng-controller="setPassingMarkModalCtrl" class="modal-background">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card modal-size">
+                <div class="card-content scrollable-content scroll">
+                    <span class="card-title grey-text text-darken-4">Set passing mark
+                        <i ng-click="functions.hideSetPassingMarkModal()" class="material-icons right cursor-button">close</i>
+                    </span>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col s12">
+                            <h6>Current passing mark: {{passingmark}}%</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <p class="range-field">
+                                <input type="range" id="passingmark" ng-model="$root.passingmark" min="0" max="100" />
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <a class="btn-floating btn-large success-button" ng-click="functions.setPassingMark()">
+                            <i data-feather="percent" class="center-feather-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>

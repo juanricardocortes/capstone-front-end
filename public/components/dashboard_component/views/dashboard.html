@@ -111,7 +111,7 @@
                     <div class="scroll-page">
                         <div class="scrollable-content scroll">
                             <ul ng-if="functions.checkAvailableApplicants()" class="collection">
-                                <li class="collection-item" ng-repeat="applicant in allApplicants | orderBy:'email':false" ng-if="applicant.completion === 100">{{applicant.email}}</li>
+                                <li class="collection-item" ng-repeat="applicant in allApplicants | orderBy:'email':false" ng-if="applicant.completion === 100 && applicant.tookExam">{{applicant.email}}</li>
                             </ul>
                             <ul ng-if="!functions.checkAvailableApplicants()" class="collection">
                                 <li class="collection-item">
