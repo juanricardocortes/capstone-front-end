@@ -1,4 +1,4 @@
-angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -35,9 +35,10 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             $rootScope.showForgotPassword = false;
         },
         initFirebase: function (token, user) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/initFirebase",
                 method: "POST",
+                cache : true,
                 data: {
                     signature: JSON.stringify(user),
                     token: token
@@ -61,9 +62,10 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             $rootScope.logExam = true;
         },
         login: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/authOne",
                 method: "POST",
+                cache : true,
                 data: {
                     user: {
                         email: $scope.email,
@@ -83,9 +85,10 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             });
         },
         cancel: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/cancelAuth",
                 method: "POST",
+                cache : true,
                 data: {
                     user: $scope.user
                 }
@@ -96,9 +99,10 @@ angular.module("app").controller("loginCtrl", function ($scope, $rootScope, $htt
             })
         },
         authTwo: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/authTwo",
                 method: "POST",
+                cache : true,
                 data: {
                     pin: $scope.pin,
                     user: $scope.user

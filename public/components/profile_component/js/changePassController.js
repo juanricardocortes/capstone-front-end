@@ -1,4 +1,4 @@
-angular.module("app").controller("changePassCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("changePassCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         resetForm: function () {
@@ -34,9 +34,10 @@ angular.module("app").controller("changePassCtrl", function ($scope, $rootScope,
                     displayLength: 2500
                 });
             } else {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/changePassword",
                     method: "POST",
+                    cache : true,
                     data: {
                         token: localStorage.getItem("token"),
                         signature: JSON.stringify($rootScope.userlogged),

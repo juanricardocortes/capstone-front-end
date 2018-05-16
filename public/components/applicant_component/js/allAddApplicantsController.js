@@ -1,4 +1,4 @@
-angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -26,9 +26,10 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
                     },
                     function complete() {
                         var downloadURL = task.snapshot.downloadURL;
-                        $http({
+                        queue({
                             url: $rootScope.baseURL + "secure-api/uploadApplicantImage",
                             method: "POST",
+                            cache : true,
                             data: {
                                 signature: JSON.stringify($rootScope.userlogged),
                                 token: localStorage.getItem("token"),
@@ -58,11 +59,12 @@ angular.module("app").controller("allAddApplicantsCtrl", function ($scope, $root
             $rootScope.showAddApplicant = true;
         },
         addApplicants: function () {
-            $http({
-                url: "http://127.0.0.1:9001/secure-api/addApplicant",
+            queue({
+                url: $rootScope.baseURL + "secure-api/addApplicant",
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
+                    cache : true,
                     signature: JSON.stringify($rootScope.userlogged),
                     allApplicants: $rootScope.allApplicantsToBeAdded
                 }

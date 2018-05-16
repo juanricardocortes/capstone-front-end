@@ -1,4 +1,4 @@
-angular.module("app").controller("addEmployeeModalCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addEmployeeModalCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -57,9 +57,10 @@ angular.module("app").controller("addEmployeeModalCtrl", function ($scope, $root
             $rootScope.showAddEmployee = false;
         },
         assignEmployee: function (employee) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/addMembers",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     slot: $rootScope.selectedSlot,

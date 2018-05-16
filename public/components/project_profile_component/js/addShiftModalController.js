@@ -1,4 +1,4 @@
-angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -49,9 +49,10 @@ angular.module("app").controller("addShiftModalCtrl", function ($scope, $rootSco
                 var endTime = moment(startTime).add(9, 'hours');
                 var startMoment = moment(startTime).format("h:mm a");
                 var endMoment = moment(endTime).format("h:mm a");
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/addShift",
                     method: "POST",
+                    cache : true,
                     data: {
                         signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),

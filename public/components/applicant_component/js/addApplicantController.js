@@ -1,4 +1,4 @@
-angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addApplicantCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {

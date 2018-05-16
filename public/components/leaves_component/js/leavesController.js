@@ -1,11 +1,12 @@
-angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $rootScope) {
+angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $rootScope, queue) {
 
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)
@@ -146,9 +147,10 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             });
         },
         acknowledgeLeave: function (leave, isAccepted) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/acknowledgeLeave",
                 method: "POST",
+                cache : true,
                 data: {
                     signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
@@ -166,9 +168,10 @@ angular.module("app").controller("leaveRequestsCtrl", function ($scope, $http, $
             })
         },
         forwardLeave: function (name, projectkey, request, isAccepted) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/forwardLeave",
                 method: "POST",
+                cache : true,
                 data: {
                     signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),

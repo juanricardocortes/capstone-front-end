@@ -1,4 +1,4 @@
-angular.module("app").controller("examCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("examCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
@@ -29,9 +29,10 @@ angular.module("app").controller("examCtrl", function ($scope, $rootScope, $http
                     displayLength: 2500
                 });
             } else {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "api/logApplicant",
                     method: "POST",
+                    cache : true,
                     data: {
                         email: $scope.exam_email,
                         refnum: $scope.exam_refnum

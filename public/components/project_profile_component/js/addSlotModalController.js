@@ -1,4 +1,4 @@
-angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -34,9 +34,10 @@ angular.module("app").controller("addSlotModalCtrl", function ($scope, $rootScop
                 errors = 1;
             }
             if (errors === 0) {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/addSlot",
                     method: "POST",
+                    cache : true,
                     data: {
                         token: localStorage.getItem("token"),
                         signature: JSON.stringify($rootScope.userlogged),

@@ -1,4 +1,4 @@
-angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -26,9 +26,10 @@ angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootS
                     function complete() {
                         console.log("Image uploaded");
                         var downloadURL = task.snapshot.downloadURL;
-                        $http({
+                        queue({
                             url: $rootScope.baseURL + "secure-api/uploadEmployeeImage",
                             method: "POST",
+                            cache : true,
                             data: {
                                 token: localStorage.getItem("token"),
                                 signature: JSON.stringify($rootScope.userlogged),
@@ -58,9 +59,10 @@ angular.module("app").controller("allAddEmployeesCtrl", function ($scope, $rootS
             $rootScope.showAddEmployee = true;
         },
         addEmployees: function () {
-            $http({
-                url: "http://127.0.0.1:9001/secure-api/addEmployee",
+            queue({
+                url: $rootScope.baseURL + "secure-api/addEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged),

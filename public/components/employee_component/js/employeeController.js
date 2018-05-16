@@ -1,13 +1,14 @@
-angular.module("app").controller("employeeCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("employeeCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
                 data: {
                     token: localStorage.getItem("token"),
+                    cache : true,
                     signature: JSON.stringify($rootScope.userlogged)
                 }
             }).then(function (response) {
@@ -95,9 +96,10 @@ angular.module("app").controller("employeeCtrl", function ($scope, $rootScope, $
         archiveEmployee: function (employee, event) {
             employee.isArchived = !employee.isArchived;
             functions.refresh();
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/archiveEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     employees: [employee],
                     signature: JSON.stringify($rootScope.userlogged),

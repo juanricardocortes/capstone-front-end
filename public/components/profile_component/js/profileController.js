@@ -1,11 +1,12 @@
-angular.module("app").controller("profileCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("profileCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)

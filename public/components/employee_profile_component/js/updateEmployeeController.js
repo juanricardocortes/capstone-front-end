@@ -1,13 +1,14 @@
-angular.module("app").controller("updateEmployeeCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("updateEmployeeCtrl", function ($scope, $rootScope, $http, queue) {
 
     $scope.functions = {
         hideUpdateEmployeeModal: function () {
             $rootScope.showUpdateEmployeeModal = false;
         },
         updateEmployee: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/updateEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged),

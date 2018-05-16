@@ -1,10 +1,11 @@
-angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, $http, queue) {
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)
@@ -111,9 +112,10 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
         archiveApplicant: function (applicant, event) {
             applicant.isArchived = !applicant.isArchived;
             functions.refresh();
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/archiveApplicant",
                 method: "POST",
+                cache : true,
                 data: {
                     applicant: [applicant],
                     signature: JSON.stringify($rootScope.userlogged),
@@ -138,9 +140,10 @@ angular.module("app").controller("applicantCtrl", function ($scope, $rootScope, 
             event.stopPropagation();
         },
         hireApplicant: function (applicant, event) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/addEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),

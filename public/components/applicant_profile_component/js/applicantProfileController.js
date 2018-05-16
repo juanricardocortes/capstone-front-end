@@ -1,10 +1,11 @@
-angular.module("app").controller("applicantProfileCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("applicantProfileCtrl", function ($scope, $rootScope, $http, queue) {
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)
@@ -61,7 +62,8 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
                 reverseButtons: true
             }).then(function (result) {
                 if (result.value) {
-                    requirement.status = "complete";
+                    // $rootScope.selectedApplicant.requirements[key].status = "complete";
+                    // requirement.status = "complete";
                     functions.updateRequirement(key, requirement);
                 } else if (
                     result.dismiss === swal.DismissReason.cancel
@@ -76,28 +78,40 @@ angular.module("app").controller("applicantProfileCtrl", function ($scope, $root
             })
         },
         updateRequirement: function (key, requirement) {
-            $http({
-                url: $rootScope.baseURL + "secure-api/updateRequirements",
-                method: "POST",
-                data: {
-                    status: "complete",
-                    signature: JSON.stringify($rootScope.userlogged),
-                    token: localStorage.getItem("token"),
-                    requirementKey: key,
-                    requirementName: requirement.name,
-                    applicant: $rootScope.selectedApplicant,
-                    applicantKey: $rootScope.selectedApplicant.userkey,
-                    completion: $rootScope.selectedApplicant.completion,
-                    totalRequirements: Object.keys($rootScope.selectedApplicant.requirements).length
-                }
-            }).then(function (response) {
-                swal({
-                    title: "Success",
-                    text: response.data.message,
-                    type: "success",
-                    confirmButtonColor: "#4fc3f7"
-                })
-            })
+            // var totalRequirements = Object.keys($rootScope.selectedApplicant.requirements).length;
+            // $rootScope.selectedApplicant.completion = Math.ceil($rootScope.selectedApplicant.completion + ((1 / (totalRequirements)) * 100));
+            // if($rootScope.selectedApplicant.completion > 100) {
+            //     $rootScope.selectedApplicant.completion = 100;
+            // }
+            try{
+                queue({
+                    url: $rootScope.baseURL + "secure-api/updateRequirements",
+                    method: "POST",
+                    cache : true,
+                    data: {
+                        status: "complete",
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token"),
+                        requirementKey: key,
+                        completion: $rootScope.selectedApplicant.completion,
+                        requirementName: requirement.name,
+                        applicant: $rootScope.selectedApplicant,
+                        applicantKey: $rootScope.selectedApplicant.userkey,
+                        totalRequirements: Object.keys($rootScope.selectedApplicant.requirements).length
+                    }
+                }).then(function (response) {
+                    setTimeout(function(){
+                        swal({
+                            type: response.data.success,
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    });
+                });
+            } catch (err) {
+                console.log("THIS IS AN ERROR 429");
+            }
         },
         refresh: function () {
             setTimeout(function () {

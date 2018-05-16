@@ -1,4 +1,4 @@
-angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -43,12 +43,13 @@ angular.module("app").controller("multipleAddApplicantCtrl", function ($scope, $
                     }
                 }
             }
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/archiveApplicant",
                 method: "POST",
                 data: {
                     applicant: $rootScope.multipleArchiveApplicant,
                     signature: JSON.stringify($rootScope.userlogged),
+                    cache : true,
                     token: localStorage.getItem("token")
                 }
             }).then(function (response) {

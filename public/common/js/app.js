@@ -47,8 +47,30 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 controller: "leaveRequestsCtrl"
             })
     })
+    
+    .factory('queue', function($q,$http) {
+  
+        var queue=[];
+        var execNext = function() {
+          var task = queue[0];
+          $http(task.c).then(function(data) {
+            queue.shift();
+            task.d.resolve(data);
+            if (queue.length>0) execNext();
+          }, function(err) {
+            task.d.reject(err);
+          })
+          ;
+        }; 
+        return function(config) {
+          var d = $q.defer();
+          queue.push({c:config,d:d});
+          if (queue.length===1) execNext();            
+          return d.promise;
+        };
+      })
 
-    .controller("mainCtrl", function ($rootScope, $scope, $http) {
+    .controller("mainCtrl", function ($rootScope, $scope, $http, queue) {
 
         var functions = {
             initialize: function () {
@@ -106,8 +128,8 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 }
             },
             getInitialValues: function () {
-                $rootScope.baseURL = "http://127.0.0.1:9001/";
-                // $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
+                // $rootScope.baseURL = "http://127.0.0.1:9001/";
+                $rootScope.baseURL = "https://us-central1-hrmsbot.cloudfunctions.net/venus/";
                 $rootScope.currentPage = "Weltanchaung";
                 $rootScope.dashboardactive = true;
                 $rootScope.employeeactive = false;
@@ -129,14 +151,30 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     if (user) {
                         console.log(user);
                         $rootScope.firebaseuser = user;
-                        functions.employeeListeners();
-                        functions.leavesListeners();
-                        functions.projectListeners();
-                        functions.applicantListeners();
-                        // if($rootScope.userlogged.isAdmin) {
-                        //     if(functions.checkIfProjectLead()){
-                        //     }
-                        // } 
+                        setTimeout(function () {
+                            functions.employeeListeners();
+                        });
+                        setTimeout(function () {
+                            functions.employeeNotifListener();
+                        });
+                        setTimeout(function () {
+                            functions.applicantListeners();
+                        })
+                        setTimeout(function () {
+                            functions.applicantNotifListener();
+                        });
+                        setTimeout(function () {
+                            functions.projectListeners();
+                        });
+                        setTimeout(function () {
+                            functions.projectNotifListener();
+                        });
+                        setTimeout(function () {
+                            functions.leavesListeners();
+                        });
+                        setTimeout(function () {
+                            functions.leaveNotifListener();
+                        });
                     } else {
                         console.log("NO USER SIGNED IN");
                     }
@@ -145,10 +183,116 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
             getUserLogged: function () {
                 $rootScope.userlogged = JSON.parse(localStorage.getItem("userlogged"));
             },
+            employeeUpdateListeners: function () {
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(decrypted), 1);
+                        $rootScope.employeeCount--;
+                    });
+                    functions.refresh();
+                });
+                firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
+                    console.log("EMPLOYEE CHANGED");
+                    console.log(snapshot.val());
+                    functions.decrypt(snapshot.val(), function (decrypted) {
+                        console.log(decrypted);
+                        for (var index = 0; index < $rootScope.allEmployees.length; index++) {
+                            if ($rootScope.allEmployees[index].userkey === decrypted.userkey) {
+                                $rootScope.allEmployees[index] = decrypted;
+                                try {
+                                    if ($rootScope.selectedEmployee.userkey === decrypted.userkey) {
+                                        $rootScope.selectedEmployee = decrypted;
+                                        localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
+                                    }
+                                } catch (err) {
+                                    console.log("No selected employee");
+                                }
+                                try {
+                                    if ($rootScope.userlogged.userkey === decrypted.userkey) {
+                                        $rootScope.userlogged = decrypted;
+                                        localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
+                                    }
+                                } catch (err) {
+                                    console.log("No logged in user");
+                                }
+                                break;
+                            }
+                        }
+                    })
+                    functions.refresh();
+                });
+            },
+            employeeListeners: function () {
+                $rootScope.allEmployees = [];
+                $rootScope.lastEmployee;
+                $rootScope.employeeCount = 0;
+                $rootScope.employeeDataPopulated = false;
+                $rootScope.janCountEmp = $rootScope.febCountEmp =
+                    $rootScope.marCountEmp = $rootScope.aprCountEmp =
+                    $rootScope.mayCountEmp = $rootScope.junCountEmp =
+                    $rootScope.julCountEmp = $rootScope.augCountEmp =
+                    $rootScope.sepCountEmp = $rootScope.octCountEmp =
+                    $rootScope.novCountEmp = $rootScope.decCountEmp = 0;
+                $rootScope.employeesLoaded = false;
+
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getEmployees",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
+                    }
+                }).then(function (response) {
+                    $rootScope.employeeCount = response.data.employees.length;
+                    $rootScope.allEmployees = response.data.employees;
+                    for (var index = 0; index < $rootScope.allEmployees.length; index++) {
+                        functions.getMonthBarGraphEmp($rootScope.allEmployees[index]);
+                    }
+                    $rootScope.employeeDataPopulated = true;
+                    $rootScope.employeesLoaded = true;
+                    functions.employeeUpdateListeners();
+                    firebase.database().ref("HRMS_Storage/Employees/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.userkey != $rootScope.allEmployees[$rootScope.allEmployees.length - 1].userkey) {
+                                    $rootScope.allEmployees.push(decrypted);
+                                    $rootScope.employeeCount++;
+                                    functions.getMonthBarGraphEmp(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        })
+                    })
+                })
+            },
+            employeeNotifListener: function () {
+                $rootScope.employeeNotifications = [];
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getEmployeeNotifications",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
+                    }
+                }).then(function (response) {
+                    $rootScope.employeeNotifications = response.data.employees;
+                    firebase.database().ref("HRMS_Storage/Notifications/Employees/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.key != $rootScope.employeeNotifications[$rootScope.employeeNotifications.length - 1].key) {
+                                    $rootScope.employeeNotifications.push(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        })
+                    });
+                });
+            },
             applicantUpdateListeners: function () {
                 firebase.database().ref("HRMS_Storage/Applicants/").on("child_removed", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allApplicants.splice($rootScope.allApplicants.indexOf(decrypted), 1);
+                        $rootScope.applicantCount--;
                         functions.refresh();
                     });
                 });
@@ -176,8 +320,6 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 });
             },
             applicantListeners: function () {
-                $rootScope.appNotifCounter = 0;
-                $rootScope.applicantNotifications = [];
                 $rootScope.allApplicants = [];
                 $rootScope.lastApplicant;
                 $rootScope.applicantCount = 0;
@@ -189,52 +331,65 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     $rootScope.sepCountApp = $rootScope.octCountApp =
                     $rootScope.novCountApp = $rootScope.decCountApp = 0;
                 $rootScope.applicantsLoaded = false;
-
-                firebase.database().ref("HRMS_Storage/Notifications/Applicants/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        if (!(decrypted.seen)) {
-                            $rootScope.appNotifCounter++;
-                        }
-                        $rootScope.unseenNotifications["applicants"] = $rootScope.appNotifCounter;
-                        $rootScope.applicantNotifications.push(decrypted);
-                        functions.refresh();
-                    });
-                });
-                firebase.database().ref("HRMS_Storage/Applicants/").orderByKey().limitToLast(1).once('value').then(function (snapshot) {
-                    try {
-                        $rootScope.lastApplicant = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
-                    } catch (err) {
-                        console.log("NO APPLICANTS YET");
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getApplicants",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
                     }
-                });
-                firebase.database().ref("HRMS_Storage/Applicants/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        $rootScope.allApplicants.push(decrypted);
-                        $rootScope.applicantCount++;
-                        functions.getMonthBarGraphApp(decrypted);
-                        functions.refresh();
-                        try {
-                            if (snapshot.val().userkey === $rootScope.lastApplicant.userkey) {
-                                console.log("ALL APPLICANTS");
-                                console.log($rootScope.allApplicants);
-                                $rootScope.applicantDataPopulated = true;
-                                $rootScope.applicantsLoaded = true;
-                                functions.applicantUpdateListeners();
-                            }
-                        } catch (err) {
-                            console.log(err.message);
-                            console.log("NO LAST APPLICANT");
-                            $rootScope.applicantDataPopulated = true;
-                            $rootScope.applicantsLoaded = true;
-                            functions.applicantUpdateListeners()
-                        }
+                }).then(function (response) {
+                    $rootScope.applicantCount = response.data.applicants.length;
+                    $rootScope.allApplicants = response.data.applicants;
+                    for (var index = 0; index < $rootScope.allApplicants.length; index++) {
+                        functions.getMonthBarGraphApp($rootScope.allApplicants[index]);
+                    }
+                    $rootScope.applicantDataPopulated = true;
+                    $rootScope.applicantsLoaded = true;
+                    functions.applicantUpdateListeners();
+                    firebase.database().ref("HRMS_Storage/Applicants/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.userkey != $rootScope.allApplicants[$rootScope.allApplicants.length - 1].userkey) {
+                                    $rootScope.allApplicants.push(decrypted);
+                                    $rootScope.applicantCount++;
+                                    functions.getMonthBarGraphApp(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        })
                     });
                 });
+            },
+            applicantNotifListener: function () {
+                $rootScope.applicantNotifications = [];
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getApplicantNotifications",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
+                    }
+                }).then(function (response) {
+                    $rootScope.applicantNotifications = response.data.applicants;
+                    firebase.database().ref("HRMS_Storage/Notifications/Applicants/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.userkey != $rootScope.applicantNotifications[$rootScope.applicantNotifications.length - 1].userkey) {
+                                    $rootScope.applicantNotifications.push(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        });
+                    });
+                })
+
             },
             projectUpdateListeners: function () {
                 firebase.database().ref("HRMS_Storage/Projects/").on("child_removed", function (snapshot) {
                     functions.decrypt(snapshot.val(), function (decrypted) {
                         $rootScope.allProjects.splice($rootScope.allProjects.indexOf(decrypted), 1);
+                        $rootScope.projectCount--;
                         functions.refresh();
                     })
                 });
@@ -266,56 +421,76 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 });
             },
             projectListeners: function () {
-                $rootScope.projectNotifCounter = 0;
-                $rootScope.projectNotifications = [];
                 $rootScope.allProjects = [];
                 $rootScope.lastProject;
                 $rootScope.isProjectLead = false;
                 $rootScope.projectCount = 0;
                 $rootScope.projectsLoaded = false;
 
-                firebase.database().ref("HRMS_Storage/Notifications/Projects/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        if (!(decrypted.seen)) {
-                            $rootScope.projectNotifCounter++;
-                        }
-                        $rootScope.unseenNotifications["projects"] = $rootScope.projectNotifCounter;
-                        $rootScope.projectNotifications.push(decrypted);
-                        functions.refresh();
-                    })
-                });
-                firebase.database().ref("HRMS_Storage/Projects/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
-                    try {
-                        $rootScope.lastProject = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
-                    } catch (err) {
-                        console.log("NO LAST PROJECT YET");
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getProjects",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
                     }
-                });
-                firebase.database().ref("HRMS_Storage/Projects/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        try {
-                            if (decrypted.projectlead.userkey === $rootScope.userlogged.userkey && !$rootScope.isProjectLead) {
+                }).then(function (response) {
+                    $rootScope.allProjects = response.data.projects;
+                    $rootScope.projectCount = response.data.projects.length;
+                    $rootScope.projectsLoaded = true;
+                    functions.projectUpdateListeners();
+                    try {
+                        for (project in $rootScope.allProjects) {
+                            if ($rootScope.allProjects[project].projectlead.userkey === $rootScope.userlogged.userkey) {
                                 $rootScope.isProjectLead = true;
                             }
-                        } catch (err) {
-                            console.log("NO PROJECT LEAD YET")
                         }
-                        $rootScope.allProjects.push(decrypted);
-                        $rootScope.projectCount++;
-                        functions.refresh();
-                        try {
-                            if (snapshot.val().projectkey === $rootScope.lastProject.projectkey) {
-                                console.log("ALL PROJECTS");
-                                console.log($rootScope.allProjects);
-                                $rootScope.projectsLoaded = true;
-                                functions.projectUpdateListeners();
+                    } catch (err) {}
+                    firebase.database().ref("HRMS_Storage/Projects/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.projectlead.userkey === $rootScope.userlogged.userkey && !$rootScope.isProjectLead) {
+                                    $rootScope.isProjectLead = true;
+                                }
+                            } catch (err) {}
+                            try {
+                                if (decrypted.projectkey != $rootScope.allProjects[$rootScope.allProjects.length - 1].projectkey) {
+                                    $rootScope.allProjects.push(decrypted);
+                                    $rootScope.projectCount++;
+                                    functions.refresh();
+                                }
+                            } catch (err) {
+                                if($rootScope.allProjects.length === 0){
+                                    $rootScope.allProjects.push(decrypted);
+                                    $rootScope.projectCount++;
+                                    functions.refresh();
+                                }
+                                console.log("ERROR: " + err.message);
                             }
-                        } catch (err) {
-                            $rootScope.projectsLoaded = true;
-                            console.log(err.message);
-                            console.log("NO LAST PROJECT");
-                            functions.projectUpdateListeners();
-                        }
+                        });
+                    });
+                })
+            },
+            projectNotifListener: function () {
+                $rootScope.projectNotifications = [];
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getProjectNotifications",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
+                    }
+                }).then(function (response) {
+                    $rootScope.projectNotifications = response.data.projects;
+                    firebase.database().ref("HRMS_Storage/Notifications/Projects/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if ($rootScope.projectNotifications[$rootScope.projectNotifications.length - 1].key != decrypted.key) {
+                                    $rootScope.projectNotifications.push(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        })
                     });
                 });
             },
@@ -362,8 +537,6 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 });
             },
             leavesListeners: function () {
-                $rootScope.leaveNotifCounter = 0;
-                $rootScope.leaveNotifications = [];
                 $rootScope.allLeaves = [];
                 $rootScope.lastLeave;
                 $rootScope.allLeaveEvents = [];
@@ -372,155 +545,92 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 $rootScope.leavesDataPopulated = false;
                 $rootScope.leavesLoaded = false;
 
-                firebase.database().ref("HRMS_Storage/Notifications/Leaves/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        if (!(decrypted.seen)) {
-                            $rootScope.leaveNotifCounter++;
-                        }
-                        $rootScope.unseenNotifications["leaves"] = $rootScope.leaveNotifCounter;
-                        $rootScope.leaveNotifications.push(decrypted);
-                        functions.refresh();
-                    })
-                });
-                firebase.database().ref("HRMS_Storage/Leaves/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
-                    try {
-                        $rootScope.lastLeave = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
-                    } catch (err) {
-                        console.log("NO LEAVES YET");
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getLeaves",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
                     }
-                });
-                firebase.database().ref("HRMS_Storage/Leaves/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        $rootScope.allLeaves.push(decrypted);
-                        if ((decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) &&
-                            (decrypted.projectlead === $rootScope.userlogged.userkey || decrypted.request.employee.userkey === $rootScope.userlogged.userkey ||
-                                $rootScope.userlogged.isAdmin)) {
-                            var event = {
-                                title: decrypted.request.request.type + ": " + decrypted.request.employee.files.lastname,
-                                start: decrypted.request.request.startDate,
-                                end: (moment(decrypted.request.request.endDate).add(1, "days")).format('YYYY-MM-DD'),
-                                displayEventEnd: true,
-                                allDay: true
-                            }
-                            $rootScope.allLeaveEvents.push(event);
-                        }
-                        functions.refresh();
+                }).then(function (response) {
+                    $rootScope.allLeaves = response.data.leaves;
+                    console.log("ALL LEAVES");
+                    console.log($rootScope.allLeaves);
+                    $rootScope.toggleAllLeaveEvents = true;
+                    $rootScope.leavesDataPopulated = true;
+                    $rootScope.leavesLoaded = true;
+                    functions.refresh();
+                    functions.leavesUpdateListener();
+                    for (leave in $rootScope.allLeaves) {
                         try {
-                            if (snapshot.val().request.leavekey === $rootScope.lastLeave.request.leavekey) {
-                                $rootScope.toggleAllLeaveEvents = true;
-                                $rootScope.leavesDataPopulated = true;
-                                $rootScope.leavesLoaded = true;
+                            if (($rootScope.allLeaves[leave].request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) &&
+                                ($rootScope.allLeaves[leave].projectlead === $rootScope.userlogged.userkey || $rootScope.allLeaves[leave].request.employee.userkey === $rootScope.userlogged.userkey ||
+                                    $rootScope.userlogged.isAdmin)) {
+                                var event = {
+                                    title: decrypted.request.request.type + ": " + decrypted.request.employee.files.lastname,
+                                    start: decrypted.request.request.startDate,
+                                    end: (moment(decrypted.request.request.endDate).add(1, "days")).format('YYYY-MM-DD'),
+                                    displayEventEnd: true,
+                                    allDay: true
+                                }
+                                $rootScope.allLeaveEvents.push(event);
                                 functions.refresh();
-                                functions.leavesUpdateListener();
                             }
-                        } catch (err) {
-                            $rootScope.toggleAllLeaveEvents = true;
-                            $rootScope.leavesDataPopulated = true;
-                            $rootScope.leavesLoaded = true;
-                            functions.refresh();
-                            functions.leavesUpdateListener();
-                        }
-                        try {
-                            if (decrypted.request.employee.userkey === $rootScope.userlogged.userkey) {
+                            if ($rootScope.allLeaves[leave].request.employee.userkey === $rootScope.userlogged.userkey) {
                                 $rootScope.userloggedHasLeaves = true;
                             }
                         } catch (err) {}
-                    });
-                });
-            },
-            employeeUpdateListeners: function () {
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_removed", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        $rootScope.allEmployees.splice($rootScope.allEmployees.indexOf(decrypted), 1);
-                    });
-                    functions.refresh();
-                });
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_changed", function (snapshot) {
-                    console.log("EMPLOYEE CHANGED");
-                    console.log(snapshot.val());
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        console.log(decrypted);
-                        for (var index = 0; index < $rootScope.allEmployees.length; index++) {
-                            if ($rootScope.allEmployees[index].userkey === decrypted.userkey) {
-                                $rootScope.allEmployees[index] = decrypted;
-                                try {
-                                    if ($rootScope.selectedEmployee.userkey === decrypted.userkey) {
-                                        $rootScope.selectedEmployee = decrypted;
-                                        localStorage.setItem("selectedEmployee", JSON.stringify($rootScope.selectedEmployee));
-                                    }
-                                } catch (err) {
-                                    console.log("No selected employee");
-                                }
-                                try {
-                                    if ($rootScope.userlogged.userkey === decrypted.userkey) {
-                                        $rootScope.userlogged = decrypted;
-                                        localStorage.setItem("userlogged", JSON.stringify($rootScope.userlogged));
-                                    }
-                                } catch (err) {
-                                    console.log("No logged in user");
-                                }
-                                break;
-                            }
-                        }
-                    })
-                    functions.refresh();
-                });
-            },
-            employeeListeners: function () {
-                $rootScope.empNotifCounter = 0;
-                $rootScope.employeeNotifications = [];
-                $rootScope.allEmployees = [];
-                $rootScope.lastEmployee;
-                $rootScope.employeeCount = 0;
-                $rootScope.employeeDataPopulated = false;
-                $rootScope.janCountEmp = $rootScope.febCountEmp =
-                    $rootScope.marCountEmp = $rootScope.aprCountEmp =
-                    $rootScope.mayCountEmp = $rootScope.junCountEmp =
-                    $rootScope.julCountEmp = $rootScope.augCountEmp =
-                    $rootScope.sepCountEmp = $rootScope.octCountEmp =
-                    $rootScope.novCountEmp = $rootScope.decCountEmp = 0;
-                $rootScope.employeesLoaded = false;
-
-                firebase.database().ref("HRMS_Storage/Notifications/Employees/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        if (!(decrypted.seen)) {
-                            $rootScope.empNotifCounter++;
-                        }
-                        $rootScope.unseenNotifications["employees"] = $rootScope.empNotifCounter;
-                        $rootScope.employeeNotifications.push(decrypted);
-                        functions.refresh();
-                    })
-                });
-                firebase.database().ref("HRMS_Storage/Employees/").orderByKey().limitToLast(1).once("value").then(function (snapshot) {
-                    try {
-                        $rootScope.lastEmployee = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
-                    } catch (err) {
-                        console.log("NO EMPLOYEES YET");
                     }
-                });
-                firebase.database().ref("HRMS_Storage/Employees/").on("child_added", function (snapshot) {
-                    functions.decrypt(snapshot.val(), function (decrypted) {
-                        $rootScope.allEmployees.push(decrypted);
-                        $rootScope.employeeCount++;
-                        functions.getMonthBarGraphEmp(decrypted);
-                        functions.refresh();
-                        try {
-                            if (snapshot.val().userkey === $rootScope.lastEmployee.userkey) {
-                                console.log("ALL EMPLOYEES");
-                                console.log($rootScope.allEmployees);
-                                $rootScope.employeeDataPopulated = true;
-                                $rootScope.employeesLoaded = true;
-                                functions.employeeUpdateListeners();
-                            }
-                        } catch (err) {
-                            console.log(err.message);
-                            console.log("NO LAST EMPLOYEE");
-                            $rootScope.employeeDataPopulated = true;
-                            $rootScope.employeesLoaded = true;
-                            functions.employeeUpdateListeners();
-                        }
+                    firebase.database().ref("HRMS_Storage/Leaves/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.request.leavekey != $rootScope.allLeaves[$rootScope.allLeaves.length - 1].request.leavekey) {
+                                    $rootScope.allLeaves.push(decrypted);
+                                    functions.refresh();
+                                    if ((decrypted.request.isAcceptedByHR && !functions.contains(event, $rootScope.allLeaveEvents)) &&
+                                        (decrypted.projectlead === $rootScope.userlogged.userkey || decrypted.request.employee.userkey === $rootScope.userlogged.userkey ||
+                                            $rootScope.userlogged.isAdmin)) {
+                                        var event = {
+                                            title: decrypted.request.request.type + ": " + decrypted.request.employee.files.lastname,
+                                            start: decrypted.request.request.startDate,
+                                            end: (moment(decrypted.request.request.endDate).add(1, "days")).format('YYYY-MM-DD'),
+                                            displayEventEnd: true,
+                                            allDay: true
+                                        }
+                                        $rootScope.allLeaveEvents.push(event);
+                                        functions.refresh();
+                                    }
+                                    if (decrypted.request.employee.userkey === $rootScope.userlogged.userkey) {
+                                        $rootScope.userloggedHasLeaves = true;
+                                    }
+                                }
+                            } catch (err) {}
+                        });
                     });
                 });
+            },
+            leaveNotifListener: function () {
+                $rootScope.leaveNotifications = [];
+                queue({
+                    url: $rootScope.baseURL + "secure-api/getLeaveNotifications",
+                    method: "POST",
+                    data: {
+                        signature: JSON.stringify($rootScope.userlogged),
+                        token: localStorage.getItem("token")
+                    }
+                }).then(function (response) {
+                    $rootScope.leaveNotifications = response.data.leaves;
+                    firebase.database().ref("HRMS_Storage/Notifications/Leaves/").limitToLast(1).on("child_added", function (snapshot) {
+                        functions.decrypt(snapshot.val(), function (decrypted) {
+                            try {
+                                if (decrypted.key != $rootScope.leaveNotifications[$rootScope.leaveNotifications.length - 1].key) {
+                                    $rootScope.leaveNotifications.push(decrypted);
+                                    functions.refresh();
+                                }
+                            } catch (err) {}
+                        })
+                    });
+                })
             },
             getMonthBarGraphEmp: function (employee) {
                 var yearhired = moment(employee.files.datehired, "dddd, MMMM Do YYYY, h:mm:ss a").format("YYYY");
@@ -675,17 +785,25 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                 M.AutoInit();
             },
             decrypt: function (object, callback) {
-                $http({
-                    url: $rootScope.baseURL + "secure-api/decrypt",
-                    method: "POST",
-                    data: {
-                        token: localStorage.getItem("token"),
-                        signature: JSON.stringify($rootScope.userlogged),
-                        object: object
-                    }
-                }).then(function (response) {
-                    callback(response.data.object);
-                });
+                try {
+                    queue({
+                        url: $rootScope.baseURL + "secure-api/decrypt",
+                        method: "POST",
+                        data: {
+                            token: localStorage.getItem("token"),
+                            signature: JSON.stringify($rootScope.userlogged),
+                            object: object,
+                            cache: true
+                        }
+                    }).then(function (response) {
+                        setTimeout(function () {
+                            callback(response.data.object);
+                        });
+                    }).catch(function (err) {
+                        console.log("still rendering some data...");
+                        console.log("ERROR: " + err.message);
+                    });
+                } catch (err) {}
             },
             contains: function (object, list) {
                 for (obj in list) {

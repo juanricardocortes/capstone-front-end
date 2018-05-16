@@ -1,4 +1,4 @@
-angular.module("app").controller("commendEmployeeModalCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("commendEmployeeModalCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -19,9 +19,10 @@ angular.module("app").controller("commendEmployeeModalCtrl", function ($scope, $
                     displayLength: 1500
                 });
             } else {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/flagMember",
                     method: "POST",
+                    cache : true,
                     data: {
                         token: localStorage.getItem("token"),
                         signature: JSON.stringify($rootScope.userlogged),

@@ -1,4 +1,4 @@
-angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -72,9 +72,10 @@ angular.module("app").controller("addPLModalCtrl", function ($scope, $rootScope,
                 errors = 1;
             }
             if (errors === 0) {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/updateProjectLead",
                     method: "POST",
+                    cache : true,
                     data: {
                         token: localStorage.getItem("token"),
                         signature: JSON.stringify($rootScope.userlogged),

@@ -1,4 +1,4 @@
-angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -61,9 +61,10 @@ angular.module("app").controller("addProjectCtrl", function ($scope, $rootScope,
                 errors = 1;
             }
             if (errors === 0) {
-                $http({
+                queue({
                     url: $rootScope.baseURL + "secure-api/addProject",
                     method: "POST",
+                    cache : true,
                     data: {
                         signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),

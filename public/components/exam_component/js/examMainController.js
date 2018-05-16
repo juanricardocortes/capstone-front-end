@@ -1,4 +1,4 @@
-angular.module("app").controller("examMainCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("examMainCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
@@ -15,9 +15,10 @@ angular.module("app").controller("examMainCtrl", function ($scope, $rootScope, $
         },
         getQuestions: function () {
             $rootScope.allQuestions;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/getQuestions",
                 method: "POST",
+                cache : true,
             }).then(function (response) {
                 $rootScope.allQuestions = response.data.questions;
                 for (var index = 0; index < $rootScope.allQuestions.length; index++) {
@@ -31,9 +32,10 @@ angular.module("app").controller("examMainCtrl", function ($scope, $rootScope, $
         },
         resetForm: function () {},
         decrypt: function (object, callback) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/decrypt",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged),
@@ -69,9 +71,10 @@ angular.module("app").controller("examMainCtrl", function ($scope, $rootScope, $
             console.log($rootScope.myScore);
         },
         submit: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/submitExam",
                 method: "POST",
+                cache : true,
                 data: {
                     score: $rootScope.myScore,
                     applicant: $rootScope.takingApplicant

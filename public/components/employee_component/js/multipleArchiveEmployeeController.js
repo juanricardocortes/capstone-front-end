@@ -1,4 +1,4 @@
-angular.module("app").controller("multipleAddEmployeeCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("multipleAddEmployeeCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         initialize: function () {
@@ -43,9 +43,10 @@ angular.module("app").controller("multipleAddEmployeeCtrl", function ($scope, $r
                     }
                 }
             }
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/archiveEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     employees: $rootScope.multipleArchiveEmployee,
                     token: localStorage.getItem("token"),

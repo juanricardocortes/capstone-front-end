@@ -1,11 +1,12 @@
-angular.module("app").controller("projectProfileCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("projectProfileCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)
@@ -41,9 +42,10 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
             $rootScope.profileactive = false;
         },
         getEmployee: function (employee) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/getEmployee",
                 method: "POST",
+                cache : true,
                 data: {
                     signature: JSON.stringify($rootScope.userlogged),
                     token: localStorage.getItem("token"),
@@ -135,9 +137,10 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
             pdfMake.createPdf(docDefinition).download("project_" + $rootScope.selectedProject.name + ".pdf");
         },
         confirmEndProject: function () {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/endProject",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged),
@@ -167,9 +170,10 @@ angular.module("app").controller("projectProfileCtrl", function ($scope, $rootSc
             });
         },
         removeEmployee: function (slot) {
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/removeMember",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged),

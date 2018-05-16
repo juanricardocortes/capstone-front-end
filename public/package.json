@@ -7,6 +7,8 @@
         "angular-route": "^1.6.9",
         "angular-toarrayfilter": "^1.0.3",
         "chart.js": "^2.7.2",
+        "crypto": "^1.0.1",
+        "crypto-json": "^2.0.0",
         "fullcalendar": "^3.9.0",
         "fullcalendar-scheduler": "^1.9.3",
         "jquery": "^3.3.1",

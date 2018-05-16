@@ -1,11 +1,12 @@
-angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $http) {
+angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $http, queue) {
 
     var functions = {
         onInit: function () {
             $rootScope.isLogged = true;
-            $http({
+            queue({
                 url: $rootScope.baseURL + "api/validateToken",
                 method: "POST",
+                cache : true,
                 data: {
                     token: localStorage.getItem("token"),
                     signature: JSON.stringify($rootScope.userlogged)
@@ -93,9 +94,10 @@ angular.module("app").controller("projectCtrl", function ($scope, $rootScope, $h
         archiveProject: function (project) {
             project.isArchived = !project.isArchived;
             functions.refresh();
-            $http({
+            queue({
                 url: $rootScope.baseURL + "secure-api/archiveProject",
                 method: "POST",
+                cache : true,
                 data: {
                     projects: [project],
                     signature: JSON.stringify($rootScope.userlogged),
