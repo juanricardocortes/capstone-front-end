@@ -559,7 +559,6 @@ angular.module("app", ["ngRoute", "blockUI", 'angular-toArrayFilter', 'chart.js'
                     $rootScope.toggleAllLeaveEvents = true;
                     $rootScope.leavesDataPopulated = true;
                     $rootScope.leavesLoaded = true;
-                    functions.refresh();
                     functions.leavesUpdateListener();
                     for (leave in $rootScope.allLeaves) {
                         try {

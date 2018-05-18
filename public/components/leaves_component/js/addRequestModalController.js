@@ -33,8 +33,8 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
             $("#addRequest_endDate").blur();
         },
         resetMinMax: function () {
-            $('#addRequest_startDate').pickadate('picker').set('min', moment());
-            $('#addRequest_endDate').pickadate('picker').set('min', moment());
+            $('#addRequest_startDate').pickadate('picker').set('min', moment(moment().add(3, 'days')).toDate());
+            $('#addRequest_endDate').pickadate('picker').set('min', moment(moment().add(3, 'days')).toDate());
             $('#addRequest_startDate').pickadate('picker').set('max', false);
             $('#addRequest_endDate').pickadate('picker').set('max', false);
         }
@@ -44,6 +44,17 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
 
     console.log(moment(moment().add(3, 'days')))
     $scope.functions = {
+        setMinimum: function () {
+            if ($scope.addRequest_type === "Sick leave" || $scope.addRequest_type === "Emergency leave") {
+                console.log("No minimum date");
+                $('#addRequest_startDate').pickadate('picker').set('min', moment(moment().subtract(3, 'days')).toDate());
+                $('#addRequest_endDate').pickadate('picker').set('min', moment(moment().subtract(3, 'days')).toDate());
+            } else {
+                console.log("atleast 3 days");
+                $('#addRequest_startDate').pickadate('picker').set('min', moment(moment().add(3, 'days')).toDate());
+                $('#addRequest_endDate').pickadate('picker').set('min', moment(moment().add(3, 'days')).toDate());
+            }
+        },
         getMinimumStart: function () {
             return moment();
         },
@@ -54,11 +65,11 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
                 selectYears: 15,
                 min: moment(moment().add(3, 'days')).toDate(),
                 closeOnSelect: true,
-                disable: [1,7]
+                disable: [1, 7]
             });
             $('.datepicker').on('change', function () {
                 if ($(this).attr('id') === 'addRequest_startDate') {
-                    if($(this).val()===""){
+                    if ($(this).val() === "") {
                         $('#addRequest_endDate').pickadate('picker').set('min', moment(moment().add(3, 'days')));
                     } else {
                         $('#addRequest_endDate').pickadate('picker').set('min', $(this).val());
@@ -75,17 +86,17 @@ angular.module("app").controller("addRequestCtrl", function ($scope, $rootScope,
         },
         addRequest: function () {
             var errors = 0;
-            if ($scope.addRequest_type === null || 
+            if ($scope.addRequest_type === null ||
                 $scope.addRequest_startDate === undefined ||
                 $scope.addRequest_endDate === undefined ||
-                $scope.addRequest_reason === undefined){
+                $scope.addRequest_reason === undefined) {
                 errors = 1;
             }
             if (errors === 0) {
                 queue({
                     url: $rootScope.baseURL + "secure-api/requestLeave",
                     method: "POST",
-                    cache : true,
+                    cache: true,
                     data: {
                         signature: JSON.stringify($rootScope.userlogged),
                         token: localStorage.getItem("token"),
